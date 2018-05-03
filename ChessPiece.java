@@ -3,7 +3,7 @@ import java.util.*;
  * Write a description of class asdf here.
  *
  * @author Rain Ma
- * @version 23/04/2018
+ * @version 03/05/2018
  */
 public abstract class ChessPiece
 {
@@ -12,42 +12,55 @@ public abstract class ChessPiece
     private boolean isWhite;
     int row;
     int col;
-    
+
     /**
-     * Constructor for objects of class asdf
+     * Constructor for objects of class ChessPiece
      */
     public ChessPiece(int row, int col, boolean isWhite)
     {
         this.row = row;
         this.col = col;
         this.isWhite = isWhite;
-        
+
     }
-    
+
     public abstract void findMove();
     
-    
+    /**
+     * @return the squares that the chess piece can move to [i][0] is row [i][1] is col
+     */
     public int[][] getMoves()
     {
         return moves;
     }
-    
+
+    /**
+     * @return if the chess piece is white
+     */
     public boolean getIsWhite()
     {
         return isWhite;
     }
-    
+
+    /**
+     * @param row is the new value for row number
+     * mutator. changes int row of chess piece
+     */
     public void moveRow(int row)
     {
         this.row = row;
-        
+
     }
-    
+
+    /**
+     * @param col is the new value for column number
+     * mutator. changes int
+     */
     public void moveCol()
     {
-        
+
         this.col = col;
-        
+
     }
-   
+
 }
