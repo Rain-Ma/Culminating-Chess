@@ -37,5 +37,17 @@ public abstract class ChessPiece
         return isWhite;
     }
     
+    public void moveRow(int row)
+    {
+        this.row = row;
+        
+    }
+    
+    public void moveCol()
+    {
+        
+        this.col = col;
+        
+    }
    
 }
