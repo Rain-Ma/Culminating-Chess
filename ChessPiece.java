@@ -8,11 +8,11 @@ import java.util.*;
 public abstract class ChessPiece
 {
     // instance variables - replace the example below with your own
-    private int[][] moves;
+    private ArrayList[][] moves;
     private boolean isWhite;
     int row;
     int col;
-
+    double value;// extra
     /**
      * Constructor for objects of class ChessPiece
      */
@@ -29,7 +29,7 @@ public abstract class ChessPiece
     /**
      * @return the squares that the chess piece can move to [i][0] is row [i][1] is col
      */
-    public int[][] getMoves()
+    public ArrayList[][] getMoves()
     {
         return moves;
     }
@@ -62,5 +62,17 @@ public abstract class ChessPiece
         this.col = col;
 
     }
-
+    /**
+     * @param the new list of possible moves the chess piece can make
+     */
+    public void newMoves(ArrayList[][] moves)
+    {
+        this.moves = moves;
+    }
+    
+    /**
+     * leave it blank for now
+     * @return the value of piece 
+     */
+    public abstract double evaluate();
 }
