@@ -3,16 +3,16 @@ import java.util.*;
  * Write a description of class asdf here.
  *
  * @author Rain Ma
- * @version 03/05/2018
+ * @version 04/05/2018
  */
 public abstract class ChessPiece
 {
     // instance variables - replace the example below with your own
-    private ArrayList[][] moves;
+    private int[][] moves;
     private boolean isWhite;
-    int row;
-    int col;
-    double value;// extra
+    private int row;
+    private int col;
+    private double value;// extra
     /**
      * Constructor for objects of class ChessPiece
      */
@@ -25,11 +25,11 @@ public abstract class ChessPiece
     }
 
     public abstract void findMove(ChessPiece[][] board);
-    
+
     /**
      * @return the squares that the chess piece can move to [i][0] is row [i][1] is col
      */
-    public ArrayList[][] getMoves()
+    public int[][] getMoves()
     {
         return moves;
     }
@@ -62,17 +62,29 @@ public abstract class ChessPiece
         this.col = col;
 
     }
+
     /**
      * @param the new list of possible moves the chess piece can make
      */
-    public void newMoves(ArrayList[][] moves)
+    public void newMoves(int[][] moves)
     {
         this.moves = moves;
     }
-    
+
     /**
      * leave it blank for now
      * @return the value of piece 
      */
     public abstract double evaluate();
+
+    public int getRow()
+    {
+        return row;
+    }
+
+    public int getCol()
+    {
+
+        return col;
+    }
 }
