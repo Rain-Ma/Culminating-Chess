@@ -25,7 +25,7 @@ public abstract class Rook extends ChessPiece
         int count = 0;
         for( int r = getRow()+1;r<8;r++)
         {
-            if(board[r][getCol()] instance of ChessPiece)
+            if(board[r][getCol()] instanceof ChessPiece)
             {
                 if(board[r][getCol()].getIsWhite()!=getIsWhite())
                 {
@@ -48,7 +48,7 @@ public abstract class Rook extends ChessPiece
          }
          for( int r = getRow()-1;r>=0;r--)
         {
-            if(board[r][getCol()] instance of ChessPiece)
+            if(board[r][getCol()] instanceof ChessPiece)
             {
                 if(board[r][getCol()].getIsWhite()!=getIsWhite())
                 {
@@ -71,12 +71,12 @@ public abstract class Rook extends ChessPiece
          }
          for( int c = getCol()+1;c<8;c++)
         {
-            if(board[r][getCol()] instance of ChessPiece)
+            if(board[getRow()][c] instanceof ChessPiece)
             {
-                if(board[r][getCol()].getIsWhite()!=getIsWhite())
+                if(board[getRow()][c].getIsWhite()!=getIsWhite())
                 {
-                    moves[count][0] = r;
-                    moves[count][1] = getCol();
+                    moves[count][0] = getRow();
+                    moves[count][1] = c;
                     count++;
                     break;
                 }
@@ -86,15 +86,15 @@ public abstract class Rook extends ChessPiece
                 }
              
              }
-             moves[count][0] = r;
-             moves[count][1] = getCol();
+             moves[count][0] = getRow();
+             moves[count][1] = c;
              count++;
             
             
          }
-         for( int r = getRow()+1;r<8;r++)
+         for( int c = getRow()-1;r<8;r++)
         {
-            if(board[r][getCol()] instance of ChessPiece)
+            if(board[r][getCol()] instanceof ChessPiece)
             {
                 if(board[r][getCol()].getIsWhite()!=getIsWhite())
                 {
