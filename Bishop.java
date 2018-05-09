@@ -87,5 +87,13 @@ public abstract class Bishop extends ChessPiece
             if(counter>13)
                 break;
         }
+    } 
+      
+    public String toString()
+    {
+        if(getIsWhite)
+            return "ChessPieceIcon/WhiteBishop"
+        else
+            return "ChessPieceIcon/BlackBishop"
     }
 }
