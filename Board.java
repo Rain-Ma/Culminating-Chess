@@ -3,7 +3,7 @@
  * Write a description of class board here.
  *
  * @author Rain Ma
- * @version 03/05/2018
+ * @version 09/05/2018
  */
 public class Board
 {
@@ -28,7 +28,7 @@ public class Board
     }
     
     /**
-     * @return the black pieces
+     * @return the white pieces
      */
     public ChessPiece[] getWhitePieces()
     {
@@ -36,7 +36,7 @@ public class Board
     }
     
     /**
-     * @return the black pieces still on the board
+     * @return the black pieces 
      */
     public ChessPiece[] getBlackPieces()
     {
@@ -50,7 +50,19 @@ public class Board
      */
     public void move(ChessPiece piece, int row, int col)
     {
+        if(piece.getClass() == King)
+        {
+            
+        }
         
+        else if(piece.attacks(row,col))
+        {
+            GameBoard[row][col] = piece;
+            GameBoard[piece.getRow()][piece.getCol()] = null;
+            piece.setRow(row);
+            piece.setCol(col);
+            
+        }
         
         
     }
