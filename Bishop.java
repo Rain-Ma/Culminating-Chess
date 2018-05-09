@@ -1,10 +1,8 @@
 import java.util.*;
 public abstract class Bishop extends ChessPiece
 {
-    // instance variables - replace the example below with your own
-
     /**
-     * Constructor for objects of class asdf
+     * Constructor for objects of class Bishop
      */
     public Bishop(int row, int col, boolean isWhite)
     {
@@ -19,7 +17,7 @@ public abstract class Bishop extends ChessPiece
         boolean dr = true;
         boolean ul = true;
         boolean dl = true;
-        int[][] move = new int[8][2];
+        int[][] move = new int[13][2];
         int counter = 0;
         for(int r = 0; r<8; r++)
         {           
@@ -37,6 +35,7 @@ public abstract class Bishop extends ChessPiece
                     else{
                         move[counter][0] = r;
                         move[counter][1] = c;
+                        counter++;
                     }
                 }
                 else if(r<getRow() && c>getCol() && dr == true)
@@ -51,6 +50,7 @@ public abstract class Bishop extends ChessPiece
                     else{
                         move[counter][0] = r;
                         move[counter][1] = c;
+                        counter++;
                     }
                 }
                 else if(r>getRow() && c<getCol() && ul == true)
@@ -65,6 +65,7 @@ public abstract class Bishop extends ChessPiece
                     else{
                         move[counter][0] = r;
                         move[counter][1] = c;
+                        counter++;
                     }
                 }
                 else if(r<getRow() && c<getCol() && dl == true)
@@ -79,10 +80,12 @@ public abstract class Bishop extends ChessPiece
                     else{
                         move[counter][0] = r;
                         move[counter][1] = c;
+                        counter++;
                     }
                 }
-                counter++;
             }
+            if(counter>13)
+                break;
         }
     }
 }

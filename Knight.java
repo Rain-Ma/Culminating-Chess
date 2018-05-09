@@ -1,10 +1,8 @@
 import java.util.*;
 public abstract class Knight extends ChessPiece
 {
-    // instance variables - replace the example below with your own
-
     /**
-     * Constructor for objects of class asdf
+     * Constructor for objects of class Knight
      */
     public Knight(int row, int col, boolean isWhite)
     {
@@ -26,12 +24,13 @@ public abstract class Knight extends ChessPiece
                 else if((Math.abs(getRow() - r) == 2 && Math.abs(getCol() - c) == 1) || (Math.abs(getRow() - r) == 1 && Math.abs(getCol() - c) == 2)) 
                 {
                     move[counter][0] = r;
-                    move[counter][1] = c;                    
+                    move[counter][1] = c;  
+                    counter++;
                 }else
-                    break;
-                counter++;
+                    break;                
             }
+            if(counter>8)
+                break;
         }
     }
-
 }
