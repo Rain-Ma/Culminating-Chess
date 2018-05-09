@@ -9,9 +9,7 @@ public abstract class Knight extends ChessPiece
         super(row,col,isWhite);
     }
 
-    public abstract void findMove();  
-
-    public void newMoves(ChessPiece[][] moves)
+    public void findMove(ChessPiece[][] moves)
     {
         int[][] move = new int[8][2];
         int counter = 0;
@@ -19,7 +17,7 @@ public abstract class Knight extends ChessPiece
         {
             for(int c = 0; c<8; c++)
             {
-                if(moves[r][c] instanceof ChessPiece && moves[getRow()][getCol()].getIsWhite() != moves[r][c].getIsWhite())
+                if(moves[r][c] instanceof ChessPiece && moves[getRow()][getCol()].getIsWhite() == moves[r][c].getIsWhite())
                     break;
                 else if((Math.abs(getRow() - r) == 2 && Math.abs(getCol() - c) == 1) || (Math.abs(getRow() - r) == 1 && Math.abs(getCol() - c) == 2)) 
                 {
@@ -32,5 +30,19 @@ public abstract class Knight extends ChessPiece
             if(counter>8)
                 break;
         }
+        //move.copyOf(move[][], 8-(8-counter));
+    }
+
+    public void newMoves(ChessPiece[][] moves)
+    {
+        
+    }
+    
+    public String toString()
+    {
+        if(getIsWhite())
+            return "ChessPieceIcons/WhiteKnight";
+        else 
+            return "ChessPieceIcons/BlackKnight";
     }
 }

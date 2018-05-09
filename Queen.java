@@ -1,33 +1,115 @@
-public abstract class Queen
+import java.util.*;
+public abstract class Queen extends ChessPiece
 {
-    // instance variables - replace the example below with your own
-    private int[][] moves;
-    private boolean isWhite;
-    int row;
-    int col;
-    
     /**
-     * Constructor for objects of class asdf
+     * Constructor for objects of class Rook
      */
     public Queen(int row, int col, boolean isWhite)
     {
-        this.row = row;
-        this.col = col;
-        this.isWhite = isWhite;
-        
+        super(row,col,isWhite);
     }
-    
-    public abstract void findMove();
-    
-    
-    public int[][] getMoves()
+
+    public void findMove(ChessPiece[][] moves)
     {
-        return moves;
+        int[][] move = new int[27][2];
+        int counter = 0;
+        boolean ur = true;
+        boolean dr = true;
+        boolean ul = true;
+        boolean dl = true;
+        for(int r = 0; r<8; r++)
+        {
+            if(moves[r][getCol()] instanceof ChessPiece != true)
+            {
+                for(int c = 0; c<8; c++)
+                {
+                    if(r>getRow() && c>getCol() && ur == true)
+                    {
+                        if(moves[r][getCol()] instanceof ChessPiece){
+                            ur = false;
+                            break;
+                        }else if(getRow() == r && getCol() == c) 
+                            break;
+                        else if(Math.abs(getRow() - r) != Math.abs(getCol() - c))
+                            break;
+                        else{
+                            move[counter][0] = r;
+                            move[counter][1] = c;
+                            counter++;
+                        }
+                    }
+                    else if(r<getRow() && c>getCol() && dr == true)
+                    {
+                        if(moves[r][getCol()] instanceof ChessPiece){
+                            dr = false;
+                            break;
+                        }else if(getRow() == r && getCol() == c) 
+                            break;
+                        else if(Math.abs(getRow() - r) != Math.abs(getCol() - c))
+                            break;
+                        else{
+                            move[counter][0] = r;
+                            move[counter][1] = c;
+                            counter++;
+                        }
+                    }
+                    else if(r>getRow() && c<getCol() && ul == true)
+                    {
+                        if(moves[r][getCol()] instanceof ChessPiece){
+                            ul = false;
+                            break;
+                        }else if(getRow() == r && getCol() == c) 
+                            break;
+                        else if(Math.abs(getRow() - r) != Math.abs(getCol() - c))
+                            break;
+                        else{
+                            move[counter][0] = r;
+                            move[counter][1] = c;
+                            counter++;
+                        }
+                    }
+                    else if(r<getRow() && c<getCol() && dl == true)
+                    {
+                        if(moves[r][getCol()] instanceof ChessPiece){
+                            dl = false;
+                            break;
+                        }else if(getRow() == r && getCol() == c) 
+                            break;
+                        else if(Math.abs(getRow() - r) != Math.abs(getCol() - c))
+                            break;
+                        else{
+                            move[counter][0] = r;
+                            move[counter][1] = c;
+                            counter++;
+                        }
+                    }else if(getRow() != r && getCol() != c) 
+                        break;
+                    else if(getRow() == r && getCol() == c) 
+                        break;
+                    else if(moves[r][c] instanceof ChessPiece)
+                        break;
+                    else{
+                        move[counter][0] = r;
+                        move[counter][1] = c;
+                        counter++;
+                    }
+                }
+            }
+            if(counter>27)
+                break;
+        }
     }
-    
-    public boolean getIsWhite()
+
+    public void newMoves(ChessPiece[][] moves)
     {
-        return isWhite;
+
     }
-    
+
+    public String toString()
+    {
+        if(getIsWhite())
+            return "ChessPieceIcons/WhiteQueen";
+        else 
+            return "ChessPieceIcons/BlackQueen";
+    }
 }
