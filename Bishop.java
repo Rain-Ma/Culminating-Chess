@@ -91,9 +91,9 @@ public abstract class Bishop extends ChessPiece
       
     public String toString()
     {
-        if(getIsWhite)
-            return "ChessPieceIcon/WhiteBishop"
+        if(getIsWhite())
+            return "ChessPieceIcon/WhiteBishop";
         else
-            return "ChessPieceIcon/BlackBishop"
+            return "ChessPieceIcon/BlackBishop";
     }
 }
