@@ -84,7 +84,7 @@ public abstract class ChessPiece
 
     public int getCol()
     {
-
         return col;
     }
+
 }
