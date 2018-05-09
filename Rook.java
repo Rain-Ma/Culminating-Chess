@@ -1,41 +1,131 @@
-import java.util.*;
+/**
+ * 
+ *
+ * @author Rain Ma
+ * @version 09/05/2018
+ */
 public abstract class Rook extends ChessPiece
 {
+    // instance variables - replace the example below with your own
+    private boolean moved;
     /**
-     * Constructor for objects of class Rook
+     * Constructor for objects of class asdf
      */
     public Rook(int row, int col, boolean isWhite)
     {
-        super(row,col,isWhite);
+        this.row = row;
+        this.col = col;
+        this.isWhite = isWhite;
+        moved = false;
     }
 
-    public abstract void findMove();
-
-    public void newMoves(ChessPiece[][] moves)
+    public void findMove(ChessPiece[][] board)
     {
-        int[][] move = new int[14][2];
-        int counter = 0;
-        for(int r = 0; r<8; r++)
+        int[][] moves = new int[14][2]
+        int count = 0;
+        for( int r = getRow()+1;r<8;r++)
         {
-            if(moves[r][getCol()] instanceof ChessPiece != true)
+            if(board[r][getCol()] instance of ChessPiece)
             {
-                for(int c = 0; c<8; c++)
+                if(board[r][getCol()].getIsWhite()!=getIsWhite())
                 {
-                    if(getRow() != r && getCol() != c) // makes sure only either the row or column is changed
-                        break;
-                    else if(getRow() == r && getCol() == c) // makes sure the piece is actually moved
-                        break;
-                    else if(moves[r][c] instanceof ChessPiece)
-                        break;
-                    else{
-                        move[counter][0] = r;
-                        move[counter][1] = c;
-                        counter++;
-                    }
+                    moves[count][0] = r;
+                    moves[count][1] = getCol();
+                    count++;
+                    break;
                 }
-            }
-            if(counter>14)
-                break;
-        }
+                else
+                {
+                    break;
+                }
+             
+             }
+             moves[count][0] = r;
+             moves[count][1] = getCol();
+             count++;
+            
+            
+         }
+         for( int r = getRow()-1;r>=0;r--)
+        {
+            if(board[r][getCol()] instance of ChessPiece)
+            {
+                if(board[r][getCol()].getIsWhite()!=getIsWhite())
+                {
+                    moves[count][0] = r;
+                    moves[count][1] = getCol();
+                    count++;
+                    break;
+                }
+                else
+                {
+                    break;
+                }
+             
+             }
+             moves[count][0] = r;
+             moves[count][1] = getCol();
+             count++;
+            
+            
+         }
+         for( int c = getCol()+1;c<8;c++)
+        {
+            if(board[r][getCol()] instance of ChessPiece)
+            {
+                if(board[r][getCol()].getIsWhite()!=getIsWhite())
+                {
+                    moves[count][0] = r;
+                    moves[count][1] = getCol();
+                    count++;
+                    break;
+                }
+                else
+                {
+                    break;
+                }
+             
+             }
+             moves[count][0] = r;
+             moves[count][1] = getCol();
+             count++;
+            
+            
+         }
+         for( int r = getRow()+1;r<8;r++)
+        {
+            if(board[r][getCol()] instance of ChessPiece)
+            {
+                if(board[r][getCol()].getIsWhite()!=getIsWhite())
+                {
+                    moves[count][0] = r;
+                    moves[count][1] = getCol();
+                    count++;
+                    break;
+                }
+                else
+                {
+                    break;
+                }
+             
+             }
+             moves[count][0] = r;
+             moves[count][1] = getCol();
+             count++;
+            
+            
+         }
+            
+        
+        
+        
+        
     }
+    
+    public boolean hasMoved()
+    {
+        return moved;
+    }
+    
+    public String toString()
 }
