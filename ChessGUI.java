@@ -32,14 +32,31 @@ class GameFrame extends JFrame implements ActionListener
     private JPanel pane;
     ChessPiece[][] images = new ChessPiece[8][8];
 
+    /**
+     * Constructor for GameFrame class
+     */
     public GameFrame()
     {
         //Using JFrame's constructor, "Chess Game" will be the name of the window
         super("Chess Game");
+    }
 
-        //We are in the frame (ColourFrame) whose Content Pane that we want, we can't say frame.getContentPane()
+    /**
+     * Runs the game
+     */
+    public void runGame()
+    {
         pane = (JPanel)getContentPane();
-        pane.setLayout(new GridLayout(8,8));
+        pane.setLayout(new BorderLayout());
+
+        JPanel BoardPane = new JPanel();
+        BoardPane.setLayout(new GridLayout(8,8));
+
+        JPanel NumberPane = new JPanel();
+        NumberPane.setLayout(new GridLayout(8,1));
+
+        JPanel LetterPane = new JPanel();
+        LetterPane.setLayout(new GridLayout(1,8));
 
         JButton[][] buttons = new JButton[8][8];
         for(int r = 0; r < 8; r++)
@@ -50,33 +67,67 @@ class GameFrame extends JFrame implements ActionListener
                 if(images[r][c]==null)
                 {
                     buttons[r][c] = new JButton();
-                    System.out.println("ok");    
                 }
                 else
                 {
-                    buttons[r][c] = new JButton(new ImageIcon("ChessPieceIcons/BlackPawn.png"));
-                    System.out.println("no");    
+                    buttons[r][c] = new JButton(new ImageIcon("ChessPieceIcons/BlackBishop.png"));//ChessPiece.toString()
                 }
                 if(r % 2 != 0&& (c+1)%2 != 0)
                 {
-                    buttons[r][c].setBackground(Color.BLACK);
-                    buttons[r][c].setForeground(buttons[r][c].getBackground());
+                    buttons[r][c].setBackground(new Color(5, 115, 56));
+                    buttons[r][c].setFocusPainted(false); //removes show icon border when pressed
                 }
                 else if(r % 2 == 0&& (c+1)%2 == 0)
                 {
-                    buttons[r][c].setBackground(Color.BLACK);
+                    buttons[r][c].setBackground(new Color(5, 115, 56));
+                    buttons[r][c].setFocusPainted(false); //removes show icon border when pressed
                 }
                 else
                 {
-                    buttons[r][c].setBackground(Color.WHITE);
+                    buttons[r][c].setBackground(new Color(251, 244, 225));
+                    buttons[r][c].setFocusPainted(false); //removes show icon border when pressed
                 }
-                pane.add(buttons[r][c]);
+                BoardPane.add(buttons[r][c]);
             }
         }
 
+        for(int i = 0; i <8; i++)
+        {
+            String number = " " + Integer.toString(Math.abs(i-8)) + " ";
+            JLabel numbers = new JLabel(number);
+            numbers.setFont(new Font("Monospaced", Font.BOLD, 24));
+            NumberPane.add(numbers);
+
+            String letter = "     " + Character.toString(Character.toUpperCase((char)(i+97)));
+            JLabel letters = new JLabel(letter);
+            letters.setFont(new Font("Monospaced", Font.BOLD, 24));
+            LetterPane.add(letters);
+        }
+
+        JPanel NumberRight = new JPanel(new GridLayout(8,1));
+        JPanel LetterBottom = new JPanel(new GridLayout(1,8));
+        for(int i = 0; i <8; i++)
+        {
+            String number = " " + Integer.toString(Math.abs(i-8)) + " ";
+            JLabel numbers = new JLabel(number);
+            numbers.setFont(new Font("Monospaced", Font.BOLD, 24));
+            NumberRight.add(numbers);
+
+            String letter = "     " + Character.toString(Character.toUpperCase((char)(i+97)));
+            JLabel letters = new JLabel(letter);
+            letters.setFont(new Font("Monospaced", Font.BOLD, 24));
+            LetterBottom.add(letters);
+        }
+
+        pane.add(NumberPane, BorderLayout.WEST);
+        pane.add(LetterPane, BorderLayout.NORTH);
+        pane.add(NumberRight, BorderLayout.EAST);
+        pane.add(LetterBottom, BorderLayout.SOUTH);
+        pane.add(BoardPane, BorderLayout.CENTER);
         //Frame here is implicit
         setSize(1000,1000);
         setVisible(true);
+        setResizable(false);
     }
 
     public void getBoard(ChessPiece[][] board)
@@ -86,9 +137,9 @@ class GameFrame extends JFrame implements ActionListener
             for(int c = 0; c < 8; c++)
             {
                 images[r][c] = board[r][c];
-                System.out.println(images[r][c]);
             }
         }
+        runGame();
     }
 
     /**
