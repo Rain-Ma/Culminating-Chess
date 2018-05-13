@@ -1,5 +1,5 @@
 import java.util.*;
-public abstract class Queen extends ChessPiece
+public class Queen extends ChessPiece
 {
     /**
      * Constructor for objects of class Rook
@@ -98,17 +98,22 @@ public abstract class Queen extends ChessPiece
                 break;
         }
     }
-    
+
     public void newMoves(ChessPiece[][] moves)
     {
 
     }
 
+    public double evaluate()
+    {
+        return 2;
+    }
+
     public String toString()
     {
         if(getIsWhite())
-            return "ChessPieceIcons/WhiteQueen";
+            return "ChessPieceIcons/WhiteQueen.png";
         else 
-            return "ChessPieceIcons/BlackQueen";
+            return "ChessPieceIcons/BlackQueen.png";
     }
 }
