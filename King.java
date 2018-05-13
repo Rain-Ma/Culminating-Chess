@@ -24,6 +24,7 @@ public class King extends ChessPiece
     @Override
     public void findMove(ChessPiece[][] board)
     {
+        /*
         int[][] moves;
         int i =0;
         if(!hasMoved)
@@ -37,8 +38,7 @@ public class King extends ChessPiece
                     i++;
                 }
             }
-            
-            
+
         }
         for(int r = getRow()-1;r<8;r++)
         {
@@ -52,43 +52,50 @@ public class King extends ChessPiece
                         {
                             if(1==1)
                             {
-                                
+
                             }
                         }
-                        
-                        
+
                     }
                 }
             }
 
         }
+        */
     }
-
+   
     public double evaluate()
     {
         return 2;
     }
-    
+
     public void updateOpponentMove(int[][] opponentMove)
     {
-        
+
         this.opponentMove = opponentMove;
-        
+
     }
-    
+
     public boolean attacked(int row,int col)
     {
-        
+
         for(int i=0;i<opponentMove.length;i++)
         {
             if(opponentMove[i][0]==row&&opponentMove[i][1]==col)
             {
                 return true;
             }
-            
+
         }
         return false;
-        
+
     }
-    
+
+        public String toString()
+    {
+        if(getIsWhite())
+            return "ChessPieceIcons/WhiteKing.png";
+        else
+            return "ChessPieceIcons/BlackKing.png";
+    }    
 }
