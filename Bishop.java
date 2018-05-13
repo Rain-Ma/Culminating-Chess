@@ -1,5 +1,5 @@
 import java.util.*;
-public abstract class Bishop extends ChessPiece
+public class Bishop extends ChessPiece
 {
     /**
      * Constructor for objects of class Bishop
@@ -9,6 +9,8 @@ public abstract class Bishop extends ChessPiece
         super(row,col,isWhite);
     }
 
+    //public abstract void findMove();
+    
     public void findMove(ChessPiece[][] moves)
     {
         boolean ur = true;
@@ -26,7 +28,7 @@ public abstract class Bishop extends ChessPiece
                     if(moves[r][getCol()] instanceof ChessPiece){
                         ur = false;
                         break;
-                    }else if(getRow() == r && getCol() == c) 
+                    }else if(getRow() == r && getCol() == c) // makes sure the piece is actually moved
                         break;
                     else if(Math.abs(getRow() - r) != Math.abs(getCol() - c))
                         break;
@@ -41,7 +43,7 @@ public abstract class Bishop extends ChessPiece
                     if(moves[r][getCol()] instanceof ChessPiece){
                         dr = false;
                         break;
-                    }else if(getRow() == r && getCol() == c) 
+                    }else if(getRow() == r && getCol() == c) // makes sure the piece is actually moved
                         break;
                     else if(Math.abs(getRow() - r) != Math.abs(getCol() - c))
                         break;
@@ -56,7 +58,7 @@ public abstract class Bishop extends ChessPiece
                     if(moves[r][getCol()] instanceof ChessPiece){
                         ul = false;
                         break;
-                    }else if(getRow() == r && getCol() == c) 
+                    }else if(getRow() == r && getCol() == c) // makes sure the piece is actually moved
                         break;
                     else if(Math.abs(getRow() - r) != Math.abs(getCol() - c))
                         break;
@@ -71,7 +73,7 @@ public abstract class Bishop extends ChessPiece
                     if(moves[r][getCol()] instanceof ChessPiece){
                         dl = false;
                         break;
-                    }else if(getRow() == r && getCol() == c) 
+                    }else if(getRow() == r && getCol() == c) // makes sure the piece is actually moved
                         break;
                     else if(Math.abs(getRow() - r) != Math.abs(getCol() - c))
                         break;
@@ -85,18 +87,18 @@ public abstract class Bishop extends ChessPiece
             if(counter>13)
                 break;
         }
-    }
+    } 
     
-    public void newMoves(ChessPiece[][] moves)
+    public double evaluate()
     {
-        
+        return 2;
     }
     
     public String toString()
     {
         if(getIsWhite())
-            return "ChessPieceIcons/WhiteBishop";
-        else 
-            return "ChessPieceIcons/BlackBishop";
+            return "ChessPieceIcons/WhiteBishop.png";
+        else
+            return "ChessPieceIcons/BlackBishop.png";
     }
 }
