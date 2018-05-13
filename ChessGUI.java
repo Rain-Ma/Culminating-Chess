@@ -5,6 +5,7 @@
  * @author Justin Chu
  * @version May 3rd, 2018
  */
+//import statements
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -13,6 +14,7 @@ public class ChessGUI
 {
     public static void main (String [] args)
     {
+        //creates a new JFrame
         GameFrame frame = new GameFrame();
         frame.addWindowListener(new WindowAdapter()
             {
@@ -28,9 +30,11 @@ public class ChessGUI
 //Essentially a JFrame, except it reacts to button events
 class GameFrame extends JFrame implements ActionListener
 {
-    //We'll make our JPanel an instance variable so we can use it in multiple methods
-    private JPanel pane;
-    ChessPiece[][] images = new ChessPiece[8][8];
+    //instance variables
+    private ChessPiece[][] images = new ChessPiece[8][8]; //new ChessPiece array for images
+    private JButton[][] buttons = new JButton[8][8]; //new JButton array to put on chess board
+    private int[][] moveLoc = new int[2][2]; //new int array which stores chess piece location on click and where it wants to go
+    private int clickCounter = 0;
 
     /**
      * Constructor for GameFrame class
@@ -42,11 +46,11 @@ class GameFrame extends JFrame implements ActionListener
     }
 
     /**
-     * Runs the game
+     * Runs the GUI
      */
-    public void runGame()
+    public void runGUI()
     {
-        pane = (JPanel)getContentPane();
+        JPanel pane = (JPanel)getContentPane(); //new JPanel
         pane.setLayout(new BorderLayout());
 
         JPanel BoardPane = new JPanel();
@@ -58,7 +62,6 @@ class GameFrame extends JFrame implements ActionListener
         JPanel LetterPane = new JPanel();
         LetterPane.setLayout(new GridLayout(1,8));
 
-        JButton[][] buttons = new JButton[8][8];
         for(int r = 0; r < 8; r++)
         {
             for(int c = 0; c < 8; c++)
@@ -67,10 +70,12 @@ class GameFrame extends JFrame implements ActionListener
                 if(images[r][c]==null)
                 {
                     buttons[r][c] = new JButton();
+                    buttons[r][c].addActionListener(this);
                 }
                 else
                 {
-                    buttons[r][c] = new JButton(new ImageIcon("ChessPieceIcons/BlackBishop.png"));//ChessPiece.toString()
+                    buttons[r][c] = new JButton(new ImageIcon(images[r][c].toString()));
+                    buttons[r][c].addActionListener(this);
                 }
                 if(r % 2 != 0&& (c+1)%2 != 0)
                 {
@@ -98,7 +103,7 @@ class GameFrame extends JFrame implements ActionListener
             numbers.setFont(new Font("Monospaced", Font.BOLD, 24));
             NumberPane.add(numbers);
 
-            String letter = "     " + Character.toString(Character.toUpperCase((char)(i+97)));
+            String letter = "    " + Character.toString(Character.toUpperCase((char)(i+97)));
             JLabel letters = new JLabel(letter);
             letters.setFont(new Font("Monospaced", Font.BOLD, 24));
             LetterPane.add(letters);
@@ -113,7 +118,7 @@ class GameFrame extends JFrame implements ActionListener
             numbers.setFont(new Font("Monospaced", Font.BOLD, 24));
             NumberRight.add(numbers);
 
-            String letter = "     " + Character.toString(Character.toUpperCase((char)(i+97)));
+            String letter = "    " + Character.toString(Character.toUpperCase((char)(i+97)));
             JLabel letters = new JLabel(letter);
             letters.setFont(new Font("Monospaced", Font.BOLD, 24));
             LetterBottom.add(letters);
@@ -130,23 +135,57 @@ class GameFrame extends JFrame implements ActionListener
         setResizable(false);
     }
 
-    public void getBoard(ChessPiece[][] board)
+    /**
+     * Updates the GUI board
+     */
+    public void changeBoard(ChessPiece[][] board)
     {
-        for(int r = 0; r < 8; r++)
-        {
-            for(int c = 0; c < 8; c++)
-            {
-                images[r][c] = board[r][c];
-            }
-        }
-        runGame();
+        images = board;
+        runGUI();
     }
 
     /**
+     * When button is pressed
      */
     public void actionPerformed (ActionEvent e)
     {
-
+        if(e.getSource() instanceof JButton)
+        {
+            for(int r = 0; r < 8; r++)
+            {
+                for(int c = 0; c < 8; c++)
+                {
+                    if(buttons[r][c] == e.getSource())
+                    {
+                        if(images[r][c] instanceof ChessPiece)
+                        {
+                            moveLoc[clickCounter][0] = r;
+                            moveLoc[clickCounter][1] = c;
+                            System.out.println(r);
+                            System.out.println(c);
+                            clickCounter++;
+                            if(clickCounter == 2)
+                            {
+                                clickCounter = 0;
+                                //check if piece can move to that location
+                            }
+                        }
+                        else if(clickCounter == 1)
+                        {
+                            moveLoc[clickCounter][0] = r;
+                            moveLoc[clickCounter][1] = c;
+                            System.out.println(r);
+                            System.out.println(c);
+                            clickCounter++;
+                            if(clickCounter == 2)
+                            {
+                                clickCounter = 0;
+                                //check if piece can move to that location
+                            }   
+                        }
+                    }
+                }
+            }
+        }
     }
 }
-
