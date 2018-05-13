@@ -1,5 +1,5 @@
 import java.util.*;
-public abstract class Knight extends ChessPiece
+public class Knight extends ChessPiece
 {
     /**
      * Constructor for objects of class Knight
@@ -38,11 +38,16 @@ public abstract class Knight extends ChessPiece
         
     }
     
+    public double evaluate()
+    {
+        return 3;
+    }
+    
     public String toString()
     {
         if(getIsWhite())
-            return "ChessPieceIcons/WhiteKnight";
+            return "ChessPieceIcons/WhiteKnight.png";
         else 
-            return "ChessPieceIcons/BlackKnight";
+            return "ChessPieceIcons/BlackKnight.png";
     }
 }
