@@ -1,33 +1,65 @@
-public abstract class Pawn
+
+/**
+ * Write a description of class Pawn here.
+ *
+ * @author Rain Ma
+ * @version 09/05/2018
+ */
+public class Pawn extends ChessPiece
 {
-    // instance variables - replace the example below with your own
-    private int[][] moves;
-    private boolean isWhite;
-    int row;
-    int col;
-    
-    /**
-     * Constructor for objects of class asdf
-     */
-    public Pawn(int row, int col, boolean isWhite)
+    boolean moved;
+    boolean enPassant;
+    public Pawn(int row,int col,boolean isWhite)
     {
-        this.row = row;
-        this.col = col;
-        this.isWhite = isWhite;
-        
+        super(row,col,isWhite);
+        moved = false;
+        enPassant = false;
     }
-    
-    public abstract void findMove();
-    
-    
-    public int[][] getMoves()
+
+    public void findMove(ChessPiece[][] board)
     {
-        return moves;
+        if(getIsWhite())
+        {
+
+            
+        }
+        else
+        {
+
+            
+        }
     }
-    
-    public boolean getIsWhite()
+    public double evaluate()
     {
-        return isWhite;
+
+        return 2;
     }
-    
+
+    public boolean hasMoved()
+    {
+        return moved;
+    }
+
+    public boolean canEnPassant()
+    {
+        return enPassant;
+    }
+
+    public void setMoved(boolean moved)
+    {
+        this.moved = moved;
+    }
+
+    public void setEnPassant(boolean enPassant)
+    {
+        this.enPassant = enPassant;
+    }
+
+    public String toString()
+    {
+        if(getIsWhite())
+            return "ChessPieceIcons/WhitePawn.png";
+        else 
+            return "ChessPieceIcons/BlackPawn.png";
+    }
 }
