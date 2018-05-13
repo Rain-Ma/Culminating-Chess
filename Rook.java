@@ -4,7 +4,7 @@
  * @author Rain Ma
  * @version 09/05/2018
  */
-public abstract class Rook extends ChessPiece
+public class Rook extends ChessPiece
 {
     // instance variables - replace the example below with your own
     private boolean moved;
@@ -113,7 +113,7 @@ public abstract class Rook extends ChessPiece
             }
         }
         newMoves(finaleMoves);
-        
+
     }
 
     public boolean hasMoved()
@@ -121,8 +121,16 @@ public abstract class Rook extends ChessPiece
         return moved;
     }
 
+    public double evaluate()
+    {
+        return 5;
+    }
+
     public String toString()
     {
-        return "1";
+        if(getIsWhite())
+            return "ChessPieceIcons/WhiteRook.png";
+        else
+            return "ChessPieceIcons/BlackRook.png";
     }
 }
