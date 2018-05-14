@@ -131,5 +131,18 @@ public class pawn extends ChessPiece
     {
         this.enPassant = enPassant;
     }
-
+    
+    public String toString()
+    {
+        if(getIsWhite())
+        {
+            return "ChessPieceIcons/WhitePawn";
+        }
+        else 
+        {
+            return "ChessPieceIcons/BlackPawn";
+        }
+        
+        
+    }
 }
