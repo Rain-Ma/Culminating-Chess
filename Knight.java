@@ -30,7 +30,9 @@ public class Knight extends ChessPiece
             if(counter>8)
                 break;
         }
-        //move.copyOf(move[][], 8-(8-counter));
+        int[][] finaleMoves = new int[counter][2];
+        super.allMoves(finaleMoves);
+        newMoves(finaleMoves);
     }
 
     public void newMoves(ChessPiece[][] moves)
