@@ -188,10 +188,10 @@ class GameFrame extends JFrame implements ActionListener
 
         JLabel Title = new JLabel("Chess Game", SwingConstants.CENTER);
         Title.setFont(TitleFont);
-
+        
         MainMenu.add(Title);
         MainMenu.add(Options);
-        
+
         return MainMenu;
     }
 
