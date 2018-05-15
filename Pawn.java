@@ -1,6 +1,6 @@
 
 /**
- * Write a description of class Pawn here.
+ * Write a description of class pawn here.
  *
  * @author Rain Ma
  * @version 09/05/2018
@@ -18,17 +18,94 @@ public class Pawn extends ChessPiece
 
     public void findMove(ChessPiece[][] board)
     {
+        int[][] moves =  new int[4][2];
+        int count=0;
         if(getIsWhite())
         {
 
-            
+            if(board[getRow()+1][getCol()]==null)
+            {
+                moves[count][0] = getRow()+1;
+                moves[count][1] = getCol();
+                count++;
+                if(!moved&&board[getRow()+2][getCol()]==null)
+                {
+                    moves[count][0] = getRow()+2;
+                    moves[count][1] = getCol();
+                    count++;
+                }
+            }
+            if(getCol()>0)
+            {
+                if(board[getRow()+1][getCol()+1]!=null)
+                {
+                    if(board[getRow()+1][getCol()+1].getIsWhite()==getIsWhite())
+                    {
+                        moves[count][0] = getRow()+1;
+                        moves[count][1] = getCol()+1;
+                        count++;
+                    }
+                }
+
+            }
+            if(getCol()<7)
+            {
+                if(board[getRow()+1][getCol()-1]!=null)
+                {
+                    if(board[getRow()+1][getCol()-1].getIsWhite()==getIsWhite())
+                    {
+                        moves[count][0] = getRow()+1;
+                        moves[count][1] = getCol()-1;
+                        count++;
+                    }
+                }
+
+            }
         }
         else
         {
+             if(board[getRow()-1][getCol()]==null)
+            {
+                moves[count][0] = getRow()-1;
+                moves[count][1] = getCol();
+                count++;
+                if(!moved&&board[getRow()-2][getCol()]==null)
+                {
+                    moves[count][0] = getRow()- -2;
+                    moves[count][1] = getCol();
+                    count++;
+                }
+            }
+            if(getCol()>0)
+            {
+                if(board[getRow()+1][getCol()+1]!=null)
+                {
+                    if(board[getRow()+1][getCol()+1].getIsWhite()==getIsWhite())
+                    {
+                        moves[count][0] = getRow()+1;
+                        moves[count][1] = getCol()+1;
+                        count++;
+                    }
+                }
 
-            
+            }
+            if(getCol()<7)
+            {
+                if(board[getRow()+1][getCol()-1]!=null)
+                {
+                    if(board[getRow()+1][getCol()-1].getIsWhite()==getIsWhite())
+                    {
+                        moves[count][0] = getRow()+1;
+                        moves[count][1] = getCol()-1;
+                        count++;
+                    }
+                }
+
+            }
+
         }
     }
+
     public double evaluate()
     {
 
@@ -54,12 +131,18 @@ public class Pawn extends ChessPiece
     {
         this.enPassant = enPassant;
     }
-
+    
     public String toString()
     {
         if(getIsWhite())
-            return "ChessPieceIcons/WhitePawn.png";
+        {
+            return "ChessPieceIcons/WhitePawn";
+        }
         else 
-            return "ChessPieceIcons/BlackPawn.png";
+        {
+            return "ChessPieceIcons/BlackPawn";
+        }
+        
+        
     }
 }
