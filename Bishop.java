@@ -87,6 +87,9 @@ public class Bishop extends ChessPiece
             if(counter>13)
                 break;
         }
+        int[][] finaleMoves = new int[counter][2];
+        super.allMoves(finaleMoves);
+        newMoves(finaleMoves)
     } 
     
     public double evaluate()
