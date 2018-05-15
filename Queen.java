@@ -97,6 +97,10 @@ public class Queen extends ChessPiece
             if(counter>27)
                 break;
         }
+        
+        int[][] finaleMoves = new int[counter][2];
+        super.allMoves(finaleMoves);
+        newMoves(finaleMoves);
     }
 
     public void newMoves(ChessPiece[][] moves)
