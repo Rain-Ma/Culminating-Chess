@@ -86,5 +86,16 @@ public abstract class ChessPiece
     {
         return col;
     }
-
+    
+    public void allMoves(int[][] moves)
+    {
+        int r= moves.length;
+        int c= moves[0].length;
+        this.moves= new int[r][c];
+        for(int i = 0; i < r; i++) {
+            for(int j = 0; j < c; j++) {
+                    this.moves[i][j] = moves[i][j];
+            }
+        }
+    }
 }
