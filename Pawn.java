@@ -104,6 +104,9 @@ public class Pawn extends ChessPiece
             }
 
         }
+        int[][] finaleMoves = new int[counter][2];
+        super.allMoves(finaleMoves);
+        newMoves(finaleMoves);
     }
 
     public double evaluate()
