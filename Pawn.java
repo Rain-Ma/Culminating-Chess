@@ -23,6 +23,77 @@ public class Pawn extends ChessPiece
         if(getIsWhite())
         {
 
+            if(board[getRow()-1][getCol()]==null)
+            {
+                moves[count][0] = getRow()-1;
+                moves[count][1] = getCol();
+                count++;
+                if(!moved&&board[getRow()-2][getCol()]==null)
+                {
+                    moves[count][0] = getRow()-2;
+                    moves[count][1] = getCol();
+                    count++;
+                }
+            }
+            if(getCol()>0)
+            {
+                if(board[getRow()-1][getCol()-1]!=null)
+                {
+                    if(board[getRow()-1][getCol()-1].getIsWhite()!=getIsWhite())
+                    {
+                        moves[count][0] = getRow()-1;
+                        moves[count][1] = getCol()-1;
+                        count++;
+                    }
+                }
+                else if(board[getRow()][getCol()-1]!=null)
+                {
+                    if(board[getRow()][getCol()-1] instanceof Pawn && board[getRow()][getCol()-1].getIsWhite()!=getIsWhite())
+                    {
+                        Pawn pawn = (Pawn)board[getRow()][getCol()-1];
+                        if(pawn.canBeEnPassant())
+                        {
+                            moves[count][0] = getRow()-1;
+                            moves[count][1] = getCol()-1;
+                            count++;
+                        }
+
+                    }
+
+                }
+
+            }
+
+            if(getCol()<7)
+            {
+                if(board[getRow()+1][getCol()+1]!=null)
+                {
+                    if(board[getRow()+1][getCol()+1].getIsWhite()!=getIsWhite())
+                    {
+                        moves[count][0] = getRow()+1;
+                        moves[count][1] = getCol()+1;
+                        count++;
+                    }
+                }
+                else if(board[getRow()][getCol()+1]!=null)
+                {
+                    if(board[getRow()][getCol()+1] instanceof Pawn && board[getRow()][getCol()+1].getIsWhite()!=getIsWhite())
+                    {
+                        Pawn pawn = (Pawn)board[getRow()][getCol()+1];
+                        if(pawn.canBeEnPassant())
+                        {
+                            moves[count][0] = getRow()-1;
+                            moves[count][1] = getCol()+1;
+                            count++;
+                        }
+
+                    }
+
+                }
+            }
+        }
+        else
+        {
             if(board[getRow()+1][getCol()]==null)
             {
                 moves[count][0] = getRow()+1;
@@ -37,76 +108,55 @@ public class Pawn extends ChessPiece
             }
             if(getCol()>0)
             {
-                if(board[getRow()+1][getCol()+1]!=null)
-                {
-                    if(board[getRow()+1][getCol()+1].getIsWhite()==getIsWhite())
-                    {
-                        moves[count][0] = getRow()+1;
-                        moves[count][1] = getCol()+1;
-                        count++;
-                    }
-                }
-
-            }
-            if(getCol()<7)
-            {
                 if(board[getRow()+1][getCol()-1]!=null)
                 {
-                    if(board[getRow()+1][getCol()-1].getIsWhite()==getIsWhite())
+                    if(board[getRow()+1][getCol()-1].getIsWhite()!=getIsWhite())
                     {
                         moves[count][0] = getRow()+1;
                         moves[count][1] = getCol()-1;
                         count++;
                     }
                 }
-
-            }
-        }
-        else
-        {
-             if(board[getRow()-1][getCol()]==null)
-            {
-                moves[count][0] = getRow()-1;
-                moves[count][1] = getCol();
-                count++;
-                if(!moved&&board[getRow()-2][getCol()]==null)
+                else if(board[getRow()][getCol()-1]!=null)
                 {
-                    moves[count][0] = getRow()- -2;
-                    moves[count][1] = getCol();
-                    count++;
+                    if(board[getRow()][getCol()-1]instanceof Pawn&&board[getRow()][getCol()-1].getIsWhite()!=getIsWhite())
+                    {
+                        Pawn pawn = (Pawn)board[getRow()][getCol()-1];
+                        if(pawn.canBeEnPassant())
+                        {
+                            moves[count][0] = getRow()+1;
+                            moves[count][1] = getCol()-1;
+                        }
+                    }
                 }
             }
-            if(getCol()>0)
+            if(getCol()<7)
             {
                 if(board[getRow()+1][getCol()+1]!=null)
                 {
-                    if(board[getRow()+1][getCol()+1].getIsWhite()==getIsWhite())
+                    if(board[getRow()+1][getCol()+1].getIsWhite()!=getIsWhite())
                     {
                         moves[count][0] = getRow()+1;
                         moves[count][1] = getCol()+1;
                         count++;
                     }
                 }
-
-            }
-            if(getCol()<7)
-            {
-                if(board[getRow()+1][getCol()-1]!=null)
+                else if(board[getRow()][getCol()+1]!=null)
                 {
-                    if(board[getRow()+1][getCol()-1].getIsWhite()==getIsWhite())
+                    if(board[getRow()][getCol()+1]instanceof Pawn&&board[getRow()][getCol()+1].getIsWhite()!=getIsWhite())
                     {
-                        moves[count][0] = getRow()+1;
-                        moves[count][1] = getCol()-1;
-                        count++;
+                        Pawn pawn = (Pawn)board[getRow()][getCol()+1];
+                        if(pawn.canBeEnPassant())
+                        {
+                            moves[count][0] = getRow()+1;
+                            moves[count][1] = getCol()+1;
+                        }
                     }
                 }
 
             }
 
         }
-        int[][] finaleMoves = new int[counter][2];
-        super.allMoves(finaleMoves);
-        newMoves(finaleMoves);
     }
 
     public double evaluate()
@@ -120,7 +170,7 @@ public class Pawn extends ChessPiece
         return moved;
     }
 
-    public boolean canEnPassant()
+    public boolean canBeEnPassant()
     {
         return enPassant;
     }
@@ -134,7 +184,7 @@ public class Pawn extends ChessPiece
     {
         this.enPassant = enPassant;
     }
-    
+
     public String toString()
     {
         if(getIsWhite())
@@ -145,7 +195,6 @@ public class Pawn extends ChessPiece
         {
             return "ChessPieceIcons/BlackPawn";
         }
-        
-        
+
     }
 }
