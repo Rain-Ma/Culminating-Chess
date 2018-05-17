@@ -30,6 +30,7 @@ public class ChessGUI
 class GameFrame extends JFrame implements ActionListener
 {
     //instance variables
+
     private JPanel Overlay = new JPanel(new FlowLayout());
     private Font OverlayFont = new Font("Sans-Serif", Font.BOLD,40);
     private JButton WhiteResign = new JButton("White Resign");
@@ -47,6 +48,7 @@ class GameFrame extends JFrame implements ActionListener
     private JLayeredPane LayeredPane; //layout manager for JPanel layers
 
     private JPanel Pane = new JPanel(new BorderLayout()); //chess game JPanel
+    private boolean firstTime = true;
     private JPanel NumberRight = new JPanel(new GridLayout(8,1));
     private JPanel LetterBottom = new JPanel(new GridLayout(1,8));
     private JPanel BoardPane = new JPanel(new GridLayout(8,8));
@@ -64,19 +66,25 @@ class GameFrame extends JFrame implements ActionListener
     private JLabel BlackEaten = new JLabel("Black Pieces Eaten:", SwingConstants.CENTER);
     private JButton Exit = new JButton("Exit");
     private JButton Help = new JButton("Help");
-    private Font ScoreFont = new Font("Monospaced", Font.BOLD, 30);
+    private Font ScoreFont = new Font("Sans-Serif", Font.BOLD, 30);
     private ChessPiece[] DeadBlack = new ChessPiece[32];
     private ChessPiece[] DeadWhite = new ChessPiece[32];
 
-    private ChessPiece[][] images = new ChessPiece[8][8]; //new ChessPiece array for images
+    private ChessPiece[][] GameBoard = new ChessPiece[8][8]; //new ChessPiece array for GameBoard
     private JButton[][] buttons = new JButton[8][8]; //new JButton array to put on chess board
+    private boolean firstBoard = true;
 
-    private int[][] moveLoc = new int[2][2]; //new int array which stores chess piece location on click and where it wants to go
+    private int oldRow;
+    private int oldCol;
+    private int newRow;
+    private int newCol;
     private int clickCounter = 0;
 
     private Integer top = new Integer(0); //overlay layers
     private Integer middle = new Integer(0);
     private Integer bottom = new Integer(0);
+
+    private Board board = new Board();
 
     /**
      * Constructor for GameFrame class
@@ -88,43 +96,117 @@ class GameFrame extends JFrame implements ActionListener
     }
 
     /**
+     * Starts a new game
+     */
+    public void startGame()
+    {
+        //black pieces
+        GameBoard[7][0] = new Rook(1,1,true);
+        GameBoard[7][1] = new Knight(1,2,true);
+        GameBoard[7][2] = new Bishop(1,3,true);
+        GameBoard[7][3] = new Queen(1,4,true);
+        GameBoard[7][4] = new King(1,5,true);
+        GameBoard[7][5] = new Bishop(1,6,true);
+        GameBoard[7][6] = new Knight(1,7,true);
+        GameBoard[7][7] = new Rook(1,8,true);
+        for(int i = 0; i < 8; i++)
+        {
+            GameBoard[6][i] = new Pawn(2, i+1, true);
+        }
+
+        //white pieces
+        GameBoard[0][0] = new Rook(8,1,false);
+        GameBoard[0][1] = new Knight(8,2,false);
+        GameBoard[0][2] = new Bishop(8,3,false);
+        GameBoard[0][3] = new Queen(8,4,false);
+        GameBoard[0][4] = new King(8,5,false);
+        GameBoard[0][5] = new Bishop(8,6,false);
+        GameBoard[0][6] = new Knight(8,7,false);
+        GameBoard[0][7] = new Rook(8,8,false);
+        for(int i = 0; i < 8; i++)
+        {
+            GameBoard[1][i] = new Pawn(7, i+1, false);
+        }
+
+        GamePane();
+    }
+
+    public JPanel RunGUI()
+    {
+        BoardPane.removeAll();
+        if(firstBoard)
+        {
+            for(int r = 0; r < 8; r++)
+            {
+                for(int c = 0; c < 8; c++)
+                {
+                    //String loc = Integer.toString(r) + ", " + Integer.toString(c+1);
+                    if(GameBoard[r][c]==null)
+                    {   
+                        buttons[r][c] = new JButton();
+                        buttons[r][c].addActionListener(this);
+                    }
+                    else
+                    {
+                        buttons[r][c] = new JButton(new ImageIcon(GameBoard[r][c].toString()));
+                        buttons[r][c].addActionListener(this);
+                    }
+                    if(r % 2 != 0&& (c+1)%2 != 0 || r % 2 == 0&& (c+1)%2 == 0)
+                    {
+                        buttons[r][c].setBackground(new Color(5, 115, 56));
+                        buttons[r][c].setFocusPainted(false); //removes button border when pressed
+                    }
+                    else
+                    {
+                        buttons[r][c].setBackground(new Color(251, 244, 225));
+                        buttons[r][c].setFocusPainted(false); //removes show icon border when pressed
+                    }
+                    BoardPane.add(buttons[r][c]);
+                }
+            }
+        }
+        else
+        {
+            for(int r = 0; r < 8; r++)
+            {
+                for(int c = 0; c < 8; c++)
+                {
+                    //String loc = Integer.toString(r) + ", " + Integer.toString(c+1);
+                    if(GameBoard[r][c]==null)
+                    {   
+                    }
+                    else
+                    {
+                        buttons[r][c].setIcon(new ImageIcon(GameBoard[r][c].toString()));
+                    }
+                    if(r % 2 != 0&& (c+1)%2 != 0 || r % 2 == 0&& (c+1)%2 == 0)
+                    {
+                        buttons[r][c].setBackground(new Color(5, 115, 56));
+                        buttons[r][c].setFocusPainted(false); //removes button border when pressed
+                    }
+                    else
+                    {
+                        buttons[r][c].setBackground(new Color(251, 244, 225));
+                        buttons[r][c].setFocusPainted(false); //removes show icon border when pressed
+                    }
+                    BoardPane.add(buttons[r][c]);
+                }
+            }
+        }
+        return BoardPane;
+    }
+
+    /**
      * Runs the chess game GUI
      */
-    public void runGUI()
+    public void GamePane()
     {
         //-------------------------------------------PANE JPANEL - CHESS GAME GUI CODE----------------------------------------
         Pane.setBounds(0, 0, 990, 958);
         Pane.setBorder(BorderFactory.createStrokeBorder(new BasicStroke(5.0f)));
 
-        for(int r = 0; r < 8; r++)
-        {
-            for(int c = 0; c < 8; c++)
-            {
-                //String loc = Integer.toString(r) + ", " + Integer.toString(c+1);
-                if(images[r][c]==null)
-                {   
-                    buttons[r][c] = new JButton();
-                    buttons[r][c].addActionListener(this);
-                }
-                else
-                {
-                    buttons[r][c] = new JButton(new ImageIcon(images[r][c].toString()));
-                    buttons[r][c].addActionListener(this);
-                }
-                if(r % 2 != 0&& (c+1)%2 != 0 || r % 2 == 0&& (c+1)%2 == 0)
-                {
-                    buttons[r][c].setBackground(new Color(5, 115, 56));
-                    buttons[r][c].setFocusPainted(false); //removes button border when pressed
-                }
-                else
-                {
-                    buttons[r][c].setBackground(new Color(251, 244, 225));
-                    buttons[r][c].setFocusPainted(false); //removes show icon border when pressed
-                }
-                BoardPane.add(buttons[r][c]);
-            }
-        }
-
+        NumberPane.removeAll();
+        LetterPane.removeAll();
         for(int i = 0; i <8; i++)
         {
             String number = "\u2008" + Integer.toString(Math.abs(i-8)) + "\u2008"; //u2008 is small space for formatting
@@ -138,6 +220,8 @@ class GameFrame extends JFrame implements ActionListener
             LetterPane.add(letters);
         }
 
+        NumberRight.removeAll();
+        LetterBottom.removeAll();
         for(int i = 0; i <8; i++)
         {
             String number = "\u2008" + Integer.toString(Math.abs(i-8)) + "\u2008"; //u2008 is small space for formatting
@@ -150,18 +234,28 @@ class GameFrame extends JFrame implements ActionListener
             letters.setFont(Labeling);
             LetterBottom.add(letters);
         }
-
+        Pane.removeAll();
         Pane.add(NumberPane, BorderLayout.WEST);
         Pane.add(LetterPane, BorderLayout.NORTH);
         Pane.add(NumberRight, BorderLayout.EAST);
         Pane.add(LetterBottom, BorderLayout.SOUTH);
-        Pane.add(BoardPane, BorderLayout.CENTER);
+        Pane.add(RunGUI(), BorderLayout.CENTER);
 
         LayeredPane = getLayeredPane(); //new layered pane
-        LayeredPane.add(MenuPanel(), top, 0); 
-        LayeredPane.add(Pane, middle, 1);
-        LayeredPane.add(ScorePanel(DeadBlack, DeadWhite), middle, 2);
         LayeredPane.setVisible(true);
+        /*if(firstTime == true)
+        {
+        LayeredPane.add(MenuPanel(), top, 0); 
+        System.out.println("first");
+        firstTime = false;
+        }
+         */
+        firstTime = false;
+        if(firstTime == false)
+        {
+            LayeredPane.add(Pane, top, 0);
+            LayeredPane.add(ScorePanel(DeadBlack, DeadWhite), middle, 1);
+        }
 
         //Frame here is implicit
         setSize(1500,1000);
@@ -258,15 +352,6 @@ class GameFrame extends JFrame implements ActionListener
     }
 
     /**
-     * Updates the GUI board
-     */
-    public void changeBoard(ChessPiece[][] board)
-    {
-        images = board;
-        runGUI();
-    }
-
-    /**
      * When button is pressed
      */
     public void actionPerformed (ActionEvent e)
@@ -279,12 +364,10 @@ class GameFrame extends JFrame implements ActionListener
                 {
                     if(buttons[r][c] == e.getSource())
                     {
-                        if(images[r][c] instanceof ChessPiece)
+                        if(GameBoard[r][c] instanceof ChessPiece)
                         {
-                            moveLoc[clickCounter][0] = r;
-                            moveLoc[clickCounter][1] = c;
-                            System.out.println(r);
-                            System.out.println(c);
+                            oldRow = r;
+                            oldCol = c;
                             clickCounter++;
                             if(clickCounter == 2)
                             {
@@ -294,16 +377,23 @@ class GameFrame extends JFrame implements ActionListener
                         }
                         else if(clickCounter == 1)
                         {
-                            moveLoc[clickCounter][0] = r;
-                            moveLoc[clickCounter][1] = c;
-                            System.out.println(r);
-                            System.out.println(c);
+                            newRow = r;
+                            newCol = c;
                             clickCounter++;
                             if(clickCounter == 2)
                             {
                                 clickCounter = 0;
-                                //check if piece can move to that location
-                            }   
+                                if(board.move(GameBoard[oldRow][oldCol], newRow, newCol))
+                                {
+                                    GameBoard[newRow][newCol] = GameBoard[oldRow][oldCol];
+                                    GameBoard[oldRow][oldCol] = null;
+                                    GamePane();
+                                }
+                                else
+                                {
+                                    //say this move is not legal
+                                }
+                            }
                         }
                     }
                 }
@@ -322,5 +412,4 @@ class GameFrame extends JFrame implements ActionListener
             LayeredPane.add(ScorePanel(DeadBlack, DeadWhite), top, 1);     
         }
     }
-
 }
