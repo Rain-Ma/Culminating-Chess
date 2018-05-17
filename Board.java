@@ -89,23 +89,129 @@ public class Board
      * @param ChessPiece is the piece being moved
      * @param row and col is where the piece is being moved to in GameBoard
      */
-    /*
-    public void move(ChessPiece piece, int row, int col)
+
+    public boolean move(ChessPiece piece, int row, int col)
     {
-    if(piece.getClass() == King)
-    {
+        if(piece.attacks(row,col))
+        {
+            if(piece instanceof King)
+            {
+                King king = (King)piece;
+                if(king.getIsWhite())
+                {
 
+                    if(!king.hasMoved())
+                    {
+                        if(col==2)
+                        {
+                            GameBoard[row][col] = piece;
+                            GameBoard[piece.getRow()][piece.getCol()] = null;
+                            piece.moveCol(col);
+                            GameBoard[7][3] = GameBoard[7][0];
+                            GameBoard[7][0] = null;
+                            GameBoard[7][3].moveCol(3);
+                        }
+                        else if(col==6)
+                        {
+                            GameBoard[row][col] = piece;
+                            GameBoard[piece.getRow()][piece.getCol()] = null;
+                            piece.moveCol(col);
+                            GameBoard[7][5] = GameBoard[7][7];
+                            GameBoard[7][7] = null;
+                            GameBoard[7][5].moveCol(5);
+                        }
+                        else
+                        {
+                            king.setHasMoved(true);
+                            GameBoard[row][col] = piece;
+                            GameBoard[piece.getRow()][piece.getCol()] = null;
+                            piece.moveRow(row);
+                            piece.moveCol(col);
+
+                        }
+                    }
+                    else 
+                    {
+
+                        GameBoard[row][col] = piece;
+                        GameBoard[piece.getRow()][piece.getCol()] = null;
+                        piece.moveRow(row);
+                        piece.moveCol(col);
+                    }
+
+                }
+                else
+                {
+                     if(!king.hasMoved())
+                    {
+                        if(col==2)
+                        {
+                            GameBoard[row][col] = piece;
+                            GameBoard[piece.getRow()][piece.getCol()] = null;
+                            piece.moveCol(col);
+                            GameBoard[0][3] = GameBoard[0][0];
+                            GameBoard[0][0] = null;
+                            GameBoard[0][3].moveCol(3);
+                        }
+                        else if(col==6)
+                        {
+                            GameBoard[row][col] = piece;
+                            GameBoard[piece.getRow()][piece.getCol()] = null;
+                            piece.moveCol(col);
+                            GameBoard[0][5] = GameBoard[0][7];
+                            GameBoard[0][7] = null;
+                            GameBoard[0][5].moveCol(5);
+                        }
+                        else
+                        {
+                            king.setHasMoved(true);
+                            GameBoard[row][col] = piece;
+                            GameBoard[piece.getRow()][piece.getCol()] = null;
+                            piece.moveRow(row);
+                            piece.moveCol(col);
+
+                        }
+                    }
+                    else 
+                    {
+
+                        GameBoard[row][col] = piece;
+                        GameBoard[piece.getRow()][piece.getCol()] = null;
+                        piece.moveRow(row);
+                        piece.moveCol(col);
+                    }
+
+                }
+            }
+            else if(piece instanceof Pawn)
+            {
+                if(col==piece.getCol())
+                {
+                    if(row==0)
+                    {
+                        ChessPiece promotion = promoteWhitePawn();
+                        GameBoard[row][col] = promotion;
+                    }
+                    else if(row==7)
+                    {
+                        
+                    }
+                    
+                    
+                }
+                
+
+            }
+            else
+            {
+                GameBoard[row][col] = piece;
+                GameBoard[piece.getRow()][piece.getCol()] = null;
+                piece.moveRow(row);
+                piece.moveCol(col);
+            }
+
+        }
+        
+        return true;
     }
-
-    else if(piece.attacks(row,col))
-    {
-    GameBoard[row][col] = piece;
-    GameBoard[piece.getRow()][piece.getCol()] = null;
-    piece.setRow(row);
-    piece.setCol(col);
-
-    }
-
-    }
-     */
 }
