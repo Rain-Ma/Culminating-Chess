@@ -3,7 +3,7 @@ import java.util.*;
  * Write a description of class asdf here.
  *
  * @author Rain Ma
- * @version 04/05/2018
+ * @version 17/05/2018
  */
 public abstract class ChessPiece
 {
@@ -56,7 +56,7 @@ public abstract class ChessPiece
      * @param col is the new value for column number
      * mutator. changes int
      */
-    public void moveCol()
+    public void moveCol(int col)
     {
 
         this.col = col;
@@ -84,18 +84,25 @@ public abstract class ChessPiece
 
     public int getCol()
     {
+
         return col;
     }
     
-    public void allMoves(int[][] moves)
+    public boolean attacks(int row,int col)
     {
-        int r= moves.length;
-        int c= moves[0].length;
-        this.moves= new int[r][c];
-        for(int i = 0; i < r; i++) {
-            for(int j = 0; j < c; j++) {
-                    this.moves[i][j] = moves[i][j];
+        for(int i=0;i<moves.length;i++)
+        {
+            if(moves[i][0]==row&&moves[i][1]==col)
+            {
+                
+                return true;
             }
+            
+            
         }
+        
+        return false;
+        
     }
+    
 }
