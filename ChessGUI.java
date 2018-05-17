@@ -1,4 +1,3 @@
-
 /**
  * GUI layout for our chess game
  *
@@ -33,18 +32,21 @@ class GameFrame extends JFrame implements ActionListener
     //instance variables
     private JPanel Overlay = new JPanel(new FlowLayout());
     private Font OverlayFont = new Font("Sans-Serif", Font.BOLD,40);
+    private JButton WhiteResign = new JButton("White Resign");
+    private JButton Draw = new JButton("Draw");
+    private JButton BlackResign = new JButton("Black Resign");
 
     private JPanel MainMenu = (JPanel)getContentPane(); //main menu JPanel
     private JPanel Options = new JPanel(new FlowLayout());
-    private Font TitleFont = new Font("Sans-Serif", Font.BOLD,100);
-    private Font MenuFont = new Font("Sans-Serif", Font.BOLD,40);
+    private Font TitleFont = new Font("Sans-Serif", Font.BOLD,150);
+    private Font MenuFont = new Font("Sans-Serif", Font.BOLD,52);
     private JButton Chess960 = new JButton("Chess960");
     private JButton Computer = new JButton("Computer");
     private JButton NewGame = new JButton("New Game");
 
     private JLayeredPane LayeredPane; //layout manager for JPanel layers
 
-    private JPanel Pane = new JPanel(new BorderLayout());; //chess game JPanel
+    private JPanel Pane = new JPanel(new BorderLayout()); //chess game JPanel
     private JPanel NumberRight = new JPanel(new GridLayout(8,1));
     private JPanel LetterBottom = new JPanel(new GridLayout(1,8));
     private JPanel BoardPane = new JPanel(new GridLayout(8,8));
@@ -52,14 +54,25 @@ class GameFrame extends JFrame implements ActionListener
     private JPanel NumberPane = new JPanel(new GridLayout(8,1));
     private Font Labeling = new Font("Monospaced", Font.BOLD, 24);
 
+    private JPanel Score = new JPanel(new GridLayout(3,1));
+    private JPanel WhiteContainer = new JPanel(new BorderLayout());
+    private JPanel WhiteSide = new JPanel(new GridLayout(4,8));
+    private JPanel BlackContainer = new JPanel(new BorderLayout());
+    private JPanel BlackSide = new JPanel(new GridLayout(4,8));
+    private JPanel Middle = new JPanel(new FlowLayout());
+    private JLabel WhiteEaten = new JLabel("White Pieces Eaten:", SwingConstants.CENTER);
+    private JLabel BlackEaten = new JLabel("Black Pieces Eaten:", SwingConstants.CENTER);
+    private JButton Exit = new JButton("Exit");
+    private JButton Help = new JButton("Help");
+    private Font ScoreFont = new Font("Monospaced", Font.BOLD, 30);
+    private ChessPiece[] DeadBlack = new ChessPiece[32];
+    private ChessPiece[] DeadWhite = new ChessPiece[32];
+
     private ChessPiece[][] images = new ChessPiece[8][8]; //new ChessPiece array for images
     private JButton[][] buttons = new JButton[8][8]; //new JButton array to put on chess board
 
     private int[][] moveLoc = new int[2][2]; //new int array which stores chess piece location on click and where it wants to go
     private int clickCounter = 0;
-
-    private JButton[][] whiteEaten = new JButton[3][8];
-    private JButton[][] blackEaten = new JButton[3][8];
 
     private Integer top = new Integer(0); //overlay layers
     private Integer middle = new Integer(0);
@@ -74,17 +87,14 @@ class GameFrame extends JFrame implements ActionListener
         super("Chess Game");
     }
 
-    public void main()
-    {
-    }
-
     /**
      * Runs the chess game GUI
      */
     public void runGUI()
     {
         //-------------------------------------------PANE JPANEL - CHESS GAME GUI CODE----------------------------------------
-        Pane.setBounds(0,0, 990, 958);
+        Pane.setBounds(0, 0, 990, 958);
+        Pane.setBorder(BorderFactory.createStrokeBorder(new BasicStroke(5.0f)));
 
         for(int r = 0; r < 8; r++)
         {
@@ -101,15 +111,10 @@ class GameFrame extends JFrame implements ActionListener
                     buttons[r][c] = new JButton(new ImageIcon(images[r][c].toString()));
                     buttons[r][c].addActionListener(this);
                 }
-                if(r % 2 != 0&& (c+1)%2 != 0)
+                if(r % 2 != 0&& (c+1)%2 != 0 || r % 2 == 0&& (c+1)%2 == 0)
                 {
                     buttons[r][c].setBackground(new Color(5, 115, 56));
-                    buttons[r][c].setFocusPainted(false); //removes show icon border when pressed
-                }
-                else if(r % 2 == 0&& (c+1)%2 == 0)
-                {
-                    buttons[r][c].setBackground(new Color(5, 115, 56));
-                    buttons[r][c].setFocusPainted(false); //removes show icon border when pressed
+                    buttons[r][c].setFocusPainted(false); //removes button border when pressed
                 }
                 else
                 {
@@ -154,12 +159,12 @@ class GameFrame extends JFrame implements ActionListener
 
         LayeredPane = getLayeredPane(); //new layered pane
         LayeredPane.add(MenuPanel(), top, 0); 
-        LayeredPane.add(Pane, middle, 1); 
-        LayeredPane.add(OverlayPanel(), bottom,2);
+        LayeredPane.add(Pane, middle, 1);
+        LayeredPane.add(ScorePanel(DeadBlack, DeadWhite), middle, 2);
         LayeredPane.setVisible(true);
 
         //Frame here is implicit
-        setSize(1000,1000);
+        setSize(1500,1000);
         setVisible(true);
         setResizable(false);
     }
@@ -168,62 +173,88 @@ class GameFrame extends JFrame implements ActionListener
     {
         //--------------------------------------MAINMENU JPANEL - MAIN MENU GUI CODE-------------------------------------------
         MainMenu.setLayout(new GridLayout(3,1));
-        MainMenu.setBounds(-3,415,1000, 200);
+        MainMenu.setBounds(-3,415,1002, 200);
+        MainMenu.setBorder(BorderFactory.createStrokeBorder(new BasicStroke(5.0f)));
 
         NewGame.setFont(MenuFont);
         NewGame.addActionListener(this);
         NewGame.setBackground(Color.WHITE);
+        NewGame.setPreferredSize(new Dimension(320,150)); 
+        NewGame.setFocusPainted(false);
 
         Chess960.setFont(MenuFont);
         Chess960.addActionListener(this);
         Chess960.setBackground(Color.WHITE);
+        Chess960.setPreferredSize(new Dimension(320,150)); 
+        Chess960.setFocusPainted(false);
 
         Computer.setFont(MenuFont);
         Computer.addActionListener(this);
         Computer.setBackground(Color.WHITE);
+        Computer.setPreferredSize(new Dimension(320,150));
+        Computer.setFocusPainted(false);
 
+        Options.setBackground(new Color(0,0,0,0));
         Options.add(NewGame);
         Options.add(Chess960);
         Options.add(Computer);
 
         JLabel Title = new JLabel("Chess Game", SwingConstants.CENTER);
+        Title.setBackground(new Color(0,0,0,0));
         Title.setFont(TitleFont);
-        
+
         MainMenu.add(Title);
         MainMenu.add(Options);
 
         return MainMenu;
     }
 
-    public JPanel OverlayPanel()
+    public JPanel ScorePanel(ChessPiece[] BlackPieces, ChessPiece[] WhitePieces)
     {
-        //-----------------------------------------OVERLAY JPANEL - OVERLAY GUI CODE-------------------------------------------
-        Overlay.setBounds(0,0,1000,1000);
-        Overlay.setBackground(new Color(0,0,0,0));
+        Score.setBounds(987, 0, 505, 958);
+        Score.setBorder(BorderFactory.createStrokeBorder(new BasicStroke(5.0f)));
 
-        JButton whiteResign = new JButton("White Resign");
-        whiteResign.setFont(OverlayFont);
-        whiteResign.setBackground(Color.WHITE);
-        whiteResign.setPreferredSize(new Dimension(300,120));       
-        whiteResign.addActionListener(this);
+        for(int i = 0; i < 32; i++)
+        {
+            if(BlackPieces[i] == null)
+                break;
+            else
+                BlackSide.add(new JButton(BlackPieces[i].toString()));
 
-        JButton draw = new JButton("Draw");
-        draw.setFont(OverlayFont);
-        draw.setBackground(Color.WHITE);
-        draw.setPreferredSize(new Dimension(300,120));       
-        draw.addActionListener(this);
+            if(WhitePieces[i] == null)
+                break;
+            else
+                WhiteSide.add(new JButton(WhitePieces[i].toString()));
+        }
 
-        JButton blackResign = new JButton("Black Resign");
-        blackResign.setFont(OverlayFont);
-        blackResign.setBackground(Color.WHITE);
-        blackResign.setPreferredSize(new Dimension(300,120));       
-        blackResign.addActionListener(this);
+        BlackEaten.setFont(ScoreFont);
+        BlackContainer.add(BlackEaten, BorderLayout.NORTH);
+        BlackContainer.add(BlackSide, BorderLayout.CENTER);
+        BlackContainer.setBorder(BorderFactory.createStrokeBorder(new BasicStroke(2.0f)));
 
-        Overlay.add(blackResign);
-        Overlay.add(draw);
-        Overlay.add(whiteResign);
+        WhiteEaten.setFont(ScoreFont);
+        WhiteContainer.add(WhiteEaten, BorderLayout.NORTH);
+        WhiteContainer.add(WhiteSide, BorderLayout.CENTER);
+        WhiteContainer.setBorder(BorderFactory.createStrokeBorder(new BasicStroke(2.0f)));
 
-        return Overlay;
+        WhiteResign.addActionListener(this);
+        BlackResign.addActionListener(this);
+        Draw.addActionListener(this);
+        Exit.addActionListener(this);
+        Help.addActionListener(this);
+
+        Middle.add(Help);
+        Middle.add(WhiteResign);
+        Middle.add(Draw);
+        Middle.add(BlackResign);
+        Middle.add(Exit);
+        Middle.setBorder(BorderFactory.createStrokeBorder(new BasicStroke(2.0f)));
+
+        Score.add(WhiteContainer);
+        Score.add(Middle);
+        Score.add(BlackContainer);
+
+        return Score;
     }
 
     /**
@@ -282,15 +313,13 @@ class GameFrame extends JFrame implements ActionListener
         if(e.getActionCommand().equals("Draw"))
         {
             LayeredPane.add(Pane, top, 0);  
-            LayeredPane.add(MainMenu, middle, 1);
-            LayeredPane.add(Overlay, bottom, 2);
+            LayeredPane.add(ScorePanel(DeadBlack, DeadWhite), top, 1);  
         }
 
         if(e.getActionCommand().equals("New Game"))
         {
             LayeredPane.add(Pane, top, 0);
-            LayeredPane.add(Overlay, middle, 1);  
-            LayeredPane.add(MainMenu, bottom, 2);
+            LayeredPane.add(ScorePanel(DeadBlack, DeadWhite), top, 1);     
         }
     }
 
