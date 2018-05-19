@@ -189,11 +189,11 @@ public class Pawn extends ChessPiece
     {
         if(getIsWhite())
         {
-            return "ChessPieceIcons/WhitePawn";
+            return "ChessPieceIcons/WhitePawn.png";
         }
         else 
         {
-            return "ChessPieceIcons/BlackPawn";
+            return "ChessPieceIcons/BlackPawn.png";
         }
 
     }
