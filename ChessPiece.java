@@ -75,7 +75,7 @@ public abstract class ChessPiece
      * leave it blank for now
      * @return the value of piece 
      */
-    public abstract double evaluate();
+    public abstract double evaluate(ChessPiece[][] board);
 
     public int getRow()
     {
