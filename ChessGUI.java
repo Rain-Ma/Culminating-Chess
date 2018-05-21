@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.net.*;
+import java.util.Random;
 public class ChessGUI
 {
     public static void main (String [] args)
@@ -30,6 +31,7 @@ public class ChessGUI
 class GameFrame extends JFrame implements ActionListener
 {
     //instance variables
+    private int[] pieces = new int[8]; //pieces on the 960 board
 
     private JPanel Overlay = new JPanel(new FlowLayout());
     private Font OverlayFont = new Font("Sans-Serif", Font.BOLD,40);
@@ -72,7 +74,6 @@ class GameFrame extends JFrame implements ActionListener
 
     private ChessPiece[][] GameBoard = new ChessPiece[8][8]; //new ChessPiece array for GameBoard
     private JButton[][] buttons = new JButton[8][8]; //new JButton array to put on chess board
-    private boolean firstBoard = true;
 
     private int oldRow;
     private int oldCol;
@@ -95,12 +96,27 @@ class GameFrame extends JFrame implements ActionListener
         super("Chess Game");
     }
 
-    /**
-     * Starts a new game
-     */
     public void startGame()
     {
-        //black pieces
+        LayeredPane = getLayeredPane(); //new layered pane
+        LayeredPane.setVisible(true);
+
+        LayeredPane.add(MenuPanel(), top, 0);
+        LayeredPane.add(Pane, middle, 1);
+        LayeredPane.add(ScorePanel(DeadBlack, DeadWhite), middle, 2);
+
+        //Frame here is implicit
+        setSize(1500,1000);
+        setVisible(true);
+        setResizable(false);
+    }
+
+    /**
+     * Sets up the board for a new game
+     */
+    public void Game()
+    {
+        //white pieces
         GameBoard[7][0] = new Rook(1,1,true);
         GameBoard[7][1] = new Knight(1,2,true);
         GameBoard[7][2] = new Bishop(1,3,true);
@@ -114,7 +130,7 @@ class GameFrame extends JFrame implements ActionListener
             GameBoard[6][i] = new Pawn(2, i+1, true);
         }
 
-        //white pieces
+        //black pieces
         GameBoard[0][0] = new Rook(8,1,false);
         GameBoard[0][1] = new Knight(8,2,false);
         GameBoard[0][2] = new Bishop(8,3,false);
@@ -131,68 +147,98 @@ class GameFrame extends JFrame implements ActionListener
         GamePane();
     }
 
-    public JPanel RunGUI()
+    public void start960()
+    {
+        //Setup pawns first because they are not randomized
+        for(int i = 0; i < 8; i++)
+        {
+            GameBoard[6][i] = new Pawn(2, i+1, true);
+        }
+        for(int i = 0; i < 8; i++)
+        {
+            GameBoard[1][i] = new Pawn(7, i+1, false);
+        }
+
+        Random rand = new Random();
+
+        //White Pieces randomized
+        int bishop1 = rand.nextInt((3-0)+1)*2; //first bishop is in a random even location
+        GameBoard[7][bishop1] = new Bishop(1, bishop1+1, true);
+        pieces[0] = bishop1; //add first bishop's location to pieces
+        int bishop2 = rand.nextInt((3-0)+1)*2+1; //second bishop location must be odd
+        GameBoard[7][bishop2] = new Bishop(1, bishop2+1, true);
+        pieces[1] = bishop2; //add second bishop's location to pieces
+
+        GameBoard[7][RandomLoc(2)] = new Queen(1, RandomLoc(2)+1, true);
+        GameBoard[7][RandomLoc(3)] = new Knight(1, RandomLoc(3)+1, true);
+        GameBoard[7][RandomLoc(4)] = new Knight(1, RandomLoc(4)+1, true);
+        GameBoard[7][RandomLoc(5)] = new Rook(1, RandomLoc(5)+1, true);
+        
+        GamePane();
+    }
+
+    /**
+     * Finds a random location for white pieces in the chess 960 game
+     * @param the piece's number (for how many pieces are before it)
+     * @return the piece's new location
+     */
+    public int RandomLoc(int pieceNum)
+    {
+        Random rand = new Random();
+
+        boolean pieceLoc = false;
+        while(pieceLoc == false) //while the piece has not found a location yet
+        {
+            int piece = rand.nextInt((7-0)+1); //random location for piece
+            for(int i = 0; i < pieces.length; i++)
+            {
+                if(piece != pieces[i]) //if piece is not on any piece's location
+                {
+                    pieceLoc = true; //piece is so far not on any piece's location
+                }
+                else
+                    pieceLoc = false; //piece is on another piece's location so find a new location
+            }
+            if(pieceLoc = true) //if piece has found a location
+            {
+                pieces[pieceNum] = piece; //add piece's location to pieces                
+            }
+        }
+
+        return pieces[pieceNum];
+    }
+
+    public JPanel BoardPanel()
     {
         BoardPane.removeAll();
-        if(firstBoard)
+        for(int r = 0; r < 8; r++)
         {
-            for(int r = 0; r < 8; r++)
+            for(int c = 0; c < 8; c++)
             {
-                for(int c = 0; c < 8; c++)
-                {
-                    //String loc = Integer.toString(r) + ", " + Integer.toString(c+1);
-                    if(GameBoard[r][c]==null)
-                    {   
-                        buttons[r][c] = new JButton();
-                        buttons[r][c].addActionListener(this);
-                    }
-                    else
-                    {
-                        buttons[r][c] = new JButton(new ImageIcon(GameBoard[r][c].toString()));
-                        buttons[r][c].addActionListener(this);
-                    }
-                    if(r % 2 != 0&& (c+1)%2 != 0 || r % 2 == 0&& (c+1)%2 == 0)
-                    {
-                        buttons[r][c].setBackground(new Color(5, 115, 56));
-                        buttons[r][c].setFocusPainted(false); //removes button border when pressed
-                    }
-                    else
-                    {
-                        buttons[r][c].setBackground(new Color(251, 244, 225));
-                        buttons[r][c].setFocusPainted(false); //removes show icon border when pressed
-                    }
-                    BoardPane.add(buttons[r][c]);
+                if(GameBoard[r][c]==null)
+                {   
+                    buttons[r][c] = new JButton();
+                    buttons[r][c].addActionListener(this);
                 }
+                else
+                {
+                    buttons[r][c] = new JButton(new ImageIcon(GameBoard[r][c].toString()));
+                    buttons[r][c].addActionListener(this);
+                }
+                if(r % 2 != 0&& (c+1)%2 != 0 || r % 2 == 0&& (c+1)%2 == 0)
+                {
+                    buttons[r][c].setBackground(new Color(5, 115, 56));
+                    buttons[r][c].setFocusPainted(false); //removes button border when pressed
+                }
+                else
+                {
+                    buttons[r][c].setBackground(new Color(251, 244, 225));
+                    buttons[r][c].setFocusPainted(false); //removes show icon border when pressed
+                }
+                BoardPane.add(buttons[r][c]);
             }
         }
-        else
-        {
-            for(int r = 0; r < 8; r++)
-            {
-                for(int c = 0; c < 8; c++)
-                {
-                    //String loc = Integer.toString(r) + ", " + Integer.toString(c+1);
-                    if(GameBoard[r][c]==null)
-                    {   
-                    }
-                    else
-                    {
-                        buttons[r][c].setIcon(new ImageIcon(GameBoard[r][c].toString()));
-                    }
-                    if(r % 2 != 0&& (c+1)%2 != 0 || r % 2 == 0&& (c+1)%2 == 0)
-                    {
-                        buttons[r][c].setBackground(new Color(5, 115, 56));
-                        buttons[r][c].setFocusPainted(false); //removes button border when pressed
-                    }
-                    else
-                    {
-                        buttons[r][c].setBackground(new Color(251, 244, 225));
-                        buttons[r][c].setFocusPainted(false); //removes show icon border when pressed
-                    }
-                    BoardPane.add(buttons[r][c]);
-                }
-            }
-        }
+
         return BoardPane;
     }
 
@@ -203,7 +249,7 @@ class GameFrame extends JFrame implements ActionListener
     {
         //-------------------------------------------PANE JPANEL - CHESS GAME GUI CODE----------------------------------------
         Pane.setBounds(0, 0, 990, 958);
-        Pane.setBorder(BorderFactory.createStrokeBorder(new BasicStroke(5.0f)));
+        Pane.setBorder(BorderFactory.createRaisedBevelBorder());
 
         NumberPane.removeAll();
         LetterPane.removeAll();
@@ -239,25 +285,9 @@ class GameFrame extends JFrame implements ActionListener
         Pane.add(LetterPane, BorderLayout.NORTH);
         Pane.add(NumberRight, BorderLayout.EAST);
         Pane.add(LetterBottom, BorderLayout.SOUTH);
-        Pane.add(RunGUI(), BorderLayout.CENTER);
+        Pane.add(BoardPanel(), BorderLayout.CENTER);
 
-        LayeredPane = getLayeredPane(); //new layered pane
-        LayeredPane.setVisible(true);
-        /*if(firstTime == true)
-        {
-        LayeredPane.add(MenuPanel(), top, 0); 
-        System.out.println("first");
-        firstTime = false;
-        }
-         */
-        firstTime = false;
-        if(firstTime == false)
-        {
-            LayeredPane.add(Pane, top, 0);
-            LayeredPane.add(ScorePanel(DeadBlack, DeadWhite), middle, 1);
-        }
-
-        //Frame here is implicit
+        //frame is implicit
         setSize(1500,1000);
         setVisible(true);
         setResizable(false);
@@ -266,9 +296,10 @@ class GameFrame extends JFrame implements ActionListener
     public JPanel MenuPanel()
     {
         //--------------------------------------MAINMENU JPANEL - MAIN MENU GUI CODE-------------------------------------------
+        MainMenu.removeAll();
         MainMenu.setLayout(new GridLayout(3,1));
         MainMenu.setBounds(-3,415,1002, 200);
-        MainMenu.setBorder(BorderFactory.createStrokeBorder(new BasicStroke(5.0f)));
+        MainMenu.setBorder(BorderFactory.createRaisedBevelBorder());
 
         NewGame.setFont(MenuFont);
         NewGame.addActionListener(this);
@@ -288,6 +319,7 @@ class GameFrame extends JFrame implements ActionListener
         Computer.setPreferredSize(new Dimension(320,150));
         Computer.setFocusPainted(false);
 
+        Options.removeAll();
         Options.setBackground(new Color(0,0,0,0));
         Options.add(NewGame);
         Options.add(Chess960);
@@ -305,8 +337,13 @@ class GameFrame extends JFrame implements ActionListener
 
     public JPanel ScorePanel(ChessPiece[] BlackPieces, ChessPiece[] WhitePieces)
     {
-        Score.setBounds(987, 0, 505, 958);
-        Score.setBorder(BorderFactory.createStrokeBorder(new BasicStroke(5.0f)));
+        Score.removeAll();
+        BlackContainer.removeAll();
+        WhiteContainer.removeAll();
+        Middle.removeAll();
+
+        Score.setBounds(986, 0, 505, 958);
+        Score.setBorder(BorderFactory.createStrokeBorder(new BasicStroke(4.0f)));
 
         for(int i = 0; i < 32; i++)
         {
@@ -324,12 +361,12 @@ class GameFrame extends JFrame implements ActionListener
         BlackEaten.setFont(ScoreFont);
         BlackContainer.add(BlackEaten, BorderLayout.NORTH);
         BlackContainer.add(BlackSide, BorderLayout.CENTER);
-        BlackContainer.setBorder(BorderFactory.createStrokeBorder(new BasicStroke(2.0f)));
+        BlackContainer.setBorder(BorderFactory.createStrokeBorder(new BasicStroke(3.0f)));
 
         WhiteEaten.setFont(ScoreFont);
         WhiteContainer.add(WhiteEaten, BorderLayout.NORTH);
         WhiteContainer.add(WhiteSide, BorderLayout.CENTER);
-        WhiteContainer.setBorder(BorderFactory.createStrokeBorder(new BasicStroke(2.0f)));
+        WhiteContainer.setBorder(BorderFactory.createStrokeBorder(new BasicStroke(3.0f)));
 
         WhiteResign.addActionListener(this);
         BlackResign.addActionListener(this);
@@ -337,12 +374,33 @@ class GameFrame extends JFrame implements ActionListener
         Exit.addActionListener(this);
         Help.addActionListener(this);
 
-        Middle.add(Help);
+        WhiteResign.setBackground(Color.WHITE);
+        WhiteResign.setFont(ScoreFont);    
+        WhiteResign.setPreferredSize(new Dimension(220,70)); 
+        WhiteResign.setFocusPainted(false);
+        Draw.setBackground(Color.WHITE);
+        Draw.setFont(ScoreFont);    
+        Draw.setPreferredSize(new Dimension(150,70)); 
+        Draw.setFocusPainted(false);
+        BlackResign.setBackground(Color.WHITE);
+        BlackResign.setFont(ScoreFont);    
+        BlackResign.setPreferredSize(new Dimension(220,70)); 
+        BlackResign.setFocusPainted(false);
+        Exit.setBackground(Color.WHITE);
+        Exit.setFont(ScoreFont);    
+        Exit.setPreferredSize(new Dimension(160,70)); 
+        Exit.setFocusPainted(false);
+        Help.setBackground(Color.WHITE);
+        Help.setFont(ScoreFont);    
+        Help.setPreferredSize(new Dimension(160,70)); 
+        Help.setFocusPainted(false);
+
         Middle.add(WhiteResign);
         Middle.add(Draw);
         Middle.add(BlackResign);
+        Middle.add(Help);
         Middle.add(Exit);
-        Middle.setBorder(BorderFactory.createStrokeBorder(new BasicStroke(2.0f)));
+        Middle.setBorder(BorderFactory.createStrokeBorder(new BasicStroke(3.0f)));
 
         Score.add(WhiteContainer);
         Score.add(Middle);
@@ -400,16 +458,27 @@ class GameFrame extends JFrame implements ActionListener
             }
         }
 
-        if(e.getActionCommand().equals("Draw"))
+        if(e.getActionCommand().equals("Exit"))
         {
-            LayeredPane.add(Pane, top, 0);  
-            LayeredPane.add(ScorePanel(DeadBlack, DeadWhite), top, 1);  
+            LayeredPane.removeAll();
+            LayeredPane.add(MenuPanel(), top, 0);
+
+            LayeredPane.add(Pane, middle, 1);
+            LayeredPane.add(ScorePanel(DeadBlack, DeadWhite), bottom , 2); 
         }
 
         if(e.getActionCommand().equals("New Game"))
         {
             LayeredPane.add(Pane, top, 0);
-            LayeredPane.add(ScorePanel(DeadBlack, DeadWhite), top, 1);     
+            LayeredPane.add(ScorePanel(DeadBlack, DeadWhite), top, 1);    
+            Game();
+        }
+
+        if(e.getActionCommand().equals("Chess960"))
+        {
+            LayeredPane.add(Pane, top, 0);
+            LayeredPane.add(ScorePanel(DeadBlack, DeadWhite), top, 1);   
+            start960();
         }
     }
 }
