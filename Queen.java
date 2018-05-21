@@ -1,4 +1,10 @@
 import java.util.*;
+/**
+ * 
+ *
+ * @author Shawn && Rain Ma
+ * @version 21/05/2018
+ */
 public class Queen extends ChessPiece
 {
     /**
@@ -108,9 +114,21 @@ public class Queen extends ChessPiece
 
     }
 
-    public double evaluate(ChessPiece[][] board)
+    /**
+     * @param the chessboard because the value of a piece depend on the position of other pieces.
+     * @return the value of the chessPiece
+     */
+     public double evaluate(ChessPiece[][] board)
     {
-        return 2;
+        double value = 9;
+        if(getIsWhite())
+        {
+            return value;
+        }
+        else
+        {
+            return value*-1;
+        }
     }
 
     public String toString()
