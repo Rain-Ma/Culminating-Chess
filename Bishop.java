@@ -92,7 +92,7 @@ public class Bishop extends ChessPiece
         newMoves(finaleMoves)
     } 
     
-    public double evaluate()
+    public double evaluate(ChessPiece[][] board)
     {
         return 2;
     }
