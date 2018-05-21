@@ -121,7 +121,7 @@ public class Rook extends ChessPiece
         return moved;
     }
 
-    public double evaluate()
+    public double evaluate(ChessPiece[][] board)
     {
         return 5;
     }
