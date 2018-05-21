@@ -1,7 +1,7 @@
 /**
  * Write a description of class board here.
  *
- * @author Rain Ma Justin Chu
+ * @author Rain Ma, Justin Chu
  * @version 21/05/2018
  */
 public class Board
