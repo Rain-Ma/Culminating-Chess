@@ -108,7 +108,7 @@ public class Queen extends ChessPiece
 
     }
 
-    public double evaluate()
+    public double evaluate(ChessPiece[][] board)
     {
         return 2;
     }
