@@ -89,9 +89,21 @@ public class King extends ChessPiece
         newMoves(move);
     }
 
+   /**
+     * @param the chessboard because the value of a piece depend on the position of other pieces.
+     * @return the value of the chessPiece
+     */
     public double evaluate(ChessPiece[][] board)
     {
-        return 2;
+        double value = 3.5;
+        if(getIsWhite())
+        {
+            return value;
+        }
+        else
+        {
+            return value*-1;
+        }
     }
 
     public void updateOpponentMove(int[][] opponentMove)
