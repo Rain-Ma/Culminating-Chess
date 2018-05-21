@@ -2,7 +2,7 @@
  * 
  *
  * @author Rain Ma
- * @version 09/05/2018
+ * @version 21/05/2018
  */
 public class Rook extends ChessPiece
 {
