@@ -1,9 +1,9 @@
 import java.util.*;
 /**
- * Write a description of class asdf here.
+ * 
  *
  * @author Rain Ma
- * @version 17/05/2018
+ * @version 21/05/2018
  */
 public abstract class ChessPiece
 {
