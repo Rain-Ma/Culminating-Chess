@@ -3,7 +3,7 @@
  * Write a description of class King here.
  *
  * @author Rain Ma
- * @version 07/05/2018
+ * @version 21/05/2018
  */
 public class King extends ChessPiece
 {
