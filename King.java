@@ -89,7 +89,7 @@ public class King extends ChessPiece
         newMoves(move);
     }
 
-    public double evaluate()
+    public double evaluate(ChessPiece[][] board)
     {
         return 2;
     }
