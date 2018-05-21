@@ -1,6 +1,6 @@
 
 /**
- * Write a description of class pawn here.
+ * 
  *
  * @author Rain Ma
  * @version 21/05/2018
@@ -159,10 +159,22 @@ public class Pawn extends ChessPiece
         }
     }
 
+    /**
+     * @param the chessboard because the value of a piece depend on the position of other pieces.
+     * @return the value of the chessPiece
+     */
     public double evaluate(ChessPiece[][] board)
     {
-
-        return 2;
+        double value = 1;
+        if(getIsWhite())
+        {
+            return value;
+        }
+        else
+        {
+            return value*-1;
+        }
+        
     }
 
     public boolean hasMoved()
