@@ -121,9 +121,21 @@ public class Rook extends ChessPiece
         return moved;
     }
 
+     /**
+     * @param the chessboard because the value of a piece depend on the position of other pieces.
+     * @return the value of the chessPiece
+     */
     public double evaluate(ChessPiece[][] board)
     {
-        return 5;
+        double value = 5;
+        if(getIsWhite())
+        {
+            return value;
+        }
+        else
+        {
+            return value*-1;
+        }
     }
 
     public String toString()
