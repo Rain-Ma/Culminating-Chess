@@ -3,7 +3,7 @@
  * Write a description of class pawn here.
  *
  * @author Rain Ma
- * @version 09/05/2018
+ * @version 21/05/2018
  */
 public class Pawn extends ChessPiece
 {
