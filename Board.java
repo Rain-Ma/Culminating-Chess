@@ -85,7 +85,7 @@ public class Board
         game.changeBoard(GameBoard);
     }
 
-    /**
+   /**
      * @param ChessPiece is the piece being moved
      * @param row and col is where the piece is being moved to in GameBoard
      */
@@ -110,6 +110,7 @@ public class Board
                             GameBoard[7][3] = GameBoard[7][0];
                             GameBoard[7][0] = null;
                             GameBoard[7][3].moveCol(3);
+                            return true;
                         }
                         else if(col==6)
                         {
@@ -119,6 +120,8 @@ public class Board
                             GameBoard[7][5] = GameBoard[7][7];
                             GameBoard[7][7] = null;
                             GameBoard[7][5].moveCol(5);
+                            return true;
+                            
                         }
                         else
                         {
@@ -127,7 +130,7 @@ public class Board
                             GameBoard[piece.getRow()][piece.getCol()] = null;
                             piece.moveRow(row);
                             piece.moveCol(col);
-
+                            return true;
                         }
                     }
                     else 
@@ -137,12 +140,13 @@ public class Board
                         GameBoard[piece.getRow()][piece.getCol()] = null;
                         piece.moveRow(row);
                         piece.moveCol(col);
+                        return true;
                     }
 
                 }
                 else
                 {
-                     if(!king.hasMoved())
+                    if(!king.hasMoved())
                     {
                         if(col==2)
                         {
@@ -152,6 +156,7 @@ public class Board
                             GameBoard[0][3] = GameBoard[0][0];
                             GameBoard[0][0] = null;
                             GameBoard[0][3].moveCol(3);
+                            return true;
                         }
                         else if(col==6)
                         {
@@ -161,6 +166,7 @@ public class Board
                             GameBoard[0][5] = GameBoard[0][7];
                             GameBoard[0][7] = null;
                             GameBoard[0][5].moveCol(5);
+                            return true;
                         }
                         else
                         {
@@ -169,7 +175,7 @@ public class Board
                             GameBoard[piece.getRow()][piece.getCol()] = null;
                             piece.moveRow(row);
                             piece.moveCol(col);
-
+                            return true;
                         }
                     }
                     else 
@@ -179,6 +185,7 @@ public class Board
                         GameBoard[piece.getRow()][piece.getCol()] = null;
                         piece.moveRow(row);
                         piece.moveCol(col);
+                        return true;
                     }
 
                 }
@@ -191,16 +198,40 @@ public class Board
                     {
                         ChessPiece promotion = promoteWhitePawn();
                         GameBoard[row][col] = promotion;
+                        GameBoard[piece.getRow()][piece.getCol()] = null;
+                        return true;
                     }
                     else if(row==7)
                     {
-                        
+                        ChessPiece promotion = promoteWhitePawn();
+                        GameBoard[row][col] = promotion;
+                        GameBoard[piece.getRow()][piece.getCol()] = null;
+                        return true;
                     }
-                    
-                    
+                    else
+                    {
+                        GameBoard[row][col] = piece;
+                        GameBoard[piece.getRow()][piece.getCol()] = null;
+                        piece.moveRow(row);
+                        piece.moveCol(col);
+                        return true;
+                    }
                 }
-                
+                else
+                {
+                    if(GameBoard[row][col]!=null)
+                    {
+                        if(GameBoard[row][col].getIsWhite()!=piece.getIsWhite())
+                        {
+                            GameBoard[row][col] = piece;
+                            GameBoard[piece.getRow()][piece.getCol()] = null;
+                            piece.moveRow(row);
+                            piece.moveCol(col);
+                            return true;
+                        }
+                    }
 
+                }
             }
             else
             {
@@ -208,10 +239,11 @@ public class Board
                 GameBoard[piece.getRow()][piece.getCol()] = null;
                 piece.moveRow(row);
                 piece.moveCol(col);
+                return true;
             }
 
         }
-        
-        return true;
+
+        return false;
     }
 }
