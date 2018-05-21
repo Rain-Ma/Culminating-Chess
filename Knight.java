@@ -40,7 +40,7 @@ public class Knight extends ChessPiece
         
     }
     
-    public double evaluate()
+    public double evaluate(ChessPiece[][] board)
     {
         return 3;
     }
