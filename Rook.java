@@ -6,10 +6,9 @@
  */
 public class Rook extends ChessPiece
 {
-    // instance variables - replace the example below with your own
     private boolean moved;
     /**
-     * Constructor for objects of class asdf
+     * Constructor for objects of class Rook
      */
     public Rook(int row, int col, boolean isWhite)
     {
@@ -17,19 +16,19 @@ public class Rook extends ChessPiece
         moved = false;
     }
 
-    public void findMove(ChessPiece[][] board)
+    public void findMove(ChessPiece[][] board) //Saves all possible moves that this can do at the moment
     {
-        int[][] moves = new int[14][2];
-        int count = 0;
-        for( int r = getRow()+1;r<8;r++)
+        int[][] moves = new int[14][2]; //Array saves all moves possible for the piece [most moves possible][coordinates]
+        int count = 0; //counter for possible moves
+        for(int r = getRow()+1;r<8;r++) //Checks move availability to the right
         {
-            if(board[r][getCol()] instanceof ChessPiece)
+            if(board[r][getCol()] instanceof ChessPiece) //if theres a piece in the way
             {
-                if(board[r][getCol()].getIsWhite()!=getIsWhite())
+                if(board[r][getCol()].getIsWhite()!=getIsWhite()) //if that piece is the oppisite colour
                 {
-                    moves[count][0] = r;
-                    moves[count][1] = getCol();
-                    count++;
+                    moves[count][0] = r; //input row coordinate of possible move
+                    moves[count][1] = getCol(); //input column coordinate of possible move
+                    count++; //add to number of possible moves
                     break;
                 }
                 else
@@ -38,19 +37,19 @@ public class Rook extends ChessPiece
                 }
 
             }
-            moves[count][0] = r;
-            moves[count][1] = getCol();
-            count++;           
+            moves[count][0] = r; //input row coordinate of possible move
+            moves[count][1] = getCol(); //input column coordinate of possible move
+            count++; //add to number of possible moves         
         }
-        for( int r = getRow()-1;r>=0;r--)
+        for( int r = getRow()-1;r>=0;r--) //Checks move availability to the left
         {
-            if(board[r][getCol()] instanceof ChessPiece)
+            if(board[r][getCol()] instanceof ChessPiece) //if theres a piece in the way
             {
-                if(board[r][getCol()].getIsWhite()!=getIsWhite())
+                if(board[r][getCol()].getIsWhite()!=getIsWhite()) //if that piece is the oppisite colour
                 {
-                    moves[count][0] = r;
-                    moves[count][1] = getCol();
-                    count++;
+                    moves[count][0] = r; //input row coordinate of possible move
+                    moves[count][1] = getCol(); //input column coordinate of possible move
+                    count++; //add to number of possible moves
                     break;
                 }
                 else
@@ -59,67 +58,60 @@ public class Rook extends ChessPiece
                 }
 
             }
-            moves[count][0] = r;
-            moves[count][1] = getCol();
-            count++;       
+            moves[count][0] = r; //input row coordinate of possible move
+            moves[count][1] = getCol(); //input column coordinate of possible move
+            count++; //add to number of possible moves       
         }
-        if(getCol()==7)
+        for( int c = getCol()+1;c<8;c++) //Checks move availability upwards
         {
-            for( int c = getCol()+1;c<8;c++)
+            if(board[getRow()][c] instanceof ChessPiece) //if theres a piece in the way
             {
-                if(board[getRow()][c] instanceof ChessPiece)
+                if(board[getRow()][c].getIsWhite()!=getIsWhite()) //if that piece is the oppisite colour
                 {
-                    if(board[getRow()][c].getIsWhite()!=getIsWhite())
-                    {
-                        moves[count][0] = getRow();
-                        moves[count][1] = c;
-                        count++;
-                        break;
-                    }
-                    else
-                    {
-                        break;
-                    }
+                    moves[count][0] = getRow(); //input row coordinate of possible move
+                    moves[count][1] = c; //input column coordinate of possible move
+                    count++; //add to number of possible moves
+                    break;
+                }
+                else
+                {
+                    break;
+                }
 
-                }
-                moves[count][0] = getRow();
-                moves[count][1] = c;
-                count++;   
             }
+            moves[count][0] = getRow(); //input row coordinate of possible move
+            moves[count][1] = c; //input column coordinate of possible move
+            count++; //add to number of possible moves
         }
-        if(getCol()<0)
+        for( int c = getRow()-1;c<8;c++) //Checks move availability downwards
         {
-            for( int c = getRow()-1;c<8;c++)
+            if(board[getRow()][c] instanceof ChessPiece) //if theres a piece in the way
             {
-                if(board[getRow()][c] instanceof ChessPiece)
+                if(board[getRow()][c].getIsWhite()!=getIsWhite()) //if that piece is the oppisite colour
                 {
-                    if(board[getRow()][c].getIsWhite()!=getIsWhite())
-                    {
-                        moves[count][0] = getRow();
-                        moves[count][1] = c;
-                        count++;
-                        break;
-                    }
-                    else
-                    {
-                        break;
-                    }
+                    moves[count][0] = getRow(); //input row coordinate of possible move
+                    moves[count][1] = c; //input column coordinate of possible move
+                    count++; //add to number of possible moves
+                    break;
                 }
-                moves[count][0] = getRow();
-                moves[count][1] = c;
-                count++;   
+                else
+                {
+                    break;
+                }
             }
+            moves[count][0] = getRow(); //input row coordinate of possible move
+            moves[count][1] = c; //input column coordinate of possible move
+            count++; //add to number of possible moves
         }
-        int[][] finaleMoves = new int[count][2];
-        for(int i =0; i <finaleMoves.length;i++)
+        int[][] finaleMoves = new int[count][2]; //new array with a length of the possible moves
+        for(int i =0; i <finaleMoves.length;i++) 
         {
             for(int j=0;j<2;j++)
             { 
-                finaleMoves[i][j] = moves[i][j];
+                finaleMoves[i][j] = moves[i][j]; //inputs all possible moves in the appropriate length array
             }
         }
-        newMoves(finaleMoves);
-
+        newMoves(finaleMoves); //changes moves array to equal finaleMoves array
     }
 
     public boolean hasMoved()

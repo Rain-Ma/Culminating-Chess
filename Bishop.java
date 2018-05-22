@@ -10,88 +10,125 @@ public class Bishop extends ChessPiece
     }
 
     //public abstract void findMove();
-    
-    public void findMove(ChessPiece[][] moves)
+
+    public void findMove(ChessPiece[][] board)
     {
-        boolean ur = true;
-        boolean dr = true;
-        boolean ul = true;
-        boolean dl = true;
-        int[][] move = new int[13][2];
-        int counter = 0;
+        boolean ur = true; //used to make sure piece cant hop over another
+        boolean dr = true; //used to make sure piece cant hop over another
+        boolean ul = true; //used to make sure piece cant hop over another
+        boolean dl = true; //used to make sure piece cant hop over another
+        int[][] move = new int[13][2]; //Array saves all moves possible for the piece [most moves possible][coordinates]
+        int count = 0; //counter for possible moves
         for(int r = 0; r<8; r++)
         {           
             for(int c = 0; c<8; c++)
             {
-                if(r>getRow() && c>getCol() && ur == true)
+                if(r>getRow() && c>getCol() && ur == true) //piece moves up, right and hasnt tried to hop over another piece
                 {
-                    if(moves[r][getCol()] instanceof ChessPiece){
-                        ur = false;
-                        break;
+                    if(board[r][c] instanceof ChessPiece && Math.abs(getRow() - r) != Math.abs(getCol() - c)){ //if a piece is in the way on the diagonal
+                        if(board[r][c].getIsWhite()!=getIsWhite()) //if that piece is the oppisite colour
+                        {
+                            move[count][0] = r; //input row coordinate of possible move
+                            move[count][1] = c; //input column coordinate of possible move
+                            count++; //add to number of possible moves
+                            ur = false;
+                            break;
+                        } else{
+                            ur = false;
+                            break;
+                        }
                     }else if(getRow() == r && getCol() == c) // makes sure the piece is actually moved
                         break;
-                    else if(Math.abs(getRow() - r) != Math.abs(getCol() - c))
+                    else if(Math.abs(getRow() - r) != Math.abs(getCol() - c)) //makes sure piece moved diagonally
                         break;
                     else{
-                        move[counter][0] = r;
-                        move[counter][1] = c;
-                        counter++;
+                        move[count][0] = r; //input row coordinate of possible move
+                        move[count][1] = c; //input column coordinate of possible move
+                        count++; //add to number of possible moves
                     }
                 }
-                else if(r<getRow() && c>getCol() && dr == true)
+                else if(r<getRow() && c>getCol() && dr == true) //piece moves down, right and hasnt tried to hop over another piece
                 {
-                    if(moves[r][getCol()] instanceof ChessPiece){
-                        dr = false;
-                        break;
+                    if(board[r][c] instanceof ChessPiece && Math.abs(getRow() - r) != Math.abs(getCol() - c)){ //if a piece is in the way on the diagonal
+                        if(board[r][c].getIsWhite()!=getIsWhite()) //if that piece is the oppisite colour
+                        {
+                            move[count][0] = r; //input row coordinate of possible move
+                            move[count][1] = c; //input column coordinate of possible move
+                            count++; //add to number of possible moves
+                            dr = false;
+                            break;
+                        } else{
+                            dr = false;
+                            break;
+                        }
                     }else if(getRow() == r && getCol() == c) // makes sure the piece is actually moved
                         break;
-                    else if(Math.abs(getRow() - r) != Math.abs(getCol() - c))
+                    else if(Math.abs(getRow() - r) != Math.abs(getCol() - c)) //makes sure piece moved diagonally
                         break;
                     else{
-                        move[counter][0] = r;
-                        move[counter][1] = c;
-                        counter++;
+                        move[count][0] = r; //input row coordinate of possible move
+                        move[count][1] = c; //input column coordinate of possible move
+                        count++; //add to number of possible moves
                     }
                 }
-                else if(r>getRow() && c<getCol() && ul == true)
+                else if(r>getRow() && c<getCol() && ul == true) //piece moves up, left and hasnt tried to hop over another piece
                 {
-                    if(moves[r][getCol()] instanceof ChessPiece){
-                        ul = false;
-                        break;
+                    if(board[r][c] instanceof ChessPiece && Math.abs(getRow() - r) != Math.abs(getCol() - c)){ //if a piece is in the way on the diagonal
+                        if(board[r][c].getIsWhite()!=getIsWhite()) //if that piece is the oppisite colour
+                        {
+                            move[count][0] = r; //input row coordinate of possible move
+                            move[count][1] = c; //input column coordinate of possible move
+                            count++; //add to number of possible moves
+                            ul = false;
+                            break;
+                        } else{
+                            ul = false;
+                            break;
+                        }
                     }else if(getRow() == r && getCol() == c) // makes sure the piece is actually moved
                         break;
-                    else if(Math.abs(getRow() - r) != Math.abs(getCol() - c))
+                    else if(Math.abs(getRow() - r) != Math.abs(getCol() - c)) //makes sure piece moved diagonally
                         break;
                     else{
-                        move[counter][0] = r;
-                        move[counter][1] = c;
-                        counter++;
+                        move[count][0] = r; //input row coordinate of possible move
+                        move[count][1] = c; //input column coordinate of possible move
+                        count++; //add to number of possible moves
                     }
                 }
-                else if(r<getRow() && c<getCol() && dl == true)
+                else if(r<getRow() && c<getCol() && dl == true) //piece moves down, left and hasnt tried to hop over another piece
                 {
-                    if(moves[r][getCol()] instanceof ChessPiece){
-                        dl = false;
-                        break;
+                    if(board[r][c] instanceof ChessPiece && Math.abs(getRow() - r) != Math.abs(getCol() - c)){ //if a piece is in the way on the diagonal
+                        if(board[r][c].getIsWhite()!=getIsWhite()) //if that piece is the oppisite colour
+                        {
+                            move[count][0] = r; //input row coordinate of possible move
+                            move[count][1] = c; //input column coordinate of possible move
+                            count++; //add to number of possible moves
+                            dl = false;
+                            break;
+                        } else{
+                            dl = false;
+                            break;
+                        }
                     }else if(getRow() == r && getCol() == c) // makes sure the piece is actually moved
                         break;
-                    else if(Math.abs(getRow() - r) != Math.abs(getCol() - c))
+                    else if(Math.abs(getRow() - r) != Math.abs(getCol() - c)) //makes sure piece moved diagonally
                         break;
                     else{
-                        move[counter][0] = r;
-                        move[counter][1] = c;
-                        counter++;
+                        move[count][0] = r; //input row coordinate of possible move
+                        move[count][1] = c; //input column coordinate of possible move
+                        count++; //add to number of possible moves
                     }
                 }
             }
-            if(counter>13)
+            if(count>13) //failsafe so counter cant go over most possible moves
                 break;
         }
-        int[][] finaleMoves = new int[counter][2];
+        //cuts down size of move array to only have the number of possible moves
+        int[][] finaleMoves = new int[count][2];
         super.allMoves(finaleMoves);
-        newMoves(finaleMoves)
+        newMoves(finaleMoves);
     } 
-    
+
     /**
      * @param the chessboard because the value of a piece depend on the position of other pieces.
      * @return the value of the chessPiece
@@ -108,7 +145,7 @@ public class Bishop extends ChessPiece
             return value*-1;
         }
     }
-    
+
     public String toString()
     {
         if(getIsWhite())
