@@ -85,6 +85,8 @@ class GameFrame extends JFrame implements ActionListener
     private Integer middle = new Integer(0);
     private Integer bottom = new Integer(0);
 
+    private JPanel PromotePane = new JPanel();
+    
     private Board board = new Board();
 
     /**
@@ -143,7 +145,8 @@ class GameFrame extends JFrame implements ActionListener
         {
             GameBoard[1][i] = new Pawn(7, i+1, false);
         }
-
+        
+        board.SetGame(); //sets up the game in the back end code
         GamePane();
     }
 
@@ -409,6 +412,13 @@ class GameFrame extends JFrame implements ActionListener
         return Score;
     }
 
+    public JPanel Promote()
+    {
+        PromotePane.setBounds(986, 0, 505, 958);
+        PromotePane.setBorder(BorderFactory.createStrokeBorder(new BasicStroke(4.0f)));
+        return PromotePane;
+    }
+    
     /**
      * When button is pressed
      */
@@ -424,13 +434,14 @@ class GameFrame extends JFrame implements ActionListener
                     {
                         if(GameBoard[r][c] instanceof ChessPiece)
                         {
+                            board.updateMoves();
                             oldRow = r;
                             oldCol = c;
                             clickCounter++;
                             if(clickCounter == 2)
                             {
+                                System.out.println("ok");
                                 clickCounter = 0;
-                                //check if piece can move to that location
                             }
                         }
                         else if(clickCounter == 1)
@@ -443,6 +454,7 @@ class GameFrame extends JFrame implements ActionListener
                                 clickCounter = 0;
                                 if(board.move(GameBoard[oldRow][oldCol], newRow, newCol))
                                 {
+                                    System.out.println("as");
                                     GameBoard[newRow][newCol] = GameBoard[oldRow][oldCol];
                                     GameBoard[oldRow][oldCol] = null;
                                     GamePane();
