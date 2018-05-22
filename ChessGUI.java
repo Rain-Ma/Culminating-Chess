@@ -72,7 +72,6 @@ class GameFrame extends JFrame implements ActionListener
     private ChessPiece[] DeadBlack = new ChessPiece[32];
     private ChessPiece[] DeadWhite = new ChessPiece[32];
 
-    private ChessPiece[][] GameBoard = new ChessPiece[8][8]; //new ChessPiece array for GameBoard
     private JButton[][] buttons = new JButton[8][8]; //new JButton array to put on chess board
 
     private int oldRow;
@@ -86,7 +85,7 @@ class GameFrame extends JFrame implements ActionListener
     private Integer bottom = new Integer(0);
 
     private JPanel PromotePane = new JPanel();
-    
+
     private Board board = new Board();
 
     /**
@@ -96,6 +95,11 @@ class GameFrame extends JFrame implements ActionListener
     {
         //Using JFrame's constructor, "Chess Game" will be the name of the window
         super("Chess Game");
+
+        //Frame here is implicit
+        setSize(1200,800);
+        setVisible(true);
+        setResizable(false);
     }
 
     public void startGame()
@@ -103,81 +107,44 @@ class GameFrame extends JFrame implements ActionListener
         LayeredPane = getLayeredPane(); //new layered pane
         LayeredPane.setVisible(true);
 
+        board.SetGame(); //sets up the chess board
+        GamePane();
+        
         LayeredPane.add(MenuPanel(), top, 0);
         LayeredPane.add(Pane, middle, 1);
         LayeredPane.add(ScorePanel(DeadBlack, DeadWhite), middle, 2);
-
-        //Frame here is implicit
-        setSize(1500,1000);
-        setVisible(true);
-        setResizable(false);
-    }
-
-    /**
-     * Sets up the board for a new game
-     */
-    public void Game()
-    {
-        //white pieces
-        GameBoard[7][0] = new Rook(1,1,true);
-        GameBoard[7][1] = new Knight(1,2,true);
-        GameBoard[7][2] = new Bishop(1,3,true);
-        GameBoard[7][3] = new Queen(1,4,true);
-        GameBoard[7][4] = new King(1,5,true);
-        GameBoard[7][5] = new Bishop(1,6,true);
-        GameBoard[7][6] = new Knight(1,7,true);
-        GameBoard[7][7] = new Rook(1,8,true);
-        for(int i = 0; i < 8; i++)
-        {
-            GameBoard[6][i] = new Pawn(2, i+1, true);
-        }
-
-        //black pieces
-        GameBoard[0][0] = new Rook(8,1,false);
-        GameBoard[0][1] = new Knight(8,2,false);
-        GameBoard[0][2] = new Bishop(8,3,false);
-        GameBoard[0][3] = new Queen(8,4,false);
-        GameBoard[0][4] = new King(8,5,false);
-        GameBoard[0][5] = new Bishop(8,6,false);
-        GameBoard[0][6] = new Knight(8,7,false);
-        GameBoard[0][7] = new Rook(8,8,false);
-        for(int i = 0; i < 8; i++)
-        {
-            GameBoard[1][i] = new Pawn(7, i+1, false);
-        }
-        
-        board.SetGame(); //sets up the game in the back end code
-        GamePane();
     }
 
     public void start960()
     {
+        /*
         //Setup pawns first because they are not randomized
         for(int i = 0; i < 8; i++)
         {
-            GameBoard[6][i] = new Pawn(2, i+1, true);
+        board.getBoard()[6][i] = new Pawn(2, i+1, true);
         }
         for(int i = 0; i < 8; i++)
         {
-            GameBoard[1][i] = new Pawn(7, i+1, false);
+        board.getBoard()[1][i] = new Pawn(7, i+1, false);
         }
 
         Random rand = new Random();
 
         //White Pieces randomized
         int bishop1 = rand.nextInt((3-0)+1)*2; //first bishop is in a random even location
-        GameBoard[7][bishop1] = new Bishop(1, bishop1+1, true);
+        board.getBoard()[7][bishop1] = new Bishop(1, bishop1+1, true);
         pieces[0] = bishop1; //add first bishop's location to pieces
         int bishop2 = rand.nextInt((3-0)+1)*2+1; //second bishop location must be odd
-        GameBoard[7][bishop2] = new Bishop(1, bishop2+1, true);
+        board.getBoard()[7][bishop2] = new Bishop(1, bishop2+1, true);
         pieces[1] = bishop2; //add second bishop's location to pieces
 
-        GameBoard[7][RandomLoc(2)] = new Queen(1, RandomLoc(2)+1, true);
-        GameBoard[7][RandomLoc(3)] = new Knight(1, RandomLoc(3)+1, true);
-        GameBoard[7][RandomLoc(4)] = new Knight(1, RandomLoc(4)+1, true);
-        GameBoard[7][RandomLoc(5)] = new Rook(1, RandomLoc(5)+1, true);
-        
+        board.getBoard()[7][RandomLoc(2)] = new Queen(1, RandomLoc(2)+1, true);
+        board.getBoard()[7][RandomLoc(3)] = new Knight(1, RandomLoc(3)+1, true);
+        board.getBoard()[7][RandomLoc(4)] = new Knight(1, RandomLoc(4)+1, true);
+        board.getBoard()[7][RandomLoc(5)] = new Rook(1, RandomLoc(5)+1, true);
+
         GamePane();
+         */
     }
 
     /**
@@ -187,28 +154,30 @@ class GameFrame extends JFrame implements ActionListener
      */
     public int RandomLoc(int pieceNum)
     {
+        /*
         Random rand = new Random();
 
         boolean pieceLoc = false;
         while(pieceLoc == false) //while the piece has not found a location yet
         {
-            int piece = rand.nextInt((7-0)+1); //random location for piece
-            for(int i = 0; i < pieces.length; i++)
-            {
-                if(piece != pieces[i]) //if piece is not on any piece's location
-                {
-                    pieceLoc = true; //piece is so far not on any piece's location
-                }
-                else
-                    pieceLoc = false; //piece is on another piece's location so find a new location
-            }
-            if(pieceLoc = true) //if piece has found a location
-            {
-                pieces[pieceNum] = piece; //add piece's location to pieces                
-            }
+        int piece = rand.nextInt((7-0)+1); //random location for piece
+        for(int i = 0; i < pieces.length; i++)
+        {
+        if(piece != pieces[i]) //if piece is not on any piece's location
+        {
+        pieceLoc = true; //piece is so far not on any piece's location
         }
-
+        else
+        pieceLoc = false; //piece is on another piece's location so find a new location
+        }
+        if(pieceLoc = true) //if piece has found a location
+        {
+        pieces[pieceNum] = piece; //add piece's location to pieces                
+        }
+        }
+        */
         return pieces[pieceNum];
+         
     }
 
     public JPanel BoardPanel()
@@ -218,14 +187,14 @@ class GameFrame extends JFrame implements ActionListener
         {
             for(int c = 0; c < 8; c++)
             {
-                if(GameBoard[r][c]==null)
+                if(board.getBoard()[r][c]==null)
                 {   
                     buttons[r][c] = new JButton();
                     buttons[r][c].addActionListener(this);
                 }
                 else
                 {
-                    buttons[r][c] = new JButton(new ImageIcon(GameBoard[r][c].toString()));
+                    buttons[r][c] = new JButton(new ImageIcon(board.getBoard()[r][c].toString()));
                     buttons[r][c].addActionListener(this);
                 }
                 if(r % 2 != 0&& (c+1)%2 != 0 || r % 2 == 0&& (c+1)%2 == 0)
@@ -251,7 +220,7 @@ class GameFrame extends JFrame implements ActionListener
     public void GamePane()
     {
         //-------------------------------------------PANE JPANEL - CHESS GAME GUI CODE----------------------------------------
-        Pane.setBounds(0, 0, 990, 958);
+        Pane.setBounds(0, 0, 800, 760);
         Pane.setBorder(BorderFactory.createRaisedBevelBorder());
 
         NumberPane.removeAll();
@@ -291,7 +260,7 @@ class GameFrame extends JFrame implements ActionListener
         Pane.add(BoardPanel(), BorderLayout.CENTER);
 
         //frame is implicit
-        setSize(1500,1000);
+        setSize(1200,800);
         setVisible(true);
         setResizable(false);
     }
@@ -301,8 +270,6 @@ class GameFrame extends JFrame implements ActionListener
         //--------------------------------------MAINMENU JPANEL - MAIN MENU GUI CODE-------------------------------------------
         MainMenu.removeAll();
         MainMenu.setLayout(new GridLayout(3,1));
-        MainMenu.setBounds(-3,415,1002, 200);
-        MainMenu.setBorder(BorderFactory.createRaisedBevelBorder());
 
         NewGame.setFont(MenuFont);
         NewGame.addActionListener(this);
@@ -345,8 +312,8 @@ class GameFrame extends JFrame implements ActionListener
         WhiteContainer.removeAll();
         Middle.removeAll();
 
-        Score.setBounds(986, 0, 505, 958);
-        Score.setBorder(BorderFactory.createStrokeBorder(new BasicStroke(4.0f)));
+        Score.setBounds(800, 0, 390, 760);
+        Score.setBorder(BorderFactory.createStrokeBorder(new BasicStroke(2.0f)));
 
         for(int i = 0; i < 32; i++)
         {
@@ -418,7 +385,7 @@ class GameFrame extends JFrame implements ActionListener
         PromotePane.setBorder(BorderFactory.createStrokeBorder(new BasicStroke(4.0f)));
         return PromotePane;
     }
-    
+
     /**
      * When button is pressed
      */
@@ -432,15 +399,25 @@ class GameFrame extends JFrame implements ActionListener
                 {
                     if(buttons[r][c] == e.getSource())
                     {
-                        if(GameBoard[r][c] instanceof ChessPiece)
+                        if(board.getBoard()[r][c] instanceof ChessPiece)
                         {
-                            board.updateMoves();
                             oldRow = r;
                             oldCol = c;
                             clickCounter++;
                             if(clickCounter == 2)
                             {
                                 System.out.println("ok");
+                                if(board.move(board.getBoard()[oldRow][oldCol], newRow, newCol))
+                                {
+                                    System.out.println("as");
+                                    board.getBoard()[newRow][newCol] = board.getBoard()[oldRow][oldCol];
+                                    board.getBoard()[oldRow][oldCol] = null;
+                                    GamePane();
+                                }
+                                else
+                                {
+                                    //say this move is not legal
+                                }
                                 clickCounter = 0;
                             }
                         }
@@ -452,11 +429,11 @@ class GameFrame extends JFrame implements ActionListener
                             if(clickCounter == 2)
                             {
                                 clickCounter = 0;
-                                if(board.move(GameBoard[oldRow][oldCol], newRow, newCol))
+                                if(board.move(board.getBoard()[oldRow][oldCol], newRow, newCol))
                                 {
                                     System.out.println("as");
-                                    GameBoard[newRow][newCol] = GameBoard[oldRow][oldCol];
-                                    GameBoard[oldRow][oldCol] = null;
+                                    board.getBoard()[newRow][newCol] = board.getBoard()[oldRow][oldCol];
+                                    board.getBoard()[oldRow][oldCol] = null;
                                     GamePane();
                                 }
                                 else
@@ -482,8 +459,7 @@ class GameFrame extends JFrame implements ActionListener
         if(e.getActionCommand().equals("New Game"))
         {
             LayeredPane.add(Pane, top, 0);
-            LayeredPane.add(ScorePanel(DeadBlack, DeadWhite), top, 1);    
-            Game();
+            LayeredPane.add(ScorePanel(DeadBlack, DeadWhite), top, 1);   
         }
 
         if(e.getActionCommand().equals("Chess960"))
