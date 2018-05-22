@@ -205,4 +205,24 @@ public class Board
 
         return false;
     }
+    public void updateMoves()
+    {
+        for(int r=0;r<8;r++)
+        {
+            for(int c=0;c<8;c++)
+            {
+                
+                if(GameBoard[r][c]!=null)
+                {
+                    GameBoard[r][c].findMove(GameBoard);
+                }
+            }
+        }
+                    
+        
+        
+        
+        
+        
+    }
 }
