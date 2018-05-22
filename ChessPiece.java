@@ -88,21 +88,26 @@ public abstract class ChessPiece
         return col;
     }
     
-    public boolean attacks(int row,int col)
+   public boolean attacks(int row,int col)
     {
-        for(int i=0;i<moves.length;i++)
+        if(moves!=null)
         {
-            if(moves[i][0]==row&&moves[i][1]==col)
+            for(int i=0;i<moves.length;i++)
             {
-                
-                return true;
+                if(moves[i][0]==row&&moves[i][1]==col)
+                {
+
+                    return true;
+                }
+
             }
-            
-            
+            return false;
         }
-        
-        return false;
-        
+        else
+        {
+            return false;
+        }
+
     }
     
     public void allMoves(int[][] moves)
