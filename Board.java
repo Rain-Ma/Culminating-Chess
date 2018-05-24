@@ -2,7 +2,7 @@
  * Write a description of class board here.
  *
  * @author Rain Ma, Justin Chu
- * @version 21/05/2018
+ * @version 24/05/2018
  */
 public class Board
 {
@@ -114,7 +114,6 @@ public class Board
                     GameBoard[7][7] = null;
                     GameBoard[7][5].moveCol(5);
                     return true;
-
                     }
                     else
                     {
@@ -128,7 +127,6 @@ public class Board
                     }
                     else 
                     {
-
                     GameBoard[row][col] = piece;
                     GameBoard[piece.getRow()][piece.getCol()] = null;
                     piece.moveRow(row);
@@ -136,6 +134,11 @@ public class Board
                     return true;
                     }
                      */
+                    GameBoard[row][col] = piece;
+                    GameBoard[piece.getRow()][piece.getCol()] = null;
+                    piece.moveRow(row);
+                    piece.moveCol(col);
+                    return true;
                 }
                 else
                 {
@@ -174,7 +177,6 @@ public class Board
                     }
                     else 
                     {
-
                     GameBoard[row][col] = piece;
                     GameBoard[piece.getRow()][piece.getCol()] = null;
                     piece.moveRow(row);
@@ -182,6 +184,11 @@ public class Board
                     return true;
                     }
                      */
+                    GameBoard[row][col] = piece;
+                    GameBoard[piece.getRow()][piece.getCol()] = null;
+                    piece.moveRow(row);
+                    piece.moveCol(col);
+                    return true;
                 }
             }
             else if(piece instanceof Pawn)
@@ -250,4 +257,77 @@ public class Board
 
         return false;
     }
+
+    public void whiteMoves()
+    {
+        int[][] whiteMoves = new int[0][2];
+        for(int r=0;r<8;r++)
+        {
+            for(int c=0;c<8;c++)
+            {
+                if(GameBoard[r][c] !=null)
+                {
+                    if(GameBoard[r][c].getIsWhite())
+                    {
+                        whiteMoves = add(whiteMoves,GameBoard[r][c].getMoves());
+                    }
+                }
+
+            }
+
+        }
+
+    }
+
+    
+    public void blackMoves()
+    {
+         int[][] whiteMoves = new int[0][2];
+        for(int r=0;r<8;r++)
+        {
+            for(int c=0;c<8;c++)
+            {
+                if(GameBoard[r][c] !=null)
+                {
+                    if(!GameBoard[r][c].getIsWhite())
+                    {
+                        whiteMoves = add(whiteMoves,GameBoard[r][c].getMoves());
+                    }
+                }
+
+            }
+
+        }
+    }
+    
+    public int[][] add(int[][] a, int[][] b)
+    {
+        int moves[][] = new int[64][2];
+        int counter=0;
+        for(int i=0;i<a.length;i++)
+        {
+            moves[i] = a[i];
+            counter++;
+            
+        }
+        for(int i=0;i<b.length;i++)
+        {
+            if(moves[i][0]!=b[i][0]&&moves[i][1]!=b[i][1])
+            {
+                moves[counter] = b[i];
+                counter++;
+            }
+            
+        }
+        int[][] finaleMoves = new int[counter][2];
+        for(int i=0;i<finaleMoves.length;i++)
+        {
+            finaleMoves[i] = moves[i];
+            
+            
+        }
+        return finaleMoves;
+    }
+    
+
 }
