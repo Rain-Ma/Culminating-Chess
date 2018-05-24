@@ -62,7 +62,7 @@ class GameFrame extends JFrame implements ActionListener
     private int oldCol;
     private int newRow;
     private int newCol;
-    private int clickCounter = 0;
+    private boolean firstClick = true;
 
     private Integer top = new Integer(0); //overlay layers
     private Integer middle = new Integer(0);
@@ -377,7 +377,7 @@ class GameFrame extends JFrame implements ActionListener
         return PromotePane;
     }
 
-    /**
+   /**
      * When button is pressed
      */
     public void actionPerformed (ActionEvent e)
@@ -390,43 +390,25 @@ class GameFrame extends JFrame implements ActionListener
                 {
                     if(buttons[r][c] == e.getSource())
                     {
-                        if(board.getBoard()[r][c] instanceof ChessPiece)
+                        if(firstClick)
                         {
-                            board.getBoard()[r][c].findMove(board.getBoard());
-                            oldRow = r;
-                            oldCol = c;
-                            clickCounter++;
-                            if(clickCounter == 2)
+                            if(board.getBoard()[r][c] instanceof ChessPiece)
                             {
-                                System.out.println("ok");
-                                if(board.move(board.getBoard()[oldRow][oldCol], newRow, newCol))
-                                {
-                                    GamePane();
-                                }
-                                else
-                                {
-                                    //say this move is not legal
-                                }
-                                clickCounter = 0;
+                                oldRow = r;
+                                oldCol = c;
+                                firstClick=false;
+                                
                             }
                         }
-                        else if(clickCounter == 1)
+                        else
                         {
-                            newRow = r;
-                            newCol = c;
-                            clickCounter++;
-                            if(clickCounter == 2)
-                            {
-                                clickCounter = 0;
-                                if(board.move(board.getBoard()[oldRow][oldCol], newRow, newCol))
+                             if(board.move(board.getBoard()[oldRow][oldCol], r, c))
                                 {
+                                    firstClick = true;
                                     GamePane();
+                                    
                                 }
-                                else
-                                {
-                                    //say this move is not legal
-                                }
-                            }
+                                firstClick = true;
                         }
                     }
                 }
