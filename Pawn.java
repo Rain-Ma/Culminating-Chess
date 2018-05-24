@@ -157,6 +157,15 @@ public class Pawn extends ChessPiece
             }
 
         }
+        int[][] finaleMoves = new int[count][2];
+        for(int i =0; i <finaleMoves.length;i++)
+        {
+            for(int j=0;j<2;j++)
+            { 
+                finaleMoves[i][j] = moves[i][j];
+            }
+        }
+        newMoves(finaleMoves);
     }
 
     /**
