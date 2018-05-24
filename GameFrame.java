@@ -1,8 +1,9 @@
+
 /**
  * GUI layout for our chess game
  *
  * @author Justin Chu
- * @version May 3rd, 2018
+ * @version May 24th, 2018
  */
 //import statements
 import javax.swing.*;
@@ -10,6 +11,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.net.*;
 import java.util.Random;
+
 
 //Essentially a JFrame, except it reacts to button events
 class GameFrame extends JFrame implements ActionListener
@@ -63,6 +65,7 @@ class GameFrame extends JFrame implements ActionListener
     private int newRow;
     private int newCol;
     private boolean firstClick = true;
+    private boolean isWhitesTurn = true;
 
     private Integer top = new Integer(0); //overlay layers
     private Integer middle = new Integer(0);
@@ -79,14 +82,7 @@ class GameFrame extends JFrame implements ActionListener
     {
         //Using JFrame's constructor, "Chess Game" will be the name of the window
         super("Chess Game");
-        addWindowListener(new WindowAdapter()
-            {
-                public void windowClosing(WindowEvent e)
-                {
-                    System.exit(0);
-                }
-            }
-        );
+
         //Frame here is implicit
         setSize(1200,800);
         setVisible(true);
@@ -118,9 +114,7 @@ class GameFrame extends JFrame implements ActionListener
         {
         board.getBoard()[1][i] = new Pawn(7, i+1, false);
         }
-
         Random rand = new Random();
-
         //White Pieces randomized
         int bishop1 = rand.nextInt((3-0)+1)*2; //first bishop is in a random even location
         board.getBoard()[7][bishop1] = new Bishop(1, bishop1+1, true);
@@ -128,12 +122,10 @@ class GameFrame extends JFrame implements ActionListener
         int bishop2 = rand.nextInt((3-0)+1)*2+1; //second bishop location must be odd
         board.getBoard()[7][bishop2] = new Bishop(1, bishop2+1, true);
         pieces[1] = bishop2; //add second bishop's location to pieces
-
         board.getBoard()[7][RandomLoc(2)] = new Queen(1, RandomLoc(2)+1, true);
         board.getBoard()[7][RandomLoc(3)] = new Knight(1, RandomLoc(3)+1, true);
         board.getBoard()[7][RandomLoc(4)] = new Knight(1, RandomLoc(4)+1, true);
         board.getBoard()[7][RandomLoc(5)] = new Rook(1, RandomLoc(5)+1, true);
-
         GamePane();
          */
     }
@@ -147,7 +139,6 @@ class GameFrame extends JFrame implements ActionListener
     {
         /*
         Random rand = new Random();
-
         boolean pieceLoc = false;
         while(pieceLoc == false) //while the piece has not found a location yet
         {
@@ -377,7 +368,7 @@ class GameFrame extends JFrame implements ActionListener
         return PromotePane;
     }
 
-   /**
+    /**
      * When button is pressed
      */
     public void actionPerformed (ActionEvent e)
@@ -394,21 +385,39 @@ class GameFrame extends JFrame implements ActionListener
                         {
                             if(board.getBoard()[r][c] instanceof ChessPiece)
                             {
-                                oldRow = r;
-                                oldCol = c;
-                                firstClick=false;
-                                
+                                if(isWhitesTurn&&board.getBoard()[r][c].getIsWhite())
+                                {
+                                    oldRow = r;
+                                    oldCol = c;
+                                    firstClick=false;
+                                }
+                                else if(!isWhitesTurn&&!board.getBoard()[r][c].getIsWhite())
+                                {
+                                    oldRow = r;
+                                    oldCol = c;
+                                    firstClick=false;
+                                    
+                                }
                             }
                         }
                         else
                         {
-                             if(board.move(board.getBoard()[oldRow][oldCol], r, c))
+                            
+                            if(board.move(board.getBoard()[oldRow][oldCol], r, c))
+                            {
+                                if(isWhitesTurn)
                                 {
-                                    firstClick = true;
-                                    GamePane();
-                                    
+                                    isWhitesTurn = false;
+                                }
+                                else
+                                {
+                                    isWhitesTurn = true;
                                 }
                                 firstClick = true;
+                                GamePane();
+
+                            }
+                            firstClick = true;
                         }
                     }
                 }
@@ -437,4 +446,5 @@ class GameFrame extends JFrame implements ActionListener
             start960();
         }
     }
+
 }
