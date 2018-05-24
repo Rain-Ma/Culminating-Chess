@@ -2,7 +2,7 @@
  * GUI layout for our chess game
  *
  * @author Justin Chu
- * @version May 3rd, 2018
+ * @version May 24th, 2018
  */
 //import statements
 import javax.swing.*;
