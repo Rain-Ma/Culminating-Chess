@@ -96,7 +96,7 @@ public  class Rook extends ChessPiece
         }
         if(getCol()>0)
         {
-            for( int c = getRow()-1;c>=0;c--)
+            for( int c = getCol()-1;c>=0;c--)
             {
                 if(board[getRow()][c] instanceof ChessPiece)
                 {
