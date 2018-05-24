@@ -2,7 +2,7 @@
  * GUI layout for our chess game
  *
  * @author Justin Chu
- * @version May 24th, 2018
+ * @version May 3rd, 2018
  */
 //import statements
 import javax.swing.*;
@@ -10,22 +10,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.net.*;
 import java.util.Random;
-public class ChessGUI
-{
-    public static void main (String [] args)
-    {
-        //creates a new JFrame
-        GameFrame frame = new GameFrame();
-        frame.addWindowListener(new WindowAdapter()
-            {
-                public void windowClosing(WindowEvent e)
-                {
-                    System.exit(0);
-                }
-            }
-        );
-    }
-}
 
 //Essentially a JFrame, except it reacts to button events
 class GameFrame extends JFrame implements ActionListener
@@ -95,7 +79,14 @@ class GameFrame extends JFrame implements ActionListener
     {
         //Using JFrame's constructor, "Chess Game" will be the name of the window
         super("Chess Game");
-
+        addWindowListener(new WindowAdapter()
+            {
+                public void windowClosing(WindowEvent e)
+                {
+                    System.exit(0);
+                }
+            }
+        );
         //Frame here is implicit
         setSize(1200,800);
         setVisible(true);
@@ -109,7 +100,7 @@ class GameFrame extends JFrame implements ActionListener
 
         board.SetGame(); //sets up the chess board
         GamePane();
-        
+
         LayeredPane.add(MenuPanel(), top, 0);
         LayeredPane.add(Pane, middle, 1);
         LayeredPane.add(ScorePanel(DeadBlack, DeadWhite), middle, 2);
@@ -175,9 +166,9 @@ class GameFrame extends JFrame implements ActionListener
         pieces[pieceNum] = piece; //add piece's location to pieces                
         }
         }
-        */
+         */
         return pieces[pieceNum];
-         
+
     }
 
     public JPanel BoardPanel()
@@ -401,6 +392,7 @@ class GameFrame extends JFrame implements ActionListener
                     {
                         if(board.getBoard()[r][c] instanceof ChessPiece)
                         {
+                            board.getBoard()[r][c].findMove(board.getBoard());
                             oldRow = r;
                             oldCol = c;
                             clickCounter++;
@@ -409,9 +401,6 @@ class GameFrame extends JFrame implements ActionListener
                                 System.out.println("ok");
                                 if(board.move(board.getBoard()[oldRow][oldCol], newRow, newCol))
                                 {
-                                    System.out.println("as");
-                                    board.getBoard()[newRow][newCol] = board.getBoard()[oldRow][oldCol];
-                                    board.getBoard()[oldRow][oldCol] = null;
                                     GamePane();
                                 }
                                 else
@@ -431,9 +420,6 @@ class GameFrame extends JFrame implements ActionListener
                                 clickCounter = 0;
                                 if(board.move(board.getBoard()[oldRow][oldCol], newRow, newCol))
                                 {
-                                    System.out.println("as");
-                                    board.getBoard()[newRow][newCol] = board.getBoard()[oldRow][oldCol];
-                                    board.getBoard()[oldRow][oldCol] = null;
                                     GamePane();
                                 }
                                 else
