@@ -4,8 +4,9 @@
  * @author Rain Ma
  * @version 21/05/2018
  */
-public class Rook extends ChessPiece
+public  class Rook extends ChessPiece
 {
+
     private boolean moved;
     /**
      * Constructor for objects of class Rook
@@ -16,102 +17,116 @@ public class Rook extends ChessPiece
         moved = false;
     }
 
-    public void findMove(ChessPiece[][] board) //Saves all possible moves that this can do at the moment
+    public void findMove(ChessPiece[][] board)
     {
-        int[][] moves = new int[14][2]; //Array saves all moves possible for the piece [most moves possible][coordinates]
-        int count = 0; //counter for possible moves
-        for(int r = getRow()+1;r<8;r++) //Checks move availability to the right
+        int[][] moves = new int[14][2];
+        int count = 0;
+        if(getRow()<7)
         {
-            if(board[r][getCol()] instanceof ChessPiece) //if theres a piece in the way
+            for( int r = getRow()+1;r<8;r++)
             {
-                if(board[r][getCol()].getIsWhite()!=getIsWhite()) //if that piece is the oppisite colour
+                if(board[r][getCol()] instanceof ChessPiece)
                 {
-                    moves[count][0] = r; //input row coordinate of possible move
-                    moves[count][1] = getCol(); //input column coordinate of possible move
-                    count++; //add to number of possible moves
-                    break;
-                }
-                else
-                {
-                    break;
-                }
+                    if(board[r][getCol()].getIsWhite()!=getIsWhite())
+                    {
+                        moves[count][0] = r;
+                        moves[count][1] = getCol();
+                        count++;
+                        break;
+                    }
+                    else
+                    {
+                        break;
+                    }
 
+                }
+                moves[count][0] = r;
+                moves[count][1] = getCol();
+                count++;           
             }
-            moves[count][0] = r; //input row coordinate of possible move
-            moves[count][1] = getCol(); //input column coordinate of possible move
-            count++; //add to number of possible moves         
         }
-        for( int r = getRow()-1;r>=0;r--) //Checks move availability to the left
+        
+        if(getRow()>0)
         {
-            if(board[r][getCol()] instanceof ChessPiece) //if theres a piece in the way
+            for( int r = getRow()-1;r>=0;r--)
             {
-                if(board[r][getCol()].getIsWhite()!=getIsWhite()) //if that piece is the oppisite colour
+                if(board[r][getCol()] instanceof ChessPiece)
                 {
-                    moves[count][0] = r; //input row coordinate of possible move
-                    moves[count][1] = getCol(); //input column coordinate of possible move
-                    count++; //add to number of possible moves
-                    break;
-                }
-                else
-                {
-                    break;
-                }
+                    if(board[r][getCol()].getIsWhite()!=getIsWhite())
+                    {
+                        moves[count][0] = r;
+                        moves[count][1] = getCol();
+                        count++;
+                        break;
+                    }
+                    else
+                    {
+                        break;
+                    }
 
+                }
+                moves[count][0] = r;
+                moves[count][1] = getCol();
+                count++;       
             }
-            moves[count][0] = r; //input row coordinate of possible move
-            moves[count][1] = getCol(); //input column coordinate of possible move
-            count++; //add to number of possible moves       
         }
-        for( int c = getCol()+1;c<8;c++) //Checks move availability upwards
+        if(getCol()<7)
         {
-            if(board[getRow()][c] instanceof ChessPiece) //if theres a piece in the way
+            for( int c = getCol()+1;c<8;c++)
             {
-                if(board[getRow()][c].getIsWhite()!=getIsWhite()) //if that piece is the oppisite colour
+                if(board[getRow()][c] instanceof ChessPiece)
                 {
-                    moves[count][0] = getRow(); //input row coordinate of possible move
-                    moves[count][1] = c; //input column coordinate of possible move
-                    count++; //add to number of possible moves
-                    break;
-                }
-                else
-                {
-                    break;
-                }
+                    if(board[getRow()][c].getIsWhite()!=getIsWhite())
+                    {
+                        moves[count][0] = getRow();
+                        moves[count][1] = c;
+                        count++;
+                        break;
+                    }
+                    else
+                    {
+                        break;
+                    }
 
+                }
+                moves[count][0] = getRow();
+                moves[count][1] = c;
+                count++;   
             }
-            moves[count][0] = getRow(); //input row coordinate of possible move
-            moves[count][1] = c; //input column coordinate of possible move
-            count++; //add to number of possible moves
         }
-        for( int c = getRow()-1;c<8;c++) //Checks move availability downwards
+        if(getCol()>0)
         {
-            if(board[getRow()][c] instanceof ChessPiece) //if theres a piece in the way
+            for( int c = getRow()-1;c>=0;c--)
             {
-                if(board[getRow()][c].getIsWhite()!=getIsWhite()) //if that piece is the oppisite colour
+                if(board[getRow()][c] instanceof ChessPiece)
                 {
-                    moves[count][0] = getRow(); //input row coordinate of possible move
-                    moves[count][1] = c; //input column coordinate of possible move
-                    count++; //add to number of possible moves
-                    break;
+                    if(board[getRow()][c].getIsWhite()!=getIsWhite())
+                    {
+                        moves[count][0] = getRow();
+                        moves[count][1] = c;
+                        count++;
+                        break;
+                    }
+                    else
+                    {
+                        break;
+                    }
                 }
-                else
-                {
-                    break;
-                }
+                moves[count][0] = getRow();
+                moves[count][1] = c;
+                count++;   
             }
-            moves[count][0] = getRow(); //input row coordinate of possible move
-            moves[count][1] = c; //input column coordinate of possible move
-            count++; //add to number of possible moves
         }
-        int[][] finaleMoves = new int[count][2]; //new array with a length of the possible moves
-        for(int i =0; i <finaleMoves.length;i++) 
+        int[][] finaleMoves = new int[count][2];
+        for(int i =0; i <finaleMoves.length;i++)
         {
             for(int j=0;j<2;j++)
             { 
-                finaleMoves[i][j] = moves[i][j]; //inputs all possible moves in the appropriate length array
+                finaleMoves[i][j] = moves[i][j];
             }
         }
-        newMoves(finaleMoves); //changes moves array to equal finaleMoves array
+        newMoves(finaleMoves);
+
     }
 
     public boolean hasMoved()
@@ -119,7 +134,19 @@ public class Rook extends ChessPiece
         return moved;
     }
 
-     /**
+    public String toString()
+    {
+        if(getIsWhite())
+        {
+            return "ChessPieceIcons/WhiteRook.png";
+        }
+        else 
+        {
+            return "ChessPieceIcons/BlackRook.png";
+        }
+    }
+
+    /**
      * @param the chessboard because the value of a piece depend on the position of other pieces.
      * @return the value of the chessPiece
      */
@@ -134,13 +161,5 @@ public class Rook extends ChessPiece
         {
             return value*-1;
         }
-    }
-
-    public String toString()
-    {
-        if(getIsWhite())
-            return "ChessPieceIcons/WhiteRook.png";
-        else
-            return "ChessPieceIcons/BlackRook.png";
     }
 }
