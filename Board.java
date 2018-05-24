@@ -48,32 +48,32 @@ public class Board
      */
     public void SetGame()
     {
-        //black pieces
-        GameBoard[7][0] = new Rook(1,1,true);
-        GameBoard[7][1] = new Knight(1,2,true);
-        GameBoard[7][2] = new Bishop(1,3,true);
-        GameBoard[7][3] = new Queen(1,4,true);
-        GameBoard[7][4] = new King(1,5,true);
-        GameBoard[7][5] = new Bishop(1,6,true);
-        GameBoard[7][6] = new Knight(1,7,true);
-        GameBoard[7][7] = new Rook(1,8,true);
+        //white pieces
+        GameBoard[7][0] = new Rook(7,0,true);
+        GameBoard[7][1] = new Knight(7,1,true);
+        GameBoard[7][2] = new Bishop(7,2,true);
+        GameBoard[7][3] = new Queen(7,3,true);
+        GameBoard[7][4] = new King(7,4,true);
+        GameBoard[7][5] = new Bishop(7,5,true);
+        GameBoard[7][6] = new Knight(7,6,true);
+        GameBoard[7][7] = new Rook(7,7,true);
         for(int i = 0; i < 8; i++)
         {
-            GameBoard[6][i] = new Pawn(2, i+1, true);
+            GameBoard[6][i] = new Pawn(6, i, true);
         }
 
-        //white pieces
-        GameBoard[0][0] = new Rook(8,1,false);
-        GameBoard[0][1] = new Knight(8,2,false);
-        GameBoard[0][2] = new Bishop(8,3,false);
-        GameBoard[0][3] = new Queen(8,4,false);
-        GameBoard[0][4] = new King(8,5,false);
-        GameBoard[0][5] = new Bishop(8,6,false);
-        GameBoard[0][6] = new Knight(8,7,false);
-        GameBoard[0][7] = new Rook(8,8,false);
+        //black pieces
+        GameBoard[0][0] = new Rook(0,0,false);
+        GameBoard[0][1] = new Knight(0,1,false);
+        GameBoard[0][2] = new Bishop(0,2,false);
+        GameBoard[0][3] = new Queen(0,3,false);
+        GameBoard[0][4] = new King(0,4,false);
+        GameBoard[0][5] = new Bishop(0,5,false);
+        GameBoard[0][6] = new Knight(0,6,false);
+        GameBoard[0][7] = new Rook(0,7,false);
         for(int i = 0; i < 8; i++)
         {
-            GameBoard[1][i] = new Pawn(7, i+1, false);
+            GameBoard[1][i] = new Pawn(1, i, false);
         }
     }
 
@@ -84,7 +84,7 @@ public class Board
 
     public boolean move(ChessPiece piece, int row, int col)
     {
-        //updateMoves();
+        piece.findMove(GameBoard);
         if(piece.attacks(row,col))
         {
             if(piece instanceof King)
@@ -249,22 +249,5 @@ public class Board
         }
 
         return false;
-    }
-
-    public void updateMoves()
-    {
-        /*
-        for(int r=0;r<8;r++)
-        {
-        for(int c=0;c<8;c++)
-        {
-
-        if(GameBoard[r][c]!=null)
-        {
-        GameBoard[r][c].findMove(GameBoard);
-        }
-        }
-        }
-         */
     }
 }
