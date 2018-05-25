@@ -193,20 +193,17 @@ public class Board
             }
             else if(piece instanceof Pawn)
             {
-                if(col==piece.getCol())
+                Pawn pawn = (Pawn)piece;
+                if(piece.getCol()!=col)
                 {
-                    if(row==0)
+                    if(GameBoard[row][col]==null)
                     {
-                        // ChessPiece promotion = promoteWhitePawn();
-                        // GameBoard[row][col] = promotion;
+
+                        GameBoard[row][col] = piece;
+                        GameBoard[piece.getRow()][col] = null;
                         GameBoard[piece.getRow()][piece.getCol()] = null;
-                        return true;
-                    }
-                    else if(row==7)
-                    {
-                        //ChessPiece promotion = promoteWhitePawn();
-                        // GameBoard[row][col] = promotion;
-                        GameBoard[piece.getRow()][piece.getCol()] = null;
+                        piece.moveRow(row);
+                        piece.moveCol(col);
                         return true;
                     }
                     else
@@ -218,20 +215,26 @@ public class Board
                         return true;
                     }
                 }
+                else if(Math.abs(pawn.getRow()-row)==2)
+                {
+                    GameBoard[row][col] = piece;
+                    GameBoard[piece.getRow()][piece.getCol()] = null;
+                    piece.moveRow(row);
+                    piece.moveCol(col);
+                    pawn.setEnPassant(true);
+                    return true;
+                }
+
                 else
                 {
-                    if(GameBoard[row][col]!=null)
-                    {
-                        if(GameBoard[row][col].getIsWhite()!=piece.getIsWhite())
-                        {
-                            GameBoard[row][col] = piece;
-                            GameBoard[piece.getRow()][piece.getCol()] = null;
-                            piece.moveRow(row);
-                            piece.moveCol(col);
-                            return true;
-                        }
-                    }
+                    GameBoard[row][col] = piece;
+                    GameBoard[piece.getRow()][piece.getCol()] = null;
+                    piece.moveRow(row);
+                    piece.moveCol(col);
+                    pawn.setEnPassant(false);
+                    return true;
                 }
+
             }
             else
             {
