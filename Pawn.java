@@ -7,12 +7,10 @@
  */
 public class Pawn extends ChessPiece
 {
-    boolean moved;
     boolean enPassant;
     public Pawn(int row,int col,boolean isWhite)
     {
         super(row,col,isWhite);
-        moved = false;
         enPassant = false;
     }
 
@@ -28,7 +26,7 @@ public class Pawn extends ChessPiece
                 moves[count][0] = getRow()-1;
                 moves[count][1] = getCol();
                 count++;
-                if(!moved&&board[getRow()-2][getCol()]==null)
+                if(getRow() == 6 &&board[getRow()-2][getCol()]==null)
                 {
                     moves[count][0] = getRow()-2;
                     moves[count][1] = getCol();
@@ -39,7 +37,7 @@ public class Pawn extends ChessPiece
             {
                 if(board[getRow()-1][getCol()-1]!=null)
                 {
-                    if(board[getRow()-1][getCol()-1].getIsWhite()!=getIsWhite())
+                    if(board[getRow()-1][getCol()-1].getIsWhite()!= getIsWhite())
                     {
                         moves[count][0] = getRow()-1;
                         moves[count][1] = getCol()-1;
@@ -99,7 +97,7 @@ public class Pawn extends ChessPiece
                 moves[count][0] = getRow()+1;
                 moves[count][1] = getCol();
                 count++;
-                if(!moved&&board[getRow()+2][getCol()]==null)
+                if(getRow() == 1 &&board[getRow()+2][getCol()]==null)
                 {
                     moves[count][0] = getRow()+2;
                     moves[count][1] = getCol();
@@ -126,6 +124,7 @@ public class Pawn extends ChessPiece
                         {
                             moves[count][0] = getRow()+1;
                             moves[count][1] = getCol()-1;
+                            count++;
                         }
                     }
                 }
@@ -150,6 +149,7 @@ public class Pawn extends ChessPiece
                         {
                             moves[count][0] = getRow()+1;
                             moves[count][1] = getCol()+1;
+                            count++;
                         }
                     }
                 }
@@ -183,24 +183,14 @@ public class Pawn extends ChessPiece
         {
             return value*-1;
         }
-        
-    }
 
-    public boolean hasMoved()
-    {
-        return moved;
     }
 
     public boolean canBeEnPassant()
     {
         return enPassant;
     }
-
-    public void setMoved(boolean moved)
-    {
-        this.moved = moved;
-    }
-
+    
     public void setEnPassant(boolean enPassant)
     {
         this.enPassant = enPassant;
