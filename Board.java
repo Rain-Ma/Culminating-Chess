@@ -243,15 +243,7 @@ public class Board
             }
 
         }
-        else
-        {
-            /*
-            for(int i = 0; i < piece.getMoves().length; i++)
-            {
-            }
-            return true;
-             */
-        }
+        
 
         return false;
     }
