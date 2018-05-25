@@ -67,7 +67,9 @@ class GameFrame extends JFrame implements ActionListener
 
     private JPanel PromotePane = new JPanel();
 
-    private Board board = new Board();
+    private JPanel GameOverPanel = new JPanel();
+
+    private Board board;
 
     /**
      * Constructor for GameFrame class
@@ -76,7 +78,14 @@ class GameFrame extends JFrame implements ActionListener
     {
         //Using JFrame's constructor, "Chess Game" will be the name of the window
         super("Chess Game");
-
+        addWindowListener(new WindowAdapter()
+            {
+                public void windowClosing(WindowEvent e)
+                {
+                    System.exit(0);
+                }
+            }
+        );
         //Frame here is implicit
         setSize(1200,800);
         setVisible(true);
@@ -85,15 +94,21 @@ class GameFrame extends JFrame implements ActionListener
 
     public void startGame()
     {
+        newGame();
+
         LayeredPane = getLayeredPane(); //new layered pane
         LayeredPane.setVisible(true);
-
-        board.SetGame(); //sets up the chess board
-        GamePane();
 
         LayeredPane.add(MenuPanel(), top, 0);
         LayeredPane.add(Pane, middle, 1);
         LayeredPane.add(ScorePanel(DeadBlack, DeadWhite), middle, 2);
+    }
+
+    public void newGame()
+    {
+        board = new Board();
+        board.SetGame(); //sets up the chess board
+        GamePane();
     }
 
     public void start960()
@@ -191,7 +206,7 @@ class GameFrame extends JFrame implements ActionListener
     }
 
     /**
-     * Runs the chess game GUI
+     * Creates the chess board
      */
     public void GamePane()
     {
@@ -370,6 +385,11 @@ class GameFrame extends JFrame implements ActionListener
         return PromotePane;
     }
 
+    public JPanel End()
+    {
+        return GameOverPanel;
+    }
+
     /**
      * When button is pressed
      */
@@ -434,6 +454,8 @@ class GameFrame extends JFrame implements ActionListener
 
         if(e.getActionCommand().equals("New Game"))
         {
+            isWhitesTurn = true;
+            newGame();
             LayeredPane.add(Pane, top, 0);
             LayeredPane.add(ScorePanel(DeadBlack, DeadWhite), top, 1);   
         }
