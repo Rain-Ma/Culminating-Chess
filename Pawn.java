@@ -11,6 +11,7 @@ public class Pawn extends ChessPiece
     public Pawn(int row,int col,boolean isWhite)
     {
         super(row,col,isWhite);
+        
         enPassant = false;
     }
 
@@ -21,12 +22,14 @@ public class Pawn extends ChessPiece
         if(getIsWhite())
         {
 
+            System.out.println(getRow()-1);
+            System.out.println(getCol());
             if(board[getRow()-1][getCol()]==null)
             {
                 moves[count][0] = getRow()-1;
                 moves[count][1] = getCol();
                 count++;
-                if(getRow() == 6 &&board[getRow()-2][getCol()]==null)
+                if(getRow()==6 && board[4][getCol()] == null)
                 {
                     moves[count][0] = getRow()-2;
                     moves[count][1] = getCol();
@@ -37,7 +40,7 @@ public class Pawn extends ChessPiece
             {
                 if(board[getRow()-1][getCol()-1]!=null)
                 {
-                    if(board[getRow()-1][getCol()-1].getIsWhite()!= getIsWhite())
+                    if(board[getRow()-1][getCol()-1].getIsWhite()!=getIsWhite())
                     {
                         moves[count][0] = getRow()-1;
                         moves[count][1] = getCol()-1;
@@ -61,14 +64,14 @@ public class Pawn extends ChessPiece
                 }
 
             }
-
+           
             if(getCol()<7)
             {
-                if(board[getRow()+1][getCol()+1]!=null)
+                if(board[getRow()-1][getCol()+1]!=null)
                 {
-                    if(board[getRow()+1][getCol()+1].getIsWhite()!=getIsWhite())
+                    if(board[getRow()-1][getCol()+1].getIsWhite()!=getIsWhite())
                     {
-                        moves[count][0] = getRow()+1;
+                        moves[count][0] = getRow()-1;
                         moves[count][1] = getCol()+1;
                         count++;
                     }
@@ -97,7 +100,7 @@ public class Pawn extends ChessPiece
                 moves[count][0] = getRow()+1;
                 moves[count][1] = getCol();
                 count++;
-                if(getRow() == 1 &&board[getRow()+2][getCol()]==null)
+                if(getRow()==1&&board[getRow()+2][getCol()]==null)
                 {
                     moves[count][0] = getRow()+2;
                     moves[count][1] = getCol();
@@ -124,7 +127,6 @@ public class Pawn extends ChessPiece
                         {
                             moves[count][0] = getRow()+1;
                             moves[count][1] = getCol()-1;
-                            count++;
                         }
                     }
                 }
@@ -149,7 +151,6 @@ public class Pawn extends ChessPiece
                         {
                             moves[count][0] = getRow()+1;
                             moves[count][1] = getCol()+1;
-                            count++;
                         }
                     }
                 }
@@ -167,7 +168,7 @@ public class Pawn extends ChessPiece
         }
         newMoves(finaleMoves);
     }
-
+    
     /**
      * @param the chessboard because the value of a piece depend on the position of other pieces.
      * @return the value of the chessPiece
@@ -183,14 +184,18 @@ public class Pawn extends ChessPiece
         {
             return value*-1;
         }
-
+        
     }
+
+    
 
     public boolean canBeEnPassant()
     {
         return enPassant;
     }
-    
+
+   
+
     public void setEnPassant(boolean enPassant)
     {
         this.enPassant = enPassant;
