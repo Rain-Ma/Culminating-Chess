@@ -1,8 +1,7 @@
 import java.util.*;
 /**
  * 
- *
- * @author Shawn && Rain Ma
+ * @author Shawn && Rain Ma && Justin Chu
  * @version 21/05/2018
  */
 public class Queen extends ChessPiece
@@ -17,134 +16,207 @@ public class Queen extends ChessPiece
 
     public void findMove(ChessPiece[][] board)
     {
-        int[][] move = new int[27][2]; //Array saves all moves possible for the piece [most moves possible][coordinates]
-        int count = 0; //counter for possible moves
-        boolean ur = true; //used to make sure piece cant hop over another
-        boolean dr = true; //used to make sure piece cant hop over another
-        boolean ul = true; //used to make sure piece cant hop over another
-        boolean dl = true; //used to make sure piece cant hop over another
-        for(int r = 0; r<8; r++)
+        int[][] moves = new int[27][2]; //Array saves all moves possible for the piece [most moves possible][coordinates]
+        int count = 0; //count for possible moves
+
+        if(getRow() < 7 && getCol() < 7)
         {
-            for(int c = 0; c<8; c++)
-            {
-                if(r>getRow() && c>getCol() && ur == true) //piece moves up, right and hasnt tried to hop over another piece
-                {
-                    if(board[r][c] instanceof ChessPiece && Math.abs(getRow() - r) != Math.abs(getCol() - c)){ //if a piece is in the way on the diagonal
-                        if(board[r][c].getIsWhite()!=getIsWhite()) //if that piece is the oppisite colour
-                        {
-                            move[count][0] = r; //input row coordinate of possible move
-                            move[count][1] = c; //input column coordinate of possible move
-                            count++; //add to number of possible moves
-                            ur = false;
-                            break;
-                        } else{
-                            ur = false;
-                            break;
-                        }
-                    }else if(getRow() == r && getCol() == c) // makes sure the piece is actually moved
-                        break;
-                    else if(Math.abs(getRow() - r) != Math.abs(getCol() - c)) //makes sure piece moved diagonally
-                        break;
-                    else{
-                        move[count][0] = r; //input row coordinate of possible move
-                        move[count][1] = c; //input column coordinate of possible move
-                        count++; //add to number of possible moves
-                    }
-                }
-                else if(r<getRow() && c>getCol() && dr == true) //piece moves down, right and hasnt tried to hop over another piece
-                {
-                    if(board[r][c] instanceof ChessPiece && Math.abs(getRow() - r) != Math.abs(getCol() - c)){ //if a piece is in the way on the diagonal
-                        if(board[r][c].getIsWhite()!=getIsWhite()) //if that piece is the oppisite colour
-                        {
-                            move[count][0] = r; //input row coordinate of possible move
-                            move[count][1] = c; //input column coordinate of possible move
-                            count++; //add to number of possible moves
-                            dr = false;
-                            break;
-                        } else{
-                            dr = false;
-                            break;
-                        }
-                    }else if(getRow() == r && getCol() == c) // makes sure the piece is actually moved
-                        break;
-                    else if(Math.abs(getRow() - r) != Math.abs(getCol() - c)) //makes sure piece moved diagonally
-                        break;
-                    else{
-                        move[count][0] = r; //input row coordinate of possible move
-                        move[count][1] = c; //input column coordinate of possible move
-                        count++; //add to number of possible moves
-                    }
-                }
-                else if(r>getRow() && c<getCol() && ul == true) //piece moves up, left and hasnt tried to hop over another piece
-                {
-                    if(board[r][c] instanceof ChessPiece && Math.abs(getRow() - r) != Math.abs(getCol() - c)){ //if a piece is in the way on the diagonal
-                        if(board[r][c].getIsWhite()!=getIsWhite()) //if that piece is the oppisite colour
-                        {
-                            move[count][0] = r; //input row coordinate of possible move
-                            move[count][1] = c; //input column coordinate of possible move
-                            count++; //add to number of possible moves
-                            ul = false;
-                            break;
-                        } else{
-                            ul = false;
-                            break;
-                        }
-                    }else if(getRow() == r && getCol() == c) // makes sure the piece is actually moved
-                        break;
-                    else if(Math.abs(getRow() - r) != Math.abs(getCol() - c)) //makes sure piece moved diagonally
-                        break;
-                    else{
-                        move[count][0] = r; //input row coordinate of possible move
-                        move[count][1] = c; //input column coordinate of possible move
-                        count++; //add to number of possible moves
-                    }
-                }
-                else if(r<getRow() && c<getCol() && dl == true) //piece moves down, left and hasnt tried to hop over another piece
-                {
-                    if(board[r][c] instanceof ChessPiece && Math.abs(getRow() - r) != Math.abs(getCol() - c)){ //if a piece is in the way on the diagonal
-                        if(board[r][c].getIsWhite()!=getIsWhite()) //if that piece is the oppisite colour
-                        {
-                            move[count][0] = r; //input row coordinate of possible move
-                            move[count][1] = c; //input column coordinate of possible move
-                            count++; //add to number of possible moves
-                            dl = false;
-                            break;
-                        } else{
-                            dl = false;
-                            break;
-                        }
-                    }else if(getRow() == r && getCol() == c) // makes sure the piece is actually moved
-                        break;
-                    else if(Math.abs(getRow() - r) != Math.abs(getCol() - c)) //makes sure piece moved diagonally
-                        break;
-                    else{
-                        move[count][0] = r; //input row coordinate of possible move
-                        move[count][1] = c; //input column coordinate of possible move
-                        count++; //add to number of possible moves
-                    }
-                }
-                /*  FIX THIS PART
-                else if(board[r][getCol()] instanceof ChessPiece){
+            for(int i = 1; i < 7; i++)
+            {                   
+                if(getRow()+i > 7 || getCol()+i > 7)
                     break;
-                }else if(getRow() != r && getCol() != c) 
-                    break;
-                else if(getRow() == r && getCol() == c) 
-                    break;
-                else if(move[r][c] instanceof ChessPiece)
-                    break;
-                else{
-                    move[count][0] = r;
-                    move[count][1] = c;
-                    count++;
+                if(board[getRow()+i][getCol()+i] instanceof ChessPiece)
+                {
+                    if(board[getRow()+i][getCol()+i].getIsWhite() != getIsWhite())
+                    {
+                        moves[count][0] = getRow()+i;
+                        moves[count][1] = getCol()+i;
+                        count++;
+                        break;
+                    }
+                    else
+                        break;
                 }
-                */
+                moves[count][0] = getRow()+i;
+                moves[count][1] = getCol()+i;
+                count++;
             }
-            if(count>27) //failsafe so counter cant go over most possible moves
-                break;
-        }     
-        //cuts down size of move array to only have the number of possible moves
+        }
+
+        if(getRow() < 7 && getCol() > 0)
+        {
+            for(int i = 1; i < 7; i++)
+            {                   
+                if(getRow()+i > 7 || getCol()-i < 0)
+                    break;
+                if(board[getRow()+i][getCol()-i] instanceof ChessPiece)
+                {
+                    if(board[getRow()+i][getCol()-i].getIsWhite() != getIsWhite())
+                    {
+                        moves[count][0] = getRow()+i;
+                        moves[count][1] = getCol()-i;
+                        count++;
+                        break;
+                    }
+                    else
+                        break;
+                }
+                moves[count][0] = getRow()+i;
+                moves[count][1] = getCol()-i;
+                count++;
+            }
+        }
+
+        if(getRow() > 0 && getCol() < 7)
+        {
+            for(int i = 1; i < 7; i++)
+            {                   
+                if(getRow()-i < 0 || getCol()+i > 7)
+                    break;
+                if(board[getRow()-i][getCol()+i] instanceof ChessPiece)
+                {
+                    if(board[getRow()-i][getCol()+i].getIsWhite() != getIsWhite())
+                    {
+                        moves[count][0] = getRow()-i;
+                        moves[count][1] = getCol()+i;
+                        count++;
+                        break;
+                    }
+                    else
+                        break;
+                }
+                moves[count][0] = getRow()-i;
+                moves[count][1] = getCol()+i;
+                count++;
+            }
+        }
+
+        if(getRow() > 0 && getCol() > 0)
+        {
+            for(int i = 1; i < 7; i++)
+            {                   
+                if(getRow()-i < 0 || getCol()-i < 0)
+                    break;
+                if(board[getRow()-i][getCol()-i] instanceof ChessPiece)
+                {
+                    if(board[getRow()-i][getCol()-i].getIsWhite() != getIsWhite())
+                    {
+                        moves[count][0] = getRow()-i;
+                        moves[count][1] = getCol()-i;
+                        count++;
+                        break;
+                    }
+                    else
+                        break;
+                }
+                moves[count][0] = getRow()-i;
+                moves[count][1] = getCol()-i;
+                count++;
+            }
+        }
+
+        if(getRow()<7)
+        {
+            for(int r = getRow()+1;r<8;r++)
+            {
+                if(board[r][getCol()] instanceof ChessPiece)
+                {
+                    if(board[r][getCol()].getIsWhite()!=getIsWhite())
+                    {
+                        moves[count][0] = r;
+                        moves[count][1] = getCol();
+                        count++;
+                        break;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }          
+            }
+        }
+
+        if(getRow()>0)
+        {
+            for( int r = getRow()-1;r>=0;r--)
+            {
+                if(board[r][getCol()] instanceof ChessPiece)
+                {
+                    if(board[r][getCol()].getIsWhite()!=getIsWhite())
+                    {
+                        moves[count][0] = r;
+                        moves[count][1] = getCol();
+                        count++;
+                        break;
+                    }
+                    else
+                    {
+                        break;
+                    }
+
+                }
+                moves[count][0] = r;
+                moves[count][1] = getCol();
+                count++;       
+            }
+        }
+
+        if(getCol()<7)
+        {
+            for( int c = getCol()+1;c<8;c++)
+            {
+                if(board[getRow()][c] instanceof ChessPiece)
+                {
+                    if(board[getRow()][c].getIsWhite()!=getIsWhite())
+                    {
+                        moves[count][0] = getRow();
+                        moves[count][1] = c;
+                        count++;
+                        break;
+                    }
+                    else
+                    {
+                        break;
+                    }
+
+                }
+                moves[count][0] = getRow();
+                moves[count][1] = c;
+                count++;   
+            }
+        }
+
+        if(getCol()>0)
+        {
+            for( int c = getCol()-1;c>=0;c--)
+            {
+                if(board[getRow()][c] instanceof ChessPiece)
+                {
+                    if(board[getRow()][c].getIsWhite()!=getIsWhite())
+                    {
+                        moves[count][0] = getRow();
+                        moves[count][1] = c;
+                        count++;
+                        break;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                moves[count][0] = getRow();
+                moves[count][1] = c;
+                count++;   
+            }
+        }
         int[][] finaleMoves = new int[count][2];
-        super.allMoves(finaleMoves);
+        for(int i =0; i <finaleMoves.length;i++)
+        {
+            for(int j=0;j<2;j++)
+            { 
+                finaleMoves[i][j] = moves[i][j];
+            }
+        }
         newMoves(finaleMoves);
     }
 
@@ -157,7 +229,7 @@ public class Queen extends ChessPiece
      * @param the chessboard because the value of a piece depend on the position of other pieces.
      * @return the value of the chessPiece
      */
-     public double evaluate(ChessPiece[][] board)
+    public double evaluate(ChessPiece[][] board)
     {
         double value = 9;
         if(getIsWhite())
