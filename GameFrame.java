@@ -1,4 +1,3 @@
-
 /**
  * GUI layout for our chess game
  *
@@ -11,7 +10,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.net.*;
 import java.util.Random;
-
 
 //Essentially a JFrame, except it reacts to button events
 class GameFrame extends JFrame implements ActionListener
@@ -50,11 +48,9 @@ class GameFrame extends JFrame implements ActionListener
     private JPanel BlackContainer = new JPanel(new BorderLayout());
     private JPanel BlackSide = new JPanel(new GridLayout(4,8));
     private JPanel Middle = new JPanel(new FlowLayout());
-    private JLabel WhiteEaten = new JLabel("White Pieces Eaten:", SwingConstants.CENTER);
-    private JLabel BlackEaten = new JLabel("Black Pieces Eaten:", SwingConstants.CENTER);
     private JButton Exit = new JButton("Exit");
     private JButton Help = new JButton("Help");
-    private Font ScoreFont = new Font("Sans-Serif", Font.BOLD, 30);
+    private Font ScoreFont = new Font("Sans-Serif", Font.BOLD, 24);
     private ChessPiece[] DeadBlack = new ChessPiece[32];
     private ChessPiece[] DeadWhite = new ChessPiece[32];
 
@@ -241,6 +237,7 @@ class GameFrame extends JFrame implements ActionListener
         Pane.add(LetterBottom, BorderLayout.SOUTH);
         Pane.add(BoardPanel(), BorderLayout.CENTER);
 
+        ScorePanel(DeadBlack, DeadWhite); //Update score panel
         //frame is implicit
         setSize(1200,800);
         setVisible(true);
@@ -310,13 +307,20 @@ class GameFrame extends JFrame implements ActionListener
                 WhiteSide.add(new JButton(WhitePieces[i].toString()));
         }
 
-        BlackEaten.setFont(ScoreFont);
-        BlackContainer.add(BlackEaten, BorderLayout.NORTH);
+        if(isWhitesTurn)
+        {
+            BlackContainer.add(new JLabel (new ImageIcon("ChessPieceIcons/Dot.png")), BorderLayout.NORTH);
+            WhiteContainer.add(new JLabel(new ImageIcon("ChessPieceIcons/NotDot.png")), BorderLayout.NORTH);
+        }
+        else
+        {
+            WhiteContainer.add(new JLabel(new ImageIcon("ChessPieceIcons/Dot.png")), BorderLayout.NORTH);
+            BlackContainer.add(new JLabel(new ImageIcon("ChessPieceIcons/NotDot.png")), BorderLayout.NORTH);
+        }
+
         BlackContainer.add(BlackSide, BorderLayout.CENTER);
         BlackContainer.setBorder(BorderFactory.createStrokeBorder(new BasicStroke(3.0f)));
 
-        WhiteEaten.setFont(ScoreFont);
-        WhiteContainer.add(WhiteEaten, BorderLayout.NORTH);
         WhiteContainer.add(WhiteSide, BorderLayout.CENTER);
         WhiteContainer.setBorder(BorderFactory.createStrokeBorder(new BasicStroke(3.0f)));
 
@@ -396,13 +400,11 @@ class GameFrame extends JFrame implements ActionListener
                                     oldRow = r;
                                     oldCol = c;
                                     firstClick=false;
-                                    
                                 }
                             }
                         }
                         else
-                        {
-                            
+                        {             
                             if(board.move(board.getBoard()[oldRow][oldCol], r, c))
                             {
                                 if(isWhitesTurn)
@@ -415,7 +417,6 @@ class GameFrame extends JFrame implements ActionListener
                                 }
                                 firstClick = true;
                                 GamePane();
-
                             }
                             firstClick = true;
                         }
