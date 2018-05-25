@@ -1,17 +1,15 @@
-/**
- * GUI layout for our chess game
- *
- * @author Justin Chu
- * @version May 24th, 2018
- */
 //import statements
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.net.*;
 import java.util.Random;
-
-//Essentially a JFrame, except it reacts to button events
+/**
+ * GUI layout for our chess game
+ *
+ * @author Justin Chu
+ * @version May 24th, 2018
+ */
 class GameFrame extends JFrame implements ActionListener
 {
     //instance variables
@@ -385,7 +383,7 @@ class GameFrame extends JFrame implements ActionListener
                 {
                     if(buttons[r][c] == e.getSource())
                     {
-                        if(firstClick)
+                        if(firstClick || board.getBoard()[r][c] instanceof ChessPiece && board.getBoard()[r][c].getIsWhite() == isWhitesTurn)
                         {
                             if(board.getBoard()[r][c] instanceof ChessPiece)
                             {
