@@ -193,7 +193,6 @@ public class Board
             }
             else if(piece instanceof Pawn)
             {
-                System.out.println("pawn");
                 if(col==piece.getCol())
                 {
                     if(row==0)
@@ -232,7 +231,6 @@ public class Board
                             return true;
                         }
                     }
-
                 }
             }
             else
@@ -279,10 +277,9 @@ public class Board
 
     }
 
-    
     public void blackMoves()
     {
-         int[][] whiteMoves = new int[0][2];
+        int[][] whiteMoves = new int[0][2];
         for(int r=0;r<8;r++)
         {
             for(int c=0;c<8;c++)
@@ -299,7 +296,7 @@ public class Board
 
         }
     }
-    
+
     public int[][] add(int[][] a, int[][] b)
     {
         int moves[][] = new int[64][2];
@@ -307,9 +304,9 @@ public class Board
         for(int i=0;i<a.length;i++)
         {
             moves[i] = a[i];
-            counter++;
-            
+            counter++;            
         }
+
         for(int i=0;i<b.length;i++)
         {
             if(moves[i][0]!=b[i][0]&&moves[i][1]!=b[i][1])
@@ -317,17 +314,15 @@ public class Board
                 moves[counter] = b[i];
                 counter++;
             }
-            
+
         }
         int[][] finaleMoves = new int[counter][2];
         for(int i=0;i<finaleMoves.length;i++)
         {
             finaleMoves[i] = moves[i];
-            
-            
+
         }
         return finaleMoves;
     }
-    
 
 }
