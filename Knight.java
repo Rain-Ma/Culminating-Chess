@@ -1,4 +1,10 @@
 import java.util.*;
+/**
+ * 
+ *
+ * @author Justin & Shawn
+ * @version May 24th, 2018
+ */
 public class Knight extends ChessPiece
 {
     /**
@@ -9,44 +15,129 @@ public class Knight extends ChessPiece
         super(row,col,isWhite);
     }
 
-    public void findMove(ChessPiece[][] moves)
+    public void findMove(ChessPiece[][] board)
     {
-        int[][] move = new int[8][2];
+        int[][] moves = new int[8][2];
         int counter = 0;
-        for(int r = 0; r<8; r++)
-        {
-            for(int c = 0; c<8; c++)
+
+        if(getRow()+1 <=7 && getRow()+1 >= 0){
+            if(getCol()+2 <=7 && getCol()+2 >=0)
             {
-                if(moves[r][c] instanceof ChessPiece && moves[getRow()][getCol()].getIsWhite() == moves[r][c].getIsWhite())
-                    break;
-                else if((Math.abs(getRow() - r) == 2 && Math.abs(getCol() - c) == 1) || (Math.abs(getRow() - r) == 1 && Math.abs(getCol() - c) == 2)) 
+                if(board[getRow()+1][getCol()+2] instanceof ChessPiece && 
+                board[getRow()+1][getCol()+2].getIsWhite() != board[getRow()][getCol()].getIsWhite()
+                || board[getRow()+1][getCol()+2] == null)
                 {
-                    move[counter][0] = r;
-                    move[counter][1] = c;  
+                    moves[counter][0] = getRow()+1;
+                    moves[counter][1] = getCol()+2;
                     counter++;
-                }else
-                    break;                
+                }
             }
-            if(counter>8)
-                break;
+            if(getCol()-2 <=7 && getCol()-2 >=0)
+            {
+                if(board[getRow()+1][getCol()-2] instanceof ChessPiece && 
+                board[getRow()+1][getCol()-2].getIsWhite() != board[getRow()][getCol()].getIsWhite()
+                || board[getRow()+1][getCol()-2] == null)
+                {
+                    moves[counter][0] = getRow()+1;
+                    moves[counter][1] = getCol()-2;
+                    counter++;
+                }
+            }
         }
+
+        if(getRow()-1 <=7 && getRow()-1 >= 0){
+            if(getCol()+2 <=7 && getCol()+2 >=0)
+            {
+                if(board[getRow()-1][getCol()+2] instanceof ChessPiece && 
+                board[getRow()-1][getCol()+2].getIsWhite() != board[getRow()][getCol()].getIsWhite()
+                || board[getRow()-1][getCol()+2] == null)
+                {
+                    moves[counter][0] = getRow()-1;
+                    moves[counter][1] = getCol()+2;
+                    counter++;
+                }
+            }
+            if(getCol()-2 <=7 && getCol()-2 >=0)
+            {
+                if((board[getRow()-1][getCol()-2] instanceof ChessPiece && 
+                    board[getRow()-1][getCol()-2].getIsWhite() != board[getRow()][getCol()].getIsWhite())
+                || board[getRow()-1][getCol()-2] == null)
+                {
+                    moves[counter][0] = getRow()-1;
+                    moves[counter][1] = getCol()-2;
+                    counter++;
+                }
+            }
+        }
+
+        if(getRow()+2 <=7 && getRow()+2 >= 0){
+            if(getCol()+1 <=7 && getCol()+1 >=0)
+            {
+                if(board[getRow()+2][getCol()+1] instanceof ChessPiece && 
+                board[getRow()+2][getCol()+1].getIsWhite() != board[getRow()][getCol()].getIsWhite()
+                || board[getRow()+2][getCol()+1] == null)
+                {
+                    moves[counter][0] = getRow()+2;
+                    moves[counter][1] = getCol()+1;
+                    counter++;
+                }
+            }
+            if(getCol()-1 <=7 && getCol()-1 >=0)
+            {
+                if((board[getRow()+2][getCol()-1] instanceof ChessPiece && 
+                    board[getRow()+2][getCol()-1].getIsWhite() != board[getRow()][getCol()].getIsWhite())
+                || board[getRow()+2][getCol()-1] == null)
+                {
+                    moves[counter][0] = getRow()+2;
+                    moves[counter][1] = getCol()-1;
+                    counter++;
+                }
+            }
+        }
+
+        if(getRow()-2 <=7 && getRow()-2 >= 0){
+            if(getCol()+1 <=7 && getCol()+1 >=0)
+            {
+                if(board[getRow()-2][getCol()+1] instanceof ChessPiece && 
+                board[getRow()-2][getCol()+1].getIsWhite() != board[getRow()][getCol()].getIsWhite()
+                || board[getRow()-2][getCol()+1] == null)
+                {
+                    moves[counter][0] = getRow()-2;
+                    moves[counter][1] = getCol()+1;
+                    counter++;
+                }
+            }
+            if(getCol()-1 <=7 && getCol()-1 >=0)
+            {
+                if(board[getRow()-2][getCol()-1] instanceof ChessPiece && 
+                board[getRow()-2][getCol()-1].getIsWhite() != board[getRow()][getCol()].getIsWhite()
+                || board[getRow()-2][getCol()-1] == null)
+                {
+                    moves[counter][0] = getRow()-2;
+                    moves[counter][1] = getCol()-1;
+                    counter++;
+                }
+            }
+        }
+
         int[][] finaleMoves = new int[counter][2];
-        super.allMoves(finaleMoves);
+        for(int i =0; i <finaleMoves.length;i++)
+        {
+            for(int j=0;j<2;j++)
+            { 
+                finaleMoves[i][j] = moves[i][j];
+            }
+        }
         newMoves(finaleMoves);
     }
 
-    public void newMoves(ChessPiece[][] moves)
-    {
-        
-    }
-    
-     /**
+    /**
      * @param the chessboard because the value of a piece depend on the position of other pieces.
      * @return the value of the chessPiece
      */
     public double evaluate(ChessPiece[][] board)
     {
-        double value =3;
+        double value = 3;
         if(getIsWhite())
         {
             return value;
@@ -56,7 +147,7 @@ public class Knight extends ChessPiece
             return value*-1;
         }
     }
-    
+
     public String toString()
     {
         if(getIsWhite())
