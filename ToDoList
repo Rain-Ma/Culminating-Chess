@@ -1,7 +1,7 @@
 Type 'DONE' besides completed items in the list
 1. Fix pawn glitches
 2. Add end-game methods (check, checkmate, concede)
-3. Implement En Passant in pawn class
+3. Implement En Passant in pawn class (done)
 4. Finish king class
 5. Add pieces eaten methods to GUI and board
 6. Maybe flip board when changing turns
