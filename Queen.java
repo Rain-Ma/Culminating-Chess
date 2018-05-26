@@ -132,7 +132,10 @@ public class Queen extends ChessPiece
                     {
                         break;
                     }
-                }          
+                }         
+                moves[count][0] = r;
+                moves[count][1] = getCol();
+                count++; 
             }
         }
 
