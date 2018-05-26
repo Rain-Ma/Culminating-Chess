@@ -23,7 +23,7 @@ public  class Rook extends ChessPiece
         int count = 0;
         if(getRow()<7)
         {
-            for( int r = getRow()+1;r<8;r++)
+            for(int r = getRow()+1;r<8;r++)
             {
                 if(board[r][getCol()] instanceof ChessPiece)
                 {
@@ -38,14 +38,13 @@ public  class Rook extends ChessPiece
                     {
                         break;
                     }
-
-                }
+                }    
                 moves[count][0] = r;
                 moves[count][1] = getCol();
-                count++;           
+                count++;
             }
         }
-        
+
         if(getRow()>0)
         {
             for( int r = getRow()-1;r>=0;r--)
@@ -63,13 +62,13 @@ public  class Rook extends ChessPiece
                     {
                         break;
                     }
-
                 }
                 moves[count][0] = r;
                 moves[count][1] = getCol();
                 count++;       
             }
         }
+
         if(getCol()<7)
         {
             for( int c = getCol()+1;c<8;c++)
@@ -94,6 +93,7 @@ public  class Rook extends ChessPiece
                 count++;   
             }
         }
+
         if(getCol()>0)
         {
             for( int c = getCol()-1;c>=0;c--)
@@ -126,7 +126,6 @@ public  class Rook extends ChessPiece
             }
         }
         newMoves(finaleMoves);
-
     }
 
     public boolean hasMoved()
