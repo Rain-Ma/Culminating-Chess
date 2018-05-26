@@ -39,6 +39,7 @@ class GameFrame extends JFrame implements ActionListener
     private JPanel LetterPane = new JPanel(new GridLayout(1,8));
     private JPanel NumberPane = new JPanel(new GridLayout(8,1));
     private Font Labeling = new Font("Monospaced", Font.BOLD, 24);
+    private int choice = 1;
 
     private JPanel Score = new JPanel(new GridLayout(3,1));
     private JPanel WhiteContainer = new JPanel(new BorderLayout());
@@ -60,12 +61,15 @@ class GameFrame extends JFrame implements ActionListener
     private int newCol;
     private boolean firstClick = true;
     private boolean isWhitesTurn = true;
+    private boolean winner = false;
 
     private Integer top = new Integer(0); //overlay layers
     private Integer middle = new Integer(0);
     private Integer bottom = new Integer(0);
 
-    private JPanel PromotePane = new JPanel();
+    private JLabel PromoteTitle = new JLabel("Promote Pawn");
+    private JPanel PiecesPanel = new JPanel(new GridLayout(1,4));
+    private JButton Promote = new JButton("Promote");
 
     private JPanel GameOverPanel = new JPanel();
 
@@ -94,21 +98,18 @@ class GameFrame extends JFrame implements ActionListener
 
     public void startGame()
     {
-        newGame();
+        board = new Board();
+        board.SetGame(); //sets up the chess board
+        GamePane();
 
         LayeredPane = getLayeredPane(); //new layered pane
         LayeredPane.setVisible(true);
 
+        choice = 1;
+
         LayeredPane.add(MenuPanel(), top, 0);
         LayeredPane.add(Pane, middle, 1);
-        LayeredPane.add(ScorePanel(DeadBlack, DeadWhite), middle, 2);
-    }
-
-    public void newGame()
-    {
-        board = new Board();
-        board.SetGame(); //sets up the chess board
-        GamePane();
+        LayeredPane.add(ScorePanel(), middle, 2);
     }
 
     public void start960()
@@ -223,7 +224,7 @@ class GameFrame extends JFrame implements ActionListener
             numbers.setFont(Labeling);
             NumberPane.add(numbers);
 
-            String letter = "    " + Character.toString(Character.toUpperCase((char)(i+97)));
+            String letter = "   " + Character.toString(Character.toUpperCase((char)(i+97)));
             JLabel letters = new JLabel(letter);
             letters.setFont(Labeling);
             LetterPane.add(letters);
@@ -238,7 +239,7 @@ class GameFrame extends JFrame implements ActionListener
             numbers.setFont(Labeling);
             NumberRight.add(numbers);
 
-            String letter = "    " + Character.toString(Character.toUpperCase((char)(i+97)));
+            String letter = "   " + Character.toString(Character.toUpperCase((char)(i+97)));
             JLabel letters = new JLabel(letter);
             letters.setFont(Labeling);
             LetterBottom.add(letters);
@@ -250,8 +251,8 @@ class GameFrame extends JFrame implements ActionListener
         Pane.add(LetterBottom, BorderLayout.SOUTH);
         Pane.add(BoardPanel(), BorderLayout.CENTER);
 
-        ScorePanel(DeadBlack, DeadWhite); //Update score panel
-        //frame is implicit
+        ScorePanel(); //Update score panel
+
         setSize(1200,800);
         setVisible(true);
         setResizable(false);
@@ -297,45 +298,18 @@ class GameFrame extends JFrame implements ActionListener
         return MainMenu;
     }
 
-    public JPanel ScorePanel(ChessPiece[] BlackPieces, ChessPiece[] WhitePieces)
+    /**
+     * Side panel to the right of board pane panel - shows options, pieces eaten, promotion, winner
+     *        if 1 - show black and white pieces eaten; if 2 - show white promotion panel; 
+     *        if 3 - show black promotion panel; if 4 - White has won the game; if 5 - Black has won the game
+     */
+    public JPanel ScorePanel()
     {
         Score.removeAll();
-        BlackContainer.removeAll();
-        WhiteContainer.removeAll();
         Middle.removeAll();
 
         Score.setBounds(800, 0, 390, 760);
         Score.setBorder(BorderFactory.createStrokeBorder(new BasicStroke(2.0f)));
-
-        for(int i = 0; i < 32; i++)
-        {
-            if(BlackPieces[i] == null)
-                break;
-            else
-                BlackSide.add(new JButton(BlackPieces[i].toString()));
-
-            if(WhitePieces[i] == null)
-                break;
-            else
-                WhiteSide.add(new JButton(WhitePieces[i].toString()));
-        }
-
-        if(isWhitesTurn)
-        {
-            BlackContainer.add(new JLabel (new ImageIcon("ChessPieceIcons/Dot.png")), BorderLayout.NORTH);
-            WhiteContainer.add(new JLabel(new ImageIcon("ChessPieceIcons/NotDot.png")), BorderLayout.NORTH);
-        }
-        else
-        {
-            WhiteContainer.add(new JLabel(new ImageIcon("ChessPieceIcons/Dot.png")), BorderLayout.NORTH);
-            BlackContainer.add(new JLabel(new ImageIcon("ChessPieceIcons/NotDot.png")), BorderLayout.NORTH);
-        }
-
-        BlackContainer.add(BlackSide, BorderLayout.CENTER);
-        BlackContainer.setBorder(BorderFactory.createStrokeBorder(new BasicStroke(3.0f)));
-
-        WhiteContainer.add(WhiteSide, BorderLayout.CENTER);
-        WhiteContainer.setBorder(BorderFactory.createStrokeBorder(new BasicStroke(3.0f)));
 
         WhiteResign.addActionListener(this);
         BlackResign.addActionListener(this);
@@ -370,24 +344,134 @@ class GameFrame extends JFrame implements ActionListener
         Middle.add(Help);
         Middle.add(Exit);
         Middle.setBorder(BorderFactory.createStrokeBorder(new BasicStroke(3.0f)));
+        if(choice == 1)
+        {
+            Score.add(WhiteEatenPane(DeadWhite));
+            Score.add(Middle);
+            Score.add(BlackEatenPane(DeadBlack));
+        }
+        else if(choice == 2)
+        {
+            Score.add(PromotePanel());
+            Score.add(Middle);
+            Score.add(BlackEatenPane(DeadBlack));
+        }
+        else if(choice == 3)
+        {
+            Score.add(WhiteEatenPane(DeadWhite));
+            Score.add(Middle);
+            Score.add(PromotePanel());
+        }
+        else if(choice == 4)
+        {
+            Score.add(WhiteEatenPane(DeadWhite));
+            Score.add(Middle);
+            Score.add(PromotePanel());
+        }
+        else if(choice == 5)
+        {
+            Score.add(WhiteEatenPane(DeadWhite));
+            Score.add(Middle);
+            Score.add(PromotePanel());
+        }
 
-        Score.add(WhiteContainer);
-        Score.add(Middle);
-        Score.add(BlackContainer);
-
+        if(isWhitesTurn)
+        {
+            BlackContainer.add(new JLabel (new ImageIcon("ChessPieceIcons/Dot.png")), BorderLayout.NORTH);
+            WhiteContainer.add(new JLabel(new ImageIcon("ChessPieceIcons/NotDot.png")), BorderLayout.NORTH);
+        }
+        else
+        {
+            WhiteContainer.add(new JLabel(new ImageIcon("ChessPieceIcons/Dot.png")), BorderLayout.NORTH);
+            BlackContainer.add(new JLabel(new ImageIcon("ChessPieceIcons/NotDot.png")), BorderLayout.NORTH);
+        }
         return Score;
     }
 
-    public JPanel Promote()
+    public JPanel WhiteEatenPane(ChessPiece[] WhitePieces)
     {
-        PromotePane.setBounds(986, 0, 505, 958);
-        PromotePane.setBorder(BorderFactory.createStrokeBorder(new BasicStroke(4.0f)));
-        return PromotePane;
+        WhiteContainer.removeAll();
+
+        WhiteContainer.add(WhiteSide, BorderLayout.CENTER);
+        WhiteContainer.setBorder(BorderFactory.createStrokeBorder(new BasicStroke(3.0f)));
+
+        for(int i = 0; i < 32; i++)
+        {
+            if(WhitePieces[i] == null)
+                break;
+            else
+                WhiteSide.add(new JButton(WhitePieces[i].toString()));
+        }
+        return WhiteContainer;
     }
 
-    public JPanel End()
+    public JPanel BlackEatenPane(ChessPiece[] BlackPieces)
     {
-        return GameOverPanel;
+        BlackContainer.removeAll();
+
+        BlackContainer.add(BlackSide, BorderLayout.CENTER);
+        BlackContainer.setBorder(BorderFactory.createStrokeBorder(new BasicStroke(3.0f)));
+
+        for(int i = 0; i < 32; i++)
+        {
+            if(BlackPieces[i] == null)
+                break;
+            else
+                BlackSide.add(new JButton(BlackPieces[i].toString()));
+        }
+        return BlackContainer;
+    }
+
+    public JPanel PromotePanel()
+    {       
+        PiecesPanel.removeAll();
+        if(isWhitesTurn)
+        {
+            WhiteContainer.removeAll();
+
+            PiecesPanel.add(new JButton(new ImageIcon("ChessPieceIcons/WhiteQueen.png")));
+            PiecesPanel.add(new JButton(new ImageIcon("ChessPieceIcons/WhiteRook.png")));
+            PiecesPanel.add(new JButton(new ImageIcon("ChessPieceIcons/WhiteBishop.png")));
+            PiecesPanel.add(new JButton(new ImageIcon("ChessPieceIcons/WhiteKnight.png")));
+
+            WhiteContainer.add(PromoteTitle, BorderLayout.NORTH, SwingConstants.CENTER);
+            WhiteContainer.add(PiecesPanel, BorderLayout.CENTER);
+            WhiteContainer.add(Promote, BorderLayout.SOUTH, SwingConstants.CENTER);
+
+            return WhiteContainer;
+        }
+        else
+        {
+            BlackContainer.removeAll();
+
+            PiecesPanel.add(new JButton(new ImageIcon("ChessPieceIcons/BlackQueen.png")));
+            PiecesPanel.add(new JButton(new ImageIcon("ChessPieceIcons/BlackRook.png")));
+            PiecesPanel.add(new JButton(new ImageIcon("ChessPieceIcons/BlackBishop.png")));
+            PiecesPanel.add(new JButton(new ImageIcon("ChessPieceIcons/BlackKnight.png")));
+
+            BlackContainer.add(PromoteTitle, BorderLayout.NORTH, SwingConstants.CENTER);
+            BlackContainer.add(PiecesPanel, BorderLayout.CENTER);
+            BlackContainer.add(Promote, BorderLayout.SOUTH, SwingConstants.CENTER);
+
+            return BlackContainer;
+        }
+    }
+
+    public JPanel End(boolean whiteWins)
+    {
+        GameOverPanel.removeAll();
+        if(whiteWins)
+        {
+            BlackContainer.removeAll();
+
+            GameOverPanel.add(new JLabel("White Wins"));
+            BlackContainer.add(GameOverPanel);
+            return BlackContainer;
+        }
+        else
+        {
+            return WhiteContainer;
+        }
     }
 
     /**
@@ -395,76 +479,113 @@ class GameFrame extends JFrame implements ActionListener
      */
     public void actionPerformed (ActionEvent e)
     {
-        if(e.getSource() instanceof JButton)
+        if(winner == false)
         {
-            for(int r = 0; r < 8; r++)
+            if(e.getSource() instanceof JButton)
             {
-                for(int c = 0; c < 8; c++)
+                for(int r = 0; r < 8; r++)
                 {
-                    if(buttons[r][c] == e.getSource())
+                    for(int c = 0; c < 8; c++)
                     {
-                        if(firstClick || board.getBoard()[r][c] instanceof ChessPiece && board.getBoard()[r][c].getIsWhite() == isWhitesTurn)
+                        if(buttons[r][c] == e.getSource())
                         {
-                            if(board.getBoard()[r][c] instanceof ChessPiece)
+                            if(firstClick || board.getBoard()[r][c] instanceof ChessPiece && board.getBoard()[r][c].getIsWhite() == isWhitesTurn)
                             {
-                                if(isWhitesTurn&&board.getBoard()[r][c].getIsWhite())
+                                if(board.getBoard()[r][c] instanceof ChessPiece)
                                 {
-                                    oldRow = r;
-                                    oldCol = c;
-                                    firstClick=false;
-                                }
-                                else if(!isWhitesTurn&&!board.getBoard()[r][c].getIsWhite())
-                                {
-                                    oldRow = r;
-                                    oldCol = c;
-                                    firstClick=false;
+                                    if(isWhitesTurn&&board.getBoard()[r][c].getIsWhite())
+                                    {
+                                        oldRow = r;
+                                        oldCol = c;
+                                        firstClick=false;
+                                    }
+                                    else if(!isWhitesTurn&&!board.getBoard()[r][c].getIsWhite())
+                                    {
+                                        oldRow = r;
+                                        oldCol = c;
+                                        firstClick=false;
+                                    }
                                 }
                             }
-                        }
-                        else
-                        {             
-                            if(board.move(board.getBoard()[oldRow][oldCol], r, c))
-                            {
-                                if(isWhitesTurn)
+                            else
+                            {             
+                                if(board.move(board.getBoard()[oldRow][oldCol], r, c))
                                 {
-                                    isWhitesTurn = false;
-                                }
-                                else
-                                {
-                                    isWhitesTurn = true;
+                                    if(board.getBoard()[r][c] instanceof Pawn)
+                                    {
+                                        if(board.getBoard()[r][c].getIsWhite() && board.getBoard()[r][c].getRow() == 0)
+                                        {
+                                            choice = 2;
+                                            LayeredPane.removeAll();
+                                            LayeredPane.add(Pane, middle, 0);
+                                            LayeredPane.add(ScorePanel(), middle, 1);   
+                                        }
+                                        else if(!board.getBoard()[r][c].getIsWhite() && board.getBoard()[r][c].getRow() == 7)
+                                        {
+                                            choice = 3;
+                                            LayeredPane.removeAll();
+                                            LayeredPane.add(Pane, top, 0);
+                                            LayeredPane.add(ScorePanel(), top, 1);   
+                                        }
+                                    }
+
+                                    if(isWhitesTurn)
+                                    {
+                                        isWhitesTurn = false;
+                                    }
+                                    else
+                                    {
+                                        isWhitesTurn = true;
+                                    }
+                                    firstClick = true;
+                                    GamePane();
                                 }
                                 firstClick = true;
-                                GamePane();
                             }
-                            firstClick = true;
                         }
                     }
                 }
             }
-        }
 
-        if(e.getActionCommand().equals("Exit"))
-        {
-            LayeredPane.removeAll();
-            LayeredPane.add(MenuPanel(), top, 0);
+            if(e.getActionCommand().equals("Exit"))
+            {
+                LayeredPane.removeAll();
+                LayeredPane.add(MenuPanel(), top, 0);
+            }
 
-            LayeredPane.add(Pane, middle, 1);
-            LayeredPane.add(ScorePanel(DeadBlack, DeadWhite), bottom , 2); 
-        }
+            if(e.getActionCommand().equals("New Game"))
+            {
+                choice = 1;
+                isWhitesTurn = true;
+                board = new Board();
+                board.SetGame(); //sets up the chess board
+                GamePane();
+                LayeredPane.removeAll();
+                LayeredPane.add(Pane, top, 0);
+                LayeredPane.add(ScorePanel(), top, 1);   
+            }
 
-        if(e.getActionCommand().equals("New Game"))
-        {
-            isWhitesTurn = true;
-            newGame();
-            LayeredPane.add(Pane, top, 0);
-            LayeredPane.add(ScorePanel(DeadBlack, DeadWhite), top, 1);   
-        }
+            if(e.getActionCommand().equals("Chess960"))
+            {
+                choice = 1;
+                LayeredPane.add(Pane, top, 0);
+                LayeredPane.add(ScorePanel(), top, 1);   
+                start960();
+            }
 
-        if(e.getActionCommand().equals("Chess960"))
-        {
-            LayeredPane.add(Pane, top, 0);
-            LayeredPane.add(ScorePanel(DeadBlack, DeadWhite), top, 1);   
-            start960();
+            if(e.getActionCommand().equals("White Resigns"))
+            {
+                winner = true;
+                choice = 5;
+                End(false);
+            }
+
+            if(e.getActionCommand().equals("Black Resigns"))
+            {
+                winner = true;
+                choice = 4;
+                End(true);
+            }
         }
     }
 
