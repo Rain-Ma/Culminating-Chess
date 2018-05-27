@@ -356,8 +356,6 @@ class GameFrame extends JFrame implements ActionListener
     public JPanel ScorePanel()
     {
         Score.removeAll();
-        BlackContainer.removeAll();
-        WhiteContainer.removeAll();
 
         if(choice == 1)
         {
@@ -367,6 +365,8 @@ class GameFrame extends JFrame implements ActionListener
         }
         else if(choice == 2)
         {
+        BlackContainer.removeAll();
+        WhiteContainer.removeAll();
             PiecesPanel.removeAll();
             PiecesPanel.add(WhiteQueen);
             PiecesPanel.add(WhiteRook);
@@ -382,6 +382,8 @@ class GameFrame extends JFrame implements ActionListener
         }
         else if(choice == 3)
         {
+        BlackContainer.removeAll();
+        WhiteContainer.removeAll();
             PiecesPanel.removeAll();
             PiecesPanel.add(BlackQueen);
             PiecesPanel.add(BlackRook);
@@ -397,6 +399,8 @@ class GameFrame extends JFrame implements ActionListener
         }
         else if(choice == 4)
         {
+        BlackContainer.removeAll();
+        WhiteContainer.removeAll();
             JLabel WhiteWin = new JLabel("White Wins!");
             WhiteWin.setFont(WinFont);
             JLabel BlackLose = new JLabel("Black Loses!");
@@ -413,6 +417,8 @@ class GameFrame extends JFrame implements ActionListener
         }
         else if(choice == 5)
         {
+        BlackContainer.removeAll();
+        WhiteContainer.removeAll();
             JLabel BlackWin = new JLabel("Black Wins!");
             BlackWin.setFont(WinFont);
             JLabel WhiteLose = new JLabel("White Loses!");
@@ -429,6 +435,8 @@ class GameFrame extends JFrame implements ActionListener
         }
         else if(choice == 6)
         {
+        BlackContainer.removeAll();
+        WhiteContainer.removeAll();
             JLabel GameDraw = new JLabel("It's a draw!"); //to be displayed in white container`
             GameDraw.setFont(WinFont);
             JLabel GameDraw1 = new JLabel("It's a draw!"); //to be displayed in black container
