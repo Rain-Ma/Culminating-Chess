@@ -1,4 +1,7 @@
-/**
+
+
+import java.util.Arrays;
+/**   
  * Write a description of class board here.
  *
  * @author Rain Ma, Justin Chu
@@ -87,126 +90,47 @@ public class Board
         piece.findMove(GameBoard);
         if(piece.attacks(row,col))
         {
-            if(piece instanceof King)
+            if(isLegal(piece,row,col))
             {
-                King king = (King)piece;
-                if(king.getIsWhite())
+                if(piece instanceof King)
                 {
-                    /*
-                    if(!king.hasMoved())
-                    {
-                    if(col==2)
-                    {
-                    GameBoard[row][col] = piece;
-                    GameBoard[piece.getRow()][piece.getCol()] = null;
-                    piece.moveCol(col);
-                    GameBoard[7][3] = GameBoard[7][0];
-                    GameBoard[7][0] = null;
-                    GameBoard[7][3].moveCol(3);
-                    return true;
-                    }
-                    else if(col==6)
-                    {
-                    GameBoard[row][col] = piece;
-                    GameBoard[piece.getRow()][piece.getCol()] = null;
-                    piece.moveCol(col);
-                    GameBoard[7][5] = GameBoard[7][7];
-                    GameBoard[7][7] = null;
-                    GameBoard[7][5].moveCol(5);
-                    return true;
-                    }
-                    else
-                    {
-                    king.setHasMoved(true);
-                    GameBoard[row][col] = piece;
-                    GameBoard[piece.getRow()][piece.getCol()] = null;
-                    piece.moveRow(row);
-                    piece.moveCol(col);
-                    return true;
-                    }
-                    }
-                    else 
-                    {
-                    GameBoard[row][col] = piece;
-                    GameBoard[piece.getRow()][piece.getCol()] = null;
-                    piece.moveRow(row);
-                    piece.moveCol(col);
-                    return true;
-                    }
-                     */
-                    GameBoard[row][col] = piece;
-                    GameBoard[piece.getRow()][piece.getCol()] = null;
-                    piece.moveRow(row);
-                    piece.moveCol(col);
-                    return true;
-                }
-                else
-                {
-                    /*
-                    if(!king.hasMoved())
-                    {
-                    if(col==2)
-                    {
-                    GameBoard[row][col] = piece;
-                    GameBoard[piece.getRow()][piece.getCol()] = null;
-                    piece.moveCol(col);
-                    GameBoard[0][3] = GameBoard[0][0];
-                    GameBoard[0][0] = null;
-                    GameBoard[0][3].moveCol(3);
-                    return true;
-                    }
-                    else if(col==6)
-                    {
-                    GameBoard[row][col] = piece;
-                    GameBoard[piece.getRow()][piece.getCol()] = null;
-                    piece.moveCol(col);
-                    GameBoard[0][5] = GameBoard[0][7];
-                    GameBoard[0][7] = null;
-                    GameBoard[0][5].moveCol(5);
-                    return true;
-                    }
-                    else
-                    {
-                    king.setHasMoved(true);
-                    GameBoard[row][col] = piece;
-                    GameBoard[piece.getRow()][piece.getCol()] = null;
-                    piece.moveRow(row);
-                    piece.moveCol(col);
-                    return true;
-                    }
-                    }
-                    else 
-                    {
-                    GameBoard[row][col] = piece;
-                    GameBoard[piece.getRow()][piece.getCol()] = null;
-                    piece.moveRow(row);
-                    piece.moveCol(col);
-                    return true;
-                    }
-                     */
-                    GameBoard[row][col] = piece;
-                    GameBoard[piece.getRow()][piece.getCol()] = null;
-                    piece.moveRow(row);
-                    piece.moveCol(col);
-                    return true;
-                }
-            }
-            else if(piece instanceof Pawn)
-            {
-                Pawn pawn = (Pawn)piece;
-                if(piece.getCol()!=col)
-                {
-                    if(GameBoard[row][col]==null)
-                    {
+                    King king = (King)piece;
 
-                        GameBoard[row][col] = piece;
-                        GameBoard[piece.getRow()][col] = null;
-                        GameBoard[piece.getRow()][piece.getCol()] = null;
-                        piece.moveRow(row);
-                        piece.moveCol(col);
-                        return true;
+                    if(!king.hasMoved())
+                    {
+                        if(col==2)
+                        {
+                            GameBoard[row][col] = piece;
+                            GameBoard[piece.getRow()][piece.getCol()] = null;
+                            piece.moveCol(col);
+                            GameBoard[king.getRow()][3] = GameBoard[king.getRow()][0];
+                            GameBoard[king.getRow()][0] = null;
+                            GameBoard[king.getRow()][3].moveCol(3);
+                            king.setHasMoved(true);
+                            return true;
+                        }
+                        else if(col==6)
+                        {
+                            GameBoard[row][col] = piece;
+                            GameBoard[piece.getRow()][piece.getCol()] = null;
+                            piece.moveCol(col);
+                            GameBoard[king.getRow()][5] = GameBoard[king.getRow()][7];
+                            GameBoard[king.getRow()][7] = null;
+                            GameBoard[king.getRow()][5].moveCol(5);
+                            king.setHasMoved(true);
+                            return true;
+                        }
+                        else
+                        {
+                            king.setHasMoved(true);
+                            GameBoard[row][col] = piece;
+                            GameBoard[piece.getRow()][piece.getCol()] = null;
+                            piece.moveRow(row);
+                            piece.moveCol(col);
+                            return true;
+                        }
                     }
-                    else
+                    else 
                     {
                         GameBoard[row][col] = piece;
                         GameBoard[piece.getRow()][piece.getCol()] = null;
@@ -214,44 +138,75 @@ public class Board
                         piece.moveCol(col);
                         return true;
                     }
+
                 }
-                else if(Math.abs(pawn.getRow()-row)==2)
+
+                else if(piece instanceof Pawn)
                 {
+                    Pawn pawn = (Pawn)piece;
+                    if(piece.getCol()!=col)
+                    {
+                        if(GameBoard[row][col]==null)
+                        {
+
+                            GameBoard[row][col] = piece;
+                            GameBoard[piece.getRow()][col] = null;
+                            GameBoard[piece.getRow()][piece.getCol()] = null;
+                            piece.moveRow(row);
+                            piece.moveCol(col);
+                            return true;
+                        }
+                        else
+                        {
+                            GameBoard[row][col] = piece;
+                            GameBoard[piece.getRow()][piece.getCol()] = null;
+                            piece.moveRow(row);
+                            piece.moveCol(col);
+                            return true;
+                        }
+                    }
+                    else if(Math.abs(pawn.getRow()-row)==2)
+                    {
+                        GameBoard[row][col] = piece;
+                        GameBoard[piece.getRow()][piece.getCol()] = null;
+                        piece.moveRow(row);
+                        piece.moveCol(col);
+                        pawn.setEnPassant(true);
+                        return true;
+                    }
+
+                    else
+                    {
+                        GameBoard[row][col] = piece;
+                        GameBoard[piece.getRow()][piece.getCol()] = null;
+                        piece.moveRow(row);
+                        piece.moveCol(col);
+                        pawn.setEnPassant(false);
+                        return true;
+                    }
+
+                }
+                else 
+                {
+                    if(piece instanceof Rook)
+                    {
+                        Rook rook = (Rook)piece;
+                        rook.setMoved(true);
+                    }
+                    System.out.println("ok");
                     GameBoard[row][col] = piece;
                     GameBoard[piece.getRow()][piece.getCol()] = null;
                     piece.moveRow(row);
                     piece.moveCol(col);
-                    pawn.setEnPassant(true);
                     return true;
                 }
-
-                else
-                {
-                    GameBoard[row][col] = piece;
-                    GameBoard[piece.getRow()][piece.getCol()] = null;
-                    piece.moveRow(row);
-                    piece.moveCol(col);
-                    pawn.setEnPassant(false);
-                    return true;
-                }
-
             }
-            else
-            {
-                GameBoard[row][col] = piece;
-                GameBoard[piece.getRow()][piece.getCol()] = null;
-                piece.moveRow(row);
-                piece.moveCol(col);
-                return true;
-            }
-
         }
-        
 
         return false;
     }
 
-    public void whiteMoves()
+    public int[][] whiteMoves()
     {
         int[][] whiteMoves = new int[0][2];
         for(int r=0;r<8;r++)
@@ -262,6 +217,7 @@ public class Board
                 {
                     if(GameBoard[r][c].getIsWhite())
                     {
+                        GameBoard[r][c].findMove(GameBoard);
                         whiteMoves = add(whiteMoves,GameBoard[r][c].getMoves());
                     }
                 }
@@ -269,10 +225,32 @@ public class Board
             }
 
         }
-
+        return whiteMoves;
     }
 
-    public void blackMoves()
+    public int[][] whiteMoves(ChessPiece[][] GameBoard)
+    {
+        int[][] whiteMoves = new int[0][2];
+        for(int r=0;r<8;r++)
+        {
+            for(int c=0;c<8;c++)
+            {
+                if(GameBoard[r][c] !=null)
+                {
+                    if(GameBoard[r][c].getIsWhite())
+                    {
+                        GameBoard[r][c].findMove(GameBoard);
+                        whiteMoves = add(whiteMoves,GameBoard[r][c].getMoves());
+                    }
+                }
+
+            }
+
+        }
+        return whiteMoves;
+    }
+
+    public int[][] blackMoves()
     {
         int[][] whiteMoves = new int[0][2];
         for(int r=0;r<8;r++)
@@ -283,6 +261,7 @@ public class Board
                 {
                     if(!GameBoard[r][c].getIsWhite())
                     {
+                        GameBoard[r][c].findMove(GameBoard);
                         whiteMoves = add(whiteMoves,GameBoard[r][c].getMoves());
                     }
                 }
@@ -290,6 +269,29 @@ public class Board
             }
 
         }
+        return whiteMoves;
+    }
+
+    public int[][] blackMoves(ChessPiece[][] GameBoard)
+    {
+        int[][] whiteMoves = new int[0][2];
+        for(int r=0;r<8;r++)
+        {
+            for(int c=0;c<8;c++)
+            {
+                if(GameBoard[r][c] !=null)
+                {
+                    if(!GameBoard[r][c].getIsWhite())
+                    {
+                        GameBoard[r][c].findMove(GameBoard);
+                        whiteMoves = add(whiteMoves,GameBoard[r][c].getMoves());
+                    }
+                }
+
+            }
+
+        }
+        return whiteMoves;
     }
 
     public int[][] add(int[][] a, int[][] b)
@@ -299,25 +301,83 @@ public class Board
         for(int i=0;i<a.length;i++)
         {
             moves[i] = a[i];
-            counter++;            
-        }
+            counter++;
 
-        for(int i=0;i<b.length;i++)
+        }
+        if(b!=null)
         {
-            if(moves[i][0]!=b[i][0]&&moves[i][1]!=b[i][1])
+            for(int i=0;i<b.length;i++)
             {
-                moves[counter] = b[i];
-                counter++;
+                if(!has(moves,b[i]))
+                {
+                    moves[counter] = b[i];
+                    counter++;
+                }
+
             }
-
         }
-        int[][] finaleMoves = new int[counter][2];
-        for(int i=0;i<finaleMoves.length;i++)
-        {
-            finaleMoves[i] = moves[i];
+        int[][] finaleMoves = Arrays.copyOf(moves,counter);
 
-        }
         return finaleMoves;
     }
 
+    public boolean isLegal(ChessPiece piece, int row, int col)
+    {
+        King king = new King();
+        ChessPiece[][] board = new ChessPiece[8][8];
+        for(int i =0;i<8;i++)
+        {
+
+            board[i] = GameBoard[i].clone();
+
+        }
+        ChessPiece Piece = board[piece.getRow()][piece.getCol()];
+        board[row][col] = Piece;
+        board[Piece.getRow()][Piece.getCol()] = null;
+
+        for(int r =0;r<8;r++)
+        {
+            for(int c=0;c<8;c++)
+            {
+                if(board[r][c]!=null)
+                {
+                    if(board[r][c] instanceof King&& board[r][c].getIsWhite()==Piece.getIsWhite())
+                    {
+                        king = (King)board[r][c];
+                        break;
+                    }
+                }
+            } 
+        }
+        if(piece.getIsWhite())
+        {
+            king.updateOpponentMove(blackMoves(board));
+        }
+        else
+        {
+            king.updateOpponentMove(whiteMoves(board));
+        }
+        if(king.checked())
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+
+    }
+
+    public boolean has(int[][] a,int[] b)
+    {
+        for(int i=0;i<a.length;i++)
+        {
+            if(a[i].equals(b))
+            {
+                return true;
+            }
+
+        }
+        return false;
+    }
 }
