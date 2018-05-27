@@ -1,6 +1,6 @@
 import java.util.*;
 /**
- * 
+ * Write a description of class asdf here.
  *
  * @author Rain Ma
  * @version 21/05/2018
@@ -22,6 +22,20 @@ public abstract class ChessPiece
         this.col = col;
         this.isWhite = isWhite;
 
+    }
+    public ChessPiece()
+    {
+        
+    }
+    public ChessPiece(ChessPiece piece)
+    {
+        this.row = piece.row;
+        this.col = piece.col;
+        this.isWhite = piece.isWhite;
+        this.moves = piece.moves;
+        this.value = piece.value;
+        
+        
     }
 
     public abstract void findMove(ChessPiece[][] board);
@@ -87,8 +101,8 @@ public abstract class ChessPiece
 
         return col;
     }
-    
-   public boolean attacks(int row,int col)
+
+    public boolean attacks(int row,int col)
     {
         if(moves!=null)
         {
@@ -101,24 +115,10 @@ public abstract class ChessPiece
                 }
 
             }
-            return false;
+            
         }
-        else
-        {
-            return false;
-        }
+        return false;
 
     }
-    
-    public void allMoves(int[][] moves)
-    {
-        int r= moves.length;
-        int c= moves[0].length;
-        this.moves= new int[r][c];
-        for(int i = 0; i < r; i++) {
-            for(int j = 0; j < c; j++) {
-                    this.moves[i][j] = moves[i][j];
-            }
-        }
-    }
+
 }
