@@ -144,7 +144,12 @@ public  class Rook extends ChessPiece
             return "ChessPieceIcons/BlackRook.png";
         }
     }
-
+    
+    public void setMoved(boolean moved)
+    {
+        this.moved = moved;
+    }
+    
     /**
      * @param the chessboard because the value of a piece depend on the position of other pieces.
      * @return the value of the chessPiece
