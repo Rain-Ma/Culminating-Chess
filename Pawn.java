@@ -3,7 +3,7 @@
  * 
  *
  * @author Rain Ma
- * @version 21/05/2018
+ * @version 26/05/2018
  */
 public class Pawn extends ChessPiece
 {
