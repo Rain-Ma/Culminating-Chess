@@ -14,6 +14,11 @@ public class Queen extends ChessPiece
         super(row,col,isWhite);
     }
 
+    public Queen(ChessPiece piece)
+    {
+        super(piece);
+    }
+    
     public void findMove(ChessPiece[][] board)
     {
         int[][] moves = new int[27][2]; //Array saves all moves possible for the piece [most moves possible][coordinates]

@@ -16,7 +16,12 @@ public  class Rook extends ChessPiece
         super(row,col,isWhite);
         moved = false;
     }
-
+    
+    public Rook(ChessPiece piece)
+    {
+        super(piece);
+    }
+    
     public void findMove(ChessPiece[][] board)
     {
         int[][] moves = new int[14][2];

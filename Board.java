@@ -5,7 +5,7 @@ import java.util.Arrays;
  * Write a description of class board here.
  *
  * @author Rain Ma, Justin Chu
- * @version 24/05/2018
+ * @version 26/05/2018
  */
 public class Board
 {
@@ -324,6 +324,7 @@ public class Board
     public boolean isLegal(ChessPiece piece, int row, int col)
     {
         King king = new King();
+        ChessPiece Piece = piece;
         ChessPiece[][] board = new ChessPiece[8][8];
         for(int i =0;i<8;i++)
         {
@@ -331,10 +332,36 @@ public class Board
             board[i] = GameBoard[i].clone();
 
         }
-        ChessPiece Piece = board[piece.getRow()][piece.getCol()];
+        if(piece instanceof Pawn)
+        {
+             Piece = new Pawn(piece);
+        }
+        else if(piece instanceof King)
+        {
+             Piece = new King(piece);
+        }
+        else if(piece instanceof Queen)
+        {
+             Piece = new Queen(piece);
+        }
+        else if(piece instanceof Rook)
+        {
+             Piece = new Rook(piece);
+        }
+        else if(piece instanceof Knight)
+        {
+             Piece = new Knight(piece);
+        }
+        else if(piece instanceof Bishop)
+        {
+             Piece = new Bishop(piece);
+        }
         board[row][col] = Piece;
         board[Piece.getRow()][Piece.getCol()] = null;
-
+        System.out.println(Piece);
+        System.out.println(piece);
+        Piece.moveRow(row);
+        Piece.moveCol(col);
         for(int r =0;r<8;r++)
         {
             for(int c=0;c<8;c++)

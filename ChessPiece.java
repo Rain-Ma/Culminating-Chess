@@ -1,9 +1,9 @@
 import java.util.*;
 /**
- * Write a description of class asdf here.
+ * 
  *
  * @author Rain Ma
- * @version 21/05/2018
+ * @version 26/05/2018
  */
 public abstract class ChessPiece
 {
@@ -23,10 +23,12 @@ public abstract class ChessPiece
         this.isWhite = isWhite;
 
     }
+    
     public ChessPiece()
     {
         
     }
+    
     public ChessPiece(ChessPiece piece)
     {
         this.row = piece.row;

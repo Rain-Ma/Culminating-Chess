@@ -1,4 +1,4 @@
-import java.util.*;
+
 /**
  * 
  *
@@ -14,7 +14,12 @@ public class Knight extends ChessPiece
     {
         super(row,col,isWhite);
     }
-
+    
+    public Knight(ChessPiece piece)
+    {
+        super(piece);
+    }
+    
     public void findMove(ChessPiece[][] board)
     {
         int[][] moves = new int[8][2];
@@ -23,13 +28,14 @@ public class Knight extends ChessPiece
         if(getRow()+1 <=7 && getRow()+1 >= 0){
             if(getCol()+2 <=7 && getCol()+2 >=0)
             {
-                if(board[getRow()+1][getCol()+2] instanceof ChessPiece && 
-                board[getRow()+1][getCol()+2].getIsWhite() != board[getRow()][getCol()].getIsWhite()
+                if(board[getRow()+1][getCol()+2] instanceof ChessPiece &&board[getRow()+1][getCol()+2].getIsWhite() != board[getRow()][getCol()].getIsWhite()
                 || board[getRow()+1][getCol()+2] == null)
                 {
+
                     moves[counter][0] = getRow()+1;
                     moves[counter][1] = getCol()+2;
                     counter++;
+
                 }
             }
             if(getCol()-2 <=7 && getCol()-2 >=0)

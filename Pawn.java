@@ -14,7 +14,12 @@ public class Pawn extends ChessPiece
         
         enPassant = false;
     }
-
+    
+    public Pawn(ChessPiece piece)
+    {
+        super(piece);
+    }
+    
     public void findMove(ChessPiece[][] board)
     {
         int[][] moves =  new int[4][2];
@@ -213,4 +218,5 @@ public class Pawn extends ChessPiece
         }
 
     }
+    
 }

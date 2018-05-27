@@ -27,6 +27,11 @@ public class King extends ChessPiece
         
     }
     
+    public King(ChessPiece piece)
+    {
+        super(piece);
+    }
+    
     @Override
     public void findMove(ChessPiece[][] board)
     {

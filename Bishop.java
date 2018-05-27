@@ -1,4 +1,4 @@
-import java.util.*;
+import java.util.Arrays;
 /**
  * 
  * @author Jutin Chu
@@ -13,12 +13,17 @@ public class Bishop extends ChessPiece
     {
         super(row,col,isWhite);
     }
-
+    
+    public Bishop(ChessPiece piece)
+    {
+        super(piece);
+    }
+    
     public void findMove(ChessPiece[][] board)
     {
         int[][] moves = new int[13][2]; //Array saves all moves possible for the piece [most moves possible][coordinates]
         int count = 0; //counter for possible moves
-
+ 
         if(getRow() < 7 && getCol() < 7)
         {
             for(int i = 1; i < 7; i++)
@@ -116,14 +121,7 @@ public class Bishop extends ChessPiece
         }
         
         //trims size of move array to only have the number of possible moves
-        int[][] finaleMoves = new int[count][2];
-        for(int i =0; i <finaleMoves.length;i++)
-        {
-            for(int j=0;j<2;j++)
-            { 
-                finaleMoves[i][j] = moves[i][j];
-            }
-        }
+        int[][] finaleMoves = Arrays.copyOf(moves,count);
         newMoves(finaleMoves);
     } 
 
