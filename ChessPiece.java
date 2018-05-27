@@ -13,6 +13,8 @@ public abstract class ChessPiece
     private int row;
     private int col;
     private double value;// extra
+    private int moveNumber;
+    private static int gameMoveNumber;
     /**
      * Constructor for objects of class ChessPiece
      */
@@ -122,5 +124,21 @@ public abstract class ChessPiece
         return false;
 
     }
-
+    
+    public void setMoveNumber(int moveNumber)
+    {
+        this.moveNumber = moveNumber;
+    }
+    
+    public int getMoveNumber()
+    {
+        return moveNumber;
+    }
+    
+    public int getGameMoveNumber()
+    {
+        gameMoveNumber++;
+        return gameMoveNumber;
+    }
+    
 }

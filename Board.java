@@ -92,6 +92,7 @@ public class Board
         {
             if(isLegal(piece,row,col))
             {
+                piece.setMoveNumber(piece.getGameMoveNumber());
                 if(piece instanceof King)
                 {
                     King king = (King)piece;
@@ -171,7 +172,7 @@ public class Board
                         GameBoard[piece.getRow()][piece.getCol()] = null;
                         piece.moveRow(row);
                         piece.moveCol(col);
-                        pawn.setEnPassant(true);
+                        
                         return true;
                     }
 
@@ -181,7 +182,7 @@ public class Board
                         GameBoard[piece.getRow()][piece.getCol()] = null;
                         piece.moveRow(row);
                         piece.moveCol(col);
-                        pawn.setEnPassant(false);
+                        
                         return true;
                     }
 
