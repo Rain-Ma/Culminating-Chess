@@ -3,16 +3,16 @@
  * 
  *
  * @author Rain Ma
- * @version 26/05/2018
+ * @version 27/05/2018
  */
 public class Pawn extends ChessPiece
 {
-
+    boolean enPassant;
     public Pawn(int row,int col,boolean isWhite)
     {
         super(row,col,isWhite);
         
-        
+        enPassant = false;
     }
     
     public Pawn(ChessPiece piece)
@@ -57,7 +57,7 @@ public class Pawn extends ChessPiece
                     if(board[getRow()][getCol()-1] instanceof Pawn && board[getRow()][getCol()-1].getIsWhite()!=getIsWhite())
                     {
                         Pawn pawn = (Pawn)board[getRow()][getCol()-1];
-                        if(Math.abs(pawn.getMoveNumber()-getMoveNumber())==1)
+                        if(Math.abs(pawn.getMoveNumber()-getMoveNumber())==1&&pawn.getEnPassant())
                         {
                             moves[count][0] = getRow()-1;
                             moves[count][1] = getCol()-1;
@@ -86,7 +86,7 @@ public class Pawn extends ChessPiece
                     if(board[getRow()][getCol()+1] instanceof Pawn && board[getRow()][getCol()+1].getIsWhite()!=getIsWhite())
                     {
                         Pawn pawn = (Pawn)board[getRow()][getCol()+1];
-                        if(Math.abs(pawn.getMoveNumber()-getMoveNumber())==1)
+                        if(Math.abs(pawn.getMoveNumber()-getMoveNumber())==1&&pawn.getEnPassant())
                         {
                             moves[count][0] = getRow()-1;
                             moves[count][1] = getCol()+1;
@@ -128,7 +128,7 @@ public class Pawn extends ChessPiece
                     if(board[getRow()][getCol()-1]instanceof Pawn&&board[getRow()][getCol()-1].getIsWhite()!=getIsWhite())
                     {
                         Pawn pawn = (Pawn)board[getRow()][getCol()-1];
-                        if(Math.abs(pawn.getMoveNumber()-getMoveNumber())==1)
+                        if(Math.abs(pawn.getMoveNumber()-getMoveNumber())==1&&pawn.getEnPassant())
                         {
                             moves[count][0] = getRow()+1;
                             moves[count][1] = getCol()-1;
@@ -152,7 +152,7 @@ public class Pawn extends ChessPiece
                     if(board[getRow()][getCol()+1]instanceof Pawn&&board[getRow()][getCol()+1].getIsWhite()!=getIsWhite())
                     {
                         Pawn pawn = (Pawn)board[getRow()][getCol()+1];
-                        if(Math.abs(pawn.getMoveNumber()-getMoveNumber())==1)
+                        if(Math.abs(pawn.getMoveNumber()-getMoveNumber())==1&&pawn.getEnPassant())
                         {
                             moves[count][0] = getRow()+1;
                             moves[count][1] = getCol()+1;
@@ -193,7 +193,15 @@ public class Pawn extends ChessPiece
     }
 
     
-
+    public boolean getEnPassant()
+    {
+        return enPassant;
+    }
+    
+    public void setEnPassant(boolean enPassant)
+    {
+        this.enPassant = enPassant;
+    }
    
 
    

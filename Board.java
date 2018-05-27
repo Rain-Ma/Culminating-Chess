@@ -5,7 +5,7 @@ import java.util.Arrays;
  * Write a description of class board here.
  *
  * @author Rain Ma, Justin Chu
- * @version 26/05/2018
+ * @version 27/05/2018
  */
 public class Board
 {
@@ -155,6 +155,7 @@ public class Board
                             GameBoard[piece.getRow()][piece.getCol()] = null;
                             piece.moveRow(row);
                             piece.moveCol(col);
+                            pawn.setEnPassant(false);
                             return true;
                         }
                         else
@@ -163,6 +164,7 @@ public class Board
                             GameBoard[piece.getRow()][piece.getCol()] = null;
                             piece.moveRow(row);
                             piece.moveCol(col);
+                            pawn.setEnPassant(false);
                             return true;
                         }
                     }
@@ -172,7 +174,7 @@ public class Board
                         GameBoard[piece.getRow()][piece.getCol()] = null;
                         piece.moveRow(row);
                         piece.moveCol(col);
-                        
+                        pawn.setEnPassant(true);
                         return true;
                     }
 
@@ -182,7 +184,7 @@ public class Board
                         GameBoard[piece.getRow()][piece.getCol()] = null;
                         piece.moveRow(row);
                         piece.moveCol(col);
-                        
+                        pawn.setEnPassant(false);
                         return true;
                     }
 
