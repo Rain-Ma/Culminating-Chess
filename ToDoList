@@ -7,3 +7,5 @@ Type 'DONE' besides completed items in the list
 6. Maybe flip board when changing turns
 7. Add promote method to pawn and GUI
 8. Fix options buttons on gui
+9. (Justin) Ask teachers about all the instance variables in GUI
+10. (Justin) Ask teachers about if we need resizing
