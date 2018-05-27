@@ -47,7 +47,6 @@ class GameFrame extends JFrame implements ActionListener
     private JPanel BlackSide = new JPanel(new GridLayout(4,8));
     private JPanel Middle = new JPanel(new FlowLayout());
     private JButton Exit = new JButton("Exit");
-    private JButton Help = new JButton("Help");
     private Font ScoreFont = new Font("Sans-Serif", Font.BOLD, 24);
     private ChessPiece[] DeadBlack = new ChessPiece[32];
     private ChessPiece[] DeadWhite = new ChessPiece[32];
@@ -66,12 +65,19 @@ class GameFrame extends JFrame implements ActionListener
     private Integer middle = new Integer(0);
     private Integer bottom = new Integer(0);
 
-    private JLabel PromoteTitle = new JLabel("Promote Pawn");
+    private JLabel PromoteTitle = new JLabel("Promote Pawn To: ", SwingConstants.CENTER);
     private JPanel PiecesPanel = new JPanel(new GridLayout(1,4));
-    private JButton Promote = new JButton("Promote");
+    private JButton WhiteKnight = new JButton(new ImageIcon("ChessPieceIcons/WhiteKnight.png"));
+    private JButton WhiteBishop = new JButton(new ImageIcon("ChessPieceIcons/WhiteBishop.png"));
+    private JButton WhiteRook = new JButton(new ImageIcon("ChessPieceIcons/WhiteRook.png"));
+    private JButton WhiteQueen = new JButton(new ImageIcon("ChessPieceIcons/WhiteQueen.png"));
+    private JButton BlackKnight = new JButton(new ImageIcon("ChessPieceIcons/BlackKnight.png"));
+    private JButton BlackBishop = new JButton(new ImageIcon("ChessPieceIcons/BlackBishop.png"));
+    private JButton BlackRook = new JButton(new ImageIcon("ChessPieceIcons/BlackRook.png"));
+    private JButton BlackQueen = new JButton(new ImageIcon("ChessPieceIcons/BlackQueen.png"));
 
-    private JPanel GameOverPanel = new JPanel();
-    private JPanel DrawPanel = new JPanel();
+    private JPanel GameOverPanel1 = new JPanel();
+    private JPanel GameOverPanel2 = new JPanel();
 
     private Board board;
 
@@ -146,7 +152,6 @@ class GameFrame extends JFrame implements ActionListener
         BlackResign.addActionListener(this);
         Draw.addActionListener(this);
         Exit.addActionListener(this);
-        Help.addActionListener(this);
 
         WhiteResign.setBackground(Color.WHITE);
         WhiteResign.setFont(ScoreFont);    
@@ -164,15 +169,10 @@ class GameFrame extends JFrame implements ActionListener
         Exit.setFont(ScoreFont);    
         Exit.setPreferredSize(new Dimension(160,70)); 
         Exit.setFocusPainted(false);
-        Help.setBackground(Color.WHITE);
-        Help.setFont(ScoreFont);    
-        Help.setPreferredSize(new Dimension(160,70)); 
-        Help.setFocusPainted(false);
 
         Middle.add(WhiteResign);
         Middle.add(Draw);
         Middle.add(BlackResign);
-        Middle.add(Help);
         Middle.add(Exit);
         Middle.setBorder(BorderFactory.createStrokeBorder(new BasicStroke(3.0f)));
 
@@ -183,6 +183,15 @@ class GameFrame extends JFrame implements ActionListener
         //set up score panel
         Score.setBounds(800, 0, 390, 760);
         Score.setBorder(BorderFactory.createStrokeBorder(new BasicStroke(2.0f)));
+        PromoteTitle.setFont(WinFont);
+        WhiteKnight.setBackground(new Color(5, 115, 56));
+        WhiteBishop.setBackground(new Color(5, 115, 56));        
+        WhiteRook.setBackground(new Color(5, 115, 56));
+        WhiteQueen.setBackground(new Color(5, 115, 56));
+        BlackKnight.setBackground(new Color(251, 244, 225));
+        BlackBishop.setBackground(new Color(251, 244, 225));
+        BlackRook.setBackground(new Color(251, 244, 225));
+        BlackQueen.setBackground(new Color(251, 244, 225));
 
         LayeredPane.add(MenuPanel(), top, 0);
         LayeredPane.add(Pane, middle, 1);
@@ -347,72 +356,91 @@ class GameFrame extends JFrame implements ActionListener
     public JPanel ScorePanel()
     {
         Score.removeAll();
+        BlackContainer.removeAll();
+        WhiteContainer.removeAll();
+
         if(choice == 1)
         {
             Score.add(WhiteEatenPane(DeadWhite));
-            Score.add(OptionsPane());
+            Score.add(Middle);
             Score.add(BlackEatenPane(DeadBlack));
         }
         else if(choice == 2)
         {
-            Score.add(PromotePanel());
-            Score.add(OptionsPane());
+            PiecesPanel.removeAll();
+            PiecesPanel.add(WhiteQueen);
+            PiecesPanel.add(WhiteRook);
+            PiecesPanel.add(WhiteBishop);
+            PiecesPanel.add(WhiteKnight);
+
+            WhiteContainer.add(PromoteTitle, BorderLayout.CENTER);
+            WhiteContainer.add(PiecesPanel, BorderLayout.SOUTH);
+
+            Score.add(WhiteContainer);
+            Score.add(Middle);
             Score.add(BlackEatenPane(DeadBlack));
         }
         else if(choice == 3)
         {
+            PiecesPanel.removeAll();
+            PiecesPanel.add(BlackQueen);
+            PiecesPanel.add(BlackRook);
+            PiecesPanel.add(BlackBishop);
+            PiecesPanel.add(BlackKnight);
+
+            BlackContainer.add(PromoteTitle, BorderLayout.CENTER);
+            BlackContainer.add(PiecesPanel, BorderLayout.SOUTH);
+
             Score.add(WhiteEatenPane(DeadWhite));
-            Score.add(OptionsPane());
-            Score.add(PromotePanel());
+            Score.add(Middle);
+            Score.add(BlackContainer);
         }
         else if(choice == 4)
         {
-            BlackContainer.removeAll();
-            GameOverPanel.removeAll();
-
             JLabel WhiteWin = new JLabel("White Wins!");
             WhiteWin.setFont(WinFont);
+            JLabel BlackLose = new JLabel("Black Loses!");
+            BlackLose.setFont(WinFont);
 
-            GameOverPanel.add(WhiteWin, BorderLayout.CENTER);
-            BlackContainer.add(GameOverPanel);
+            GameOverPanel1.add(WhiteWin, BorderLayout.CENTER);
+            BlackContainer.add(GameOverPanel1, BorderLayout.CENTER);
+            GameOverPanel2.add(BlackLose, BorderLayout.CENTER);
+            WhiteContainer.add(GameOverPanel2, BorderLayout.CENTER);
 
-            Score.add(WhiteEatenPane(DeadWhite));
-            Score.add(OptionsPane());
+            Score.add(WhiteContainer);
+            Score.add(Middle);
             Score.add(BlackContainer);
         }
         else if(choice == 5)
         {
-            WhiteContainer.removeAll();
-            GameOverPanel.removeAll();
-
             JLabel BlackWin = new JLabel("Black Wins!");
             BlackWin.setFont(WinFont);
+            JLabel WhiteLose = new JLabel("White Loses!");
+            WhiteLose.setFont(WinFont);
 
-            GameOverPanel.add(BlackWin, BorderLayout.CENTER);        
-            WhiteContainer.add(BlackWin);
+            GameOverPanel1.add(BlackWin, BorderLayout.CENTER);        
+            WhiteContainer.add(GameOverPanel1, BorderLayout.CENTER);
+            GameOverPanel2.add(WhiteLose, BorderLayout.CENTER);
+            BlackContainer.add(GameOverPanel2, BorderLayout.CENTER);
 
             Score.add(WhiteContainer);
-            Score.add(OptionsPane());
-            Score.add(BlackEatenPane(DeadBlack));
+            Score.add(Middle);
+            Score.add(BlackContainer);
         }
         else if(choice == 6)
         {
-            WhiteContainer.removeAll();
-            BlackContainer.removeAll();
-            GameOverPanel.removeAll();
-
             JLabel GameDraw = new JLabel("It's a draw!"); //to be displayed in white container`
             GameDraw.setFont(WinFont);
             JLabel GameDraw1 = new JLabel("It's a draw!"); //to be displayed in black container
             GameDraw1.setFont(WinFont);
 
-            GameOverPanel.add(GameDraw, BorderLayout.CENTER);
-            DrawPanel.add(GameDraw1, BorderLayout.CENTER);
-            WhiteContainer.add(GameOverPanel);
-            BlackContainer.add(DrawPanel);
+            GameOverPanel1.add(GameDraw, BorderLayout.CENTER);
+            GameOverPanel2.add(GameDraw1, BorderLayout.CENTER);
+            WhiteContainer.add(GameOverPanel1, BorderLayout.CENTER);
+            BlackContainer.add(GameOverPanel2, BorderLayout.CENTER);
 
             Score.add(WhiteContainer);
-            Score.add(OptionsPane());
+            Score.add(Middle);
             Score.add(BlackContainer);
         }
 
@@ -429,11 +457,6 @@ class GameFrame extends JFrame implements ActionListener
         return Score;
     }
 
-    public JPanel OptionsPane()
-    {
-        return Middle;
-    }
-
     public JPanel WhiteEatenPane(ChessPiece[] WhitePieces)
     {
         WhiteContainer.removeAll();
@@ -441,7 +464,7 @@ class GameFrame extends JFrame implements ActionListener
         WhiteContainer.add(WhiteSide, BorderLayout.CENTER);
         WhiteContainer.setBorder(BorderFactory.createStrokeBorder(new BasicStroke(3.0f)));
 
-        for(int i = 0; i < 32; i++)
+        for(int i = 0; i < 32; i++) 
         {
             if(WhitePieces[i] == null)
                 break;
@@ -468,41 +491,6 @@ class GameFrame extends JFrame implements ActionListener
         }
 
         return BlackContainer;
-    }
-
-    public JPanel PromotePanel()
-    {       
-        PiecesPanel.removeAll();
-        if(isWhitesTurn)
-        {
-            WhiteContainer.removeAll();
-
-            PiecesPanel.add(new JButton(new ImageIcon("ChessPieceIcons/WhiteQueen.png")));
-            PiecesPanel.add(new JButton(new ImageIcon("ChessPieceIcons/WhiteRook.png")));
-            PiecesPanel.add(new JButton(new ImageIcon("ChessPieceIcons/WhiteBishop.png")));
-            PiecesPanel.add(new JButton(new ImageIcon("ChessPieceIcons/WhiteKnight.png")));
-
-            WhiteContainer.add(PromoteTitle, BorderLayout.NORTH, SwingConstants.CENTER);
-            WhiteContainer.add(PiecesPanel, BorderLayout.CENTER);
-            WhiteContainer.add(Promote, BorderLayout.SOUTH, SwingConstants.CENTER);
-
-            return WhiteContainer;
-        }
-        else
-        {
-            BlackContainer.removeAll();
-
-            PiecesPanel.add(new JButton(new ImageIcon("ChessPieceIcons/BlackQueen.png")));
-            PiecesPanel.add(new JButton(new ImageIcon("ChessPieceIcons/BlackRook.png")));
-            PiecesPanel.add(new JButton(new ImageIcon("ChessPieceIcons/BlackBishop.png")));
-            PiecesPanel.add(new JButton(new ImageIcon("ChessPieceIcons/BlackKnight.png")));
-
-            BlackContainer.add(PromoteTitle, BorderLayout.NORTH, SwingConstants.CENTER);
-            BlackContainer.add(PiecesPanel, BorderLayout.CENTER);
-            BlackContainer.add(Promote, BorderLayout.SOUTH, SwingConstants.CENTER);
-
-            return BlackContainer;
-        }
     }
 
     /**
