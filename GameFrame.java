@@ -8,7 +8,7 @@ import java.util.Random;
  * GUI layout for our chess game
  *
  * @author Justin Chu
- * @version May 24th, 2018
+ * @version May 27th, 2018
  */
 class GameFrame extends JFrame implements ActionListener
 {
@@ -365,8 +365,8 @@ class GameFrame extends JFrame implements ActionListener
         }
         else if(choice == 2)
         {
-        BlackContainer.removeAll();
-        WhiteContainer.removeAll();
+            BlackContainer.removeAll();
+            WhiteContainer.removeAll();
             PiecesPanel.removeAll();
             PiecesPanel.add(WhiteQueen);
             PiecesPanel.add(WhiteRook);
@@ -382,8 +382,8 @@ class GameFrame extends JFrame implements ActionListener
         }
         else if(choice == 3)
         {
-        BlackContainer.removeAll();
-        WhiteContainer.removeAll();
+            BlackContainer.removeAll();
+            WhiteContainer.removeAll();
             PiecesPanel.removeAll();
             PiecesPanel.add(BlackQueen);
             PiecesPanel.add(BlackRook);
@@ -399,8 +399,8 @@ class GameFrame extends JFrame implements ActionListener
         }
         else if(choice == 4)
         {
-        BlackContainer.removeAll();
-        WhiteContainer.removeAll();
+            BlackContainer.removeAll();
+            WhiteContainer.removeAll();
             JLabel WhiteWin = new JLabel("White Wins!");
             WhiteWin.setFont(WinFont);
             JLabel BlackLose = new JLabel("Black Loses!");
@@ -417,8 +417,8 @@ class GameFrame extends JFrame implements ActionListener
         }
         else if(choice == 5)
         {
-        BlackContainer.removeAll();
-        WhiteContainer.removeAll();
+            BlackContainer.removeAll();
+            WhiteContainer.removeAll();
             JLabel BlackWin = new JLabel("Black Wins!");
             BlackWin.setFont(WinFont);
             JLabel WhiteLose = new JLabel("White Loses!");
@@ -435,8 +435,8 @@ class GameFrame extends JFrame implements ActionListener
         }
         else if(choice == 6)
         {
-        BlackContainer.removeAll();
-        WhiteContainer.removeAll();
+            BlackContainer.removeAll();
+            WhiteContainer.removeAll();
             JLabel GameDraw = new JLabel("It's a draw!"); //to be displayed in white container`
             GameDraw.setFont(WinFont);
             JLabel GameDraw1 = new JLabel("It's a draw!"); //to be displayed in black container
@@ -451,7 +451,7 @@ class GameFrame extends JFrame implements ActionListener
             Score.add(Middle);
             Score.add(BlackContainer);
         }
-
+        
         if(isWhitesTurn)
         {
             BlackContainer.add(new JLabel (new ImageIcon("ChessPieceIcons/Dot.png")), BorderLayout.NORTH);
@@ -558,12 +558,39 @@ class GameFrame extends JFrame implements ActionListener
 
                                     if(isWhitesTurn)
                                     {
+                                        if(board.checkCheckMate(false))
+                                        {
+                                            winner = true;
+                                            choice = 4;
+
+                                            
+
+                                        }
+                                        else if(board.checkStaleMate(false))
+                                        {
+                                            winner = true;
+                                            choice = 6;
+
+                                            
+
+                                        }
                                         isWhitesTurn = false;
                                     }
                                     else
                                     {
+                                        if(board.checkCheckMate(true))
+                                        {
+                                            winner = true;
+                                            choice = 5;                                          
+                                        }
+                                        else if(board.checkStaleMate(true))
+                                        {
+                                            winner = true;
+                                            choice = 6;                                            
+                                        }
                                         isWhitesTurn = true;
                                     }
+
                                     firstClick = true;
                                     GamePane();
                                 }
