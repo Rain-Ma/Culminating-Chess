@@ -1,5 +1,4 @@
 
-
 import java.util.Arrays;
 /**   
  * Write a description of class board here.
@@ -299,13 +298,16 @@ public class Board
 
     public int[][] add(int[][] a, int[][] b)
     {
-        int moves[][] = new int[64][2];
+        int moves[][] = new int[128][2];
         int counter=0;
-        for(int i=0;i<a.length;i++)
+        if(a.length>0)
         {
-            moves[i] = a[i];
-            counter++;
+            for(int i=0;i<a.length;i++)
+            {
+                moves[i] = a[i];
+                counter++;
 
+            }
         }
         if(b!=null)
         {
@@ -337,27 +339,27 @@ public class Board
         }
         if(piece instanceof Pawn)
         {
-             Piece = new Pawn(piece);
+            Piece = new Pawn(piece);
         }
         else if(piece instanceof King)
         {
-             Piece = new King(piece);
+            Piece = new King(piece);
         }
         else if(piece instanceof Queen)
         {
-             Piece = new Queen(piece);
+            Piece = new Queen(piece);
         }
         else if(piece instanceof Rook)
         {
-             Piece = new Rook(piece);
+            Piece = new Rook(piece);
         }
         else if(piece instanceof Knight)
         {
-             Piece = new Knight(piece);
+            Piece = new Knight(piece);
         }
         else if(piece instanceof Bishop)
         {
-             Piece = new Bishop(piece);
+            Piece = new Bishop(piece);
         }
         board[row][col] = Piece;
         board[Piece.getRow()][Piece.getCol()] = null;
@@ -409,5 +411,161 @@ public class Board
 
         }
         return false;
+    }
+
+    public boolean checkCheckMate(boolean white)
+    { 
+        King king = new King();
+        boolean foundKing = false;
+        for(int r =0;r<8;r++)
+        {
+            for(int c=0;c<8;c++)
+            {
+                if(GameBoard[r][c]!=null)
+                {
+                    if(GameBoard[r][c] instanceof King&& GameBoard[r][c].getIsWhite()==white)
+                    {
+                        king = (King)GameBoard[r][c];
+                        foundKing = true;
+                        break;
+                    }
+                }
+            } 
+            if(foundKing)
+            {
+                break;
+            }
+        }
+        
+
+        boolean noLegalMoves = true;
+        for(int r =0;r<8;r++)
+        {
+            for(int c=0;c<8;c++)
+            {
+                if(GameBoard[r][c]!=null)
+                {
+                    if(GameBoard[r][c].getIsWhite() ==white)
+                    {
+                        GameBoard[r][c].findMove(GameBoard);
+                        int[][] move = GameBoard[r][c].getMoves();
+                        for(int i=0;i<move.length;i++)
+                        {
+                            if(isLegal(GameBoard[r][c],move[i][0],move[i][1]))
+                            {
+                                noLegalMoves = false;
+                                break;
+                            }
+                        }
+                    }
+                }
+            } 
+            if(!noLegalMoves)
+            {
+                break;
+            }
+        }
+        if(white)
+        {
+            king.updateOpponentMove(blackMoves());
+        }
+        else
+        {
+            king.updateOpponentMove(whiteMoves());
+        }
+        if(noLegalMoves)
+        {
+            if(king.checked())
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
+
+    }
+
+    public boolean checkStaleMate(boolean white)
+    {
+        King king = new King();
+        boolean foundKing = false;
+        for(int r =0;r<8;r++)
+        {
+            for(int c=0;c<8;c++)
+            {
+                if(GameBoard[r][c]!=null)
+                {
+                    if(GameBoard[r][c] instanceof King&& GameBoard[r][c].getIsWhite()==white)
+                    {
+                        king = (King)GameBoard[r][c];
+                        foundKing = true;
+                        break;
+                    }
+                }
+            } 
+            if(foundKing)
+            {
+                break;
+            }
+        }
+       
+
+        boolean noLegalMoves = true;
+        for(int r =0;r<8;r++)
+        {
+            for(int c=0;c<8;c++)
+            {
+                if(GameBoard[r][c]!=null)
+                {
+                    if(GameBoard[r][c].getIsWhite() ==white)
+                    {
+                        GameBoard[r][c].findMove(GameBoard);
+                        int[][] move = GameBoard[r][c].getMoves();
+                        for(int i=0;i<move.length;i++)
+                        {
+                            if(isLegal(GameBoard[r][c],move[i][0],move[i][1]))
+                            {
+                                noLegalMoves = false;
+                                break;
+                            }
+                        }
+                    }
+                }
+            } 
+            if(!noLegalMoves)
+            {
+                break;
+            }
+        }
+         if(white)
+        {
+            king.updateOpponentMove(blackMoves());
+        }
+        else
+        {
+            king.updateOpponentMove(whiteMoves());
+        }
+        if(noLegalMoves)
+        {
+            if(king.checked())
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+        else
+        {
+            return false;
+        }
+
     }
 }
