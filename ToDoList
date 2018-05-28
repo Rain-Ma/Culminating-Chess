@@ -12,3 +12,4 @@ Type 'DONE' besides completed items in the list
 11. (URGENT) King remains in check because it thinks pawns can attack forward
 12. Comment code
 13. Do we need getWhitePieces and getBlackPieces in board and their arrays
+14. Promote doesn't require to be clicked before moving enemy piece
