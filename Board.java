@@ -11,8 +11,8 @@ public class Board
     private ChessPiece[][] GameBoard;// the entire board
     private ChessPiece[] blackPieces;  // the black Pieces
     private ChessPiece[] whitePieces;  // the white pieces
-    private ChessPiece[] deadBlack = new ChessPiece[32];  // the dead black pieces
-    private ChessPiece[] deadWhite = new ChessPiece[32]; // the dead white pieces
+    private ChessPiece[] deadBlack = new ChessPiece[16];  // the dead black pieces
+    private ChessPiece[] deadWhite = new ChessPiece[16]; // the dead white pieces
 
     /**
      * Constructor for objects of class board
@@ -425,6 +425,7 @@ public class Board
                 if(deadWhite[i] == null)
                 {
                     deadWhite[i] = piece;
+                    break;
                 }
             }
         }
@@ -435,6 +436,7 @@ public class Board
                 if(deadBlack[i] == null)
                 {
                     deadBlack[i] = piece;
+                    break;
                 }
             }
         }
