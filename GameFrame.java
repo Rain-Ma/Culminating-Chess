@@ -127,6 +127,7 @@ class GameFrame extends JFrame implements ActionListener
         Computer.setBackground(Color.WHITE);
         Computer.setPreferredSize(new Dimension(320,150));
         Computer.setFocusPainted(false);
+        Computer.setEnabled(false);
 
         Options.removeAll();
         Options.setBackground(new Color(0,0,0,0));
@@ -180,27 +181,42 @@ class GameFrame extends JFrame implements ActionListener
         WhiteKnight.setBackground(new Color(5, 115, 56));
         WhiteKnight.setActionCommand("Knight");
         WhiteKnight.addActionListener(this);
+        WhiteKnight.setFocusPainted(false);
+        
         WhiteBishop.setBackground(new Color(5, 115, 56)); 
         WhiteBishop.setActionCommand("Bishop");
         WhiteBishop.addActionListener(this);
+        WhiteBishop.setFocusPainted(false);
+        
         WhiteRook.setBackground(new Color(5, 115, 56));
         WhiteRook.setActionCommand("Rook");
         WhiteRook.addActionListener(this);
+        WhiteRook.setFocusPainted(false);
+        
         WhiteQueen.setBackground(new Color(5, 115, 56));
         WhiteQueen.setActionCommand("Queen");
         WhiteQueen.addActionListener(this);
+        WhiteQueen.setFocusPainted(false);
+        
         BlackKnight.setBackground(new Color(251, 244, 225));
         BlackKnight.setActionCommand("Knight");
         BlackKnight.addActionListener(this);
+        BlackKnight.setFocusPainted(false);
+        
         BlackBishop.setBackground(new Color(251, 244, 225));
         BlackBishop.setActionCommand("Bishop");
         BlackBishop.addActionListener(this);
+        BlackBishop.setFocusPainted(false);
+        
         BlackRook.setBackground(new Color(251, 244, 225));
         BlackRook.setActionCommand("Rook");
         BlackRook.addActionListener(this);
+        BlackRook.setFocusPainted(false);
+        
         BlackQueen.setBackground(new Color(251, 244, 225));
         BlackQueen.setActionCommand("Queen");
         BlackQueen.addActionListener(this);
+        BlackQueen.setFocusPainted(false);
 
         LayeredPane.add(MenuPanel(), top, 0);
         LayeredPane.add(Pane, middle, 1);
@@ -548,23 +564,25 @@ class GameFrame extends JFrame implements ActionListener
             {
                 choice = 1;
                 board.promote(board.getBoard()[promoteRow][promoteCol], "Queen");
-                System.out.println(board.getBoard()[promoteRow][promoteCol]);
-                LayeredPane.removeAll();
-                LayeredPane.add(Pane, top, 0);
-                LayeredPane.add(ScorePanel(), top, 1);  
-                System.out.println(board.getBoard()[promoteRow][promoteCol]);
+                GamePane();
             }
             else if(e.getActionCommand().equals("Rook"))
             {
+                choice = 1;
                 board.promote(board.getBoard()[promoteRow][promoteCol], "Rook");
+                GamePane();
             }
             else if(e.getActionCommand().equals("Bishop"))
             {
+                choice = 1;
                 board.promote(board.getBoard()[promoteRow][promoteCol], "Bishop");
+                GamePane();
             }
             else if(e.getActionCommand().equals("Knight"))
             {
+                choice = 1;
                 board.promote(board.getBoard()[promoteRow][promoteCol], "Knight");
+                GamePane();
             }
 
             if(e.getActionCommand().equals("White Resign"))
