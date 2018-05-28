@@ -57,6 +57,7 @@ class GameFrame extends JFrame implements ActionListener
     private boolean firstClick = true;
     private boolean isWhitesTurn = true;
     private boolean winner = false;
+    private boolean promoting = false; //if someone is promoting a pawn 
 
     private Integer top = new Integer(0); //overlay layers
     private Integer middle = new Integer(0);
@@ -371,7 +372,7 @@ class GameFrame extends JFrame implements ActionListener
                     BlackSide.add(new JLabel(new ImageIcon(board.getBlackEaten()[i].toString())));
             }
             BlackContainer.add(BlackSide, BorderLayout.CENTER);
-           
+
             Score.add(WhiteContainer);
             Score.add(Middle);
             Score.add(BlackContainer);
@@ -395,7 +396,7 @@ class GameFrame extends JFrame implements ActionListener
                     WhiteSide.add(new JLabel(new ImageIcon(board.getWhiteEaten()[i].toString())));
             }
             WhiteContainer.add(WhiteSide, BorderLayout.SOUTH);
-            
+
             Score.add(WhiteContainer);
             Score.add(Middle);
             Score.add(BlackContainer);
@@ -451,12 +452,12 @@ class GameFrame extends JFrame implements ActionListener
 
         if(isWhitesTurn)
         {
-            BlackContainer.add(new JLabel (new ImageIcon("ChessPieceIcons/test.png")), BorderLayout.NORTH);
+            BlackContainer.add(new JLabel (new ImageIcon("ChessPieceIcons/Dot.png")), BorderLayout.NORTH);
             WhiteContainer.add(new JLabel(new ImageIcon("ChessPieceIcons/NotDot.png")), BorderLayout.NORTH);
         }
         else
         {
-            WhiteContainer.add(new JLabel(new ImageIcon("ChessPieceIcons/test.png")), BorderLayout.NORTH);
+            WhiteContainer.add(new JLabel(new ImageIcon("ChessPieceIcons/Dot.png")), BorderLayout.NORTH);
             BlackContainer.add(new JLabel(new ImageIcon("ChessPieceIcons/NotDot.png")), BorderLayout.NORTH);
         }
         return Score;
@@ -497,63 +498,68 @@ class GameFrame extends JFrame implements ActionListener
                             }
                             else
                             {             
-                                if(board.move(board.getBoard()[oldRow][oldCol], r, c))
+                                if(!promoting)
                                 {
-                                    if(board.getBoard()[r][c] instanceof Pawn)
+                                    if(board.move(board.getBoard()[oldRow][oldCol], r, c))
                                     {
-                                        if(board.getBoard()[r][c].getIsWhite() && board.getBoard()[r][c].getRow() == 0)
+                                        if(board.getBoard()[r][c] instanceof Pawn)
                                         {
-                                            choice = 2;
-                                            promoteRow = r;
-                                            promoteCol = c;
+                                            if(board.getBoard()[r][c].getIsWhite() && board.getBoard()[r][c].getRow() == 0)
+                                            {
+                                                choice = 2;
+                                                promoting = true;
+                                                promoteRow = r;
+                                                promoteCol = c;
 
-                                            LayeredPane.removeAll();
-                                            LayeredPane.add(Pane, middle, 0);
-                                            LayeredPane.add(ScorePanel(), middle, 1);  
+                                                LayeredPane.removeAll();
+                                                LayeredPane.add(Pane, middle, 0);
+                                                LayeredPane.add(ScorePanel(), middle, 1);  
+                                            }
+                                            else if(!board.getBoard()[r][c].getIsWhite() && board.getBoard()[r][c].getRow() == 7)
+                                            {
+                                                choice = 3;
+                                                promoting = true;
+                                                promoteRow = r;
+                                                promoteCol = c;
+
+                                                LayeredPane.removeAll();
+                                                LayeredPane.add(Pane, top, 0);
+                                                LayeredPane.add(ScorePanel(), top, 1);   
+                                            }
                                         }
-                                        else if(!board.getBoard()[r][c].getIsWhite() && board.getBoard()[r][c].getRow() == 7)
+
+                                        if(isWhitesTurn)
                                         {
-                                            choice = 3;
-                                            promoteRow = r;
-                                            promoteCol = c;
-
-                                            LayeredPane.removeAll();
-                                            LayeredPane.add(Pane, top, 0);
-                                            LayeredPane.add(ScorePanel(), top, 1);   
+                                            if(board.checkCheckMate(false))
+                                            {
+                                                winner = true;
+                                                choice = 4;
+                                            }
+                                            else if(board.checkStaleMate(false))
+                                            {
+                                                winner = true;
+                                                choice = 6;
+                                            }
+                                            isWhitesTurn = false;
                                         }
+                                        else
+                                        {
+                                            if(board.checkCheckMate(true))
+                                            {
+                                                winner = true;
+                                                choice = 5;                                          
+                                            }
+                                            else if(board.checkStaleMate(true))
+                                            {
+                                                winner = true;
+                                                choice = 6;                                            
+                                            }
+                                            isWhitesTurn = true;
+                                        }
+
+                                        firstClick = true;
+                                        GamePane();
                                     }
-
-                                    if(isWhitesTurn)
-                                    {
-                                        if(board.checkCheckMate(false))
-                                        {
-                                            winner = true;
-                                            choice = 4;
-                                        }
-                                        else if(board.checkStaleMate(false))
-                                        {
-                                            winner = true;
-                                            choice = 6;
-                                        }
-                                        isWhitesTurn = false;
-                                    }
-                                    else
-                                    {
-                                        if(board.checkCheckMate(true))
-                                        {
-                                            winner = true;
-                                            choice = 5;                                          
-                                        }
-                                        else if(board.checkStaleMate(true))
-                                        {
-                                            winner = true;
-                                            choice = 6;                                            
-                                        }
-                                        isWhitesTurn = true;
-                                    }
-
-                                    firstClick = true;
-                                    GamePane();
                                 }
                                 firstClick = true;
                             }
@@ -565,24 +571,28 @@ class GameFrame extends JFrame implements ActionListener
             if(e.getActionCommand().equals("Queen"))
             {
                 choice = 1;
+                promoting = false;
                 board.promote(board.getBoard()[promoteRow][promoteCol], "Queen");
                 GamePane();
             }
             else if(e.getActionCommand().equals("Rook"))
             {
                 choice = 1;
+                promoting = false;
                 board.promote(board.getBoard()[promoteRow][promoteCol], "Rook");
                 GamePane();
             }
             else if(e.getActionCommand().equals("Bishop"))
             {
                 choice = 1;
+                promoting = false;
                 board.promote(board.getBoard()[promoteRow][promoteCol], "Bishop");
                 GamePane();
             }
             else if(e.getActionCommand().equals("Knight"))
             {
                 choice = 1;
+                promoting = false;
                 board.promote(board.getBoard()[promoteRow][promoteCol], "Knight");
                 GamePane();
             }
