@@ -13,7 +13,6 @@ import java.util.Random;
 class GameFrame extends JFrame implements ActionListener
 {
     //instance variables
-    private int[] pieces = new int[8]; //pieces on the 960 board
 
     private Font WinFont = new Font("Sans-Serif", Font.BOLD,40);
     private JButton WhiteResign = new JButton("White Resign");
@@ -24,7 +23,6 @@ class GameFrame extends JFrame implements ActionListener
     private JPanel Options = new JPanel(new FlowLayout());
     private Font TitleFont = new Font("Sans-Serif", Font.BOLD,150);
     private Font MenuFont = new Font("Sans-Serif", Font.BOLD,52);
-    private JButton Chess960 = new JButton("Chess960");
     private JButton Computer = new JButton("Computer");
     private JButton NewGame = new JButton("New Game");
 
@@ -57,6 +55,8 @@ class GameFrame extends JFrame implements ActionListener
     private int oldCol;
     private int newRow;
     private int newCol;
+    private int promoteRow;
+    private int promoteCol;
     private boolean firstClick = true;
     private boolean isWhitesTurn = true;
     private boolean winner = false;
@@ -122,12 +122,6 @@ class GameFrame extends JFrame implements ActionListener
         NewGame.setPreferredSize(new Dimension(320,150)); 
         NewGame.setFocusPainted(false);
 
-        Chess960.setFont(MenuFont);
-        Chess960.addActionListener(this);
-        Chess960.setBackground(Color.WHITE);
-        Chess960.setPreferredSize(new Dimension(320,150)); 
-        Chess960.setFocusPainted(false);
-
         Computer.setFont(MenuFont);
         Computer.addActionListener(this);
         Computer.setBackground(Color.WHITE);
@@ -137,7 +131,6 @@ class GameFrame extends JFrame implements ActionListener
         Options.removeAll();
         Options.setBackground(new Color(0,0,0,0));
         Options.add(NewGame);
-        Options.add(Chess960);
         Options.add(Computer);
 
         JLabel Title = new JLabel("Chess Game", SwingConstants.CENTER);
@@ -185,77 +178,33 @@ class GameFrame extends JFrame implements ActionListener
         Score.setBorder(BorderFactory.createStrokeBorder(new BasicStroke(2.0f)));
         PromoteTitle.setFont(WinFont);
         WhiteKnight.setBackground(new Color(5, 115, 56));
-        WhiteBishop.setBackground(new Color(5, 115, 56));        
+        WhiteKnight.setActionCommand("Knight");
+        WhiteKnight.addActionListener(this);
+        WhiteBishop.setBackground(new Color(5, 115, 56)); 
+        WhiteBishop.setActionCommand("Bishop");
+        WhiteBishop.addActionListener(this);
         WhiteRook.setBackground(new Color(5, 115, 56));
+        WhiteRook.setActionCommand("Rook");
+        WhiteRook.addActionListener(this);
         WhiteQueen.setBackground(new Color(5, 115, 56));
+        WhiteQueen.setActionCommand("Queen");
+        WhiteQueen.addActionListener(this);
         BlackKnight.setBackground(new Color(251, 244, 225));
+        BlackKnight.setActionCommand("Knight");
+        BlackKnight.addActionListener(this);
         BlackBishop.setBackground(new Color(251, 244, 225));
+        BlackBishop.setActionCommand("Bishop");
+        BlackBishop.addActionListener(this);
         BlackRook.setBackground(new Color(251, 244, 225));
+        BlackRook.setActionCommand("Rook");
+        BlackRook.addActionListener(this);
         BlackQueen.setBackground(new Color(251, 244, 225));
+        BlackQueen.setActionCommand("Queen");
+        BlackQueen.addActionListener(this);
 
         LayeredPane.add(MenuPanel(), top, 0);
         LayeredPane.add(Pane, middle, 1);
         LayeredPane.add(ScorePanel(), middle, 2);
-    }
-
-    public void start960()
-    {
-        /*
-        //Setup pawns first because they are not randomized
-        for(int i = 0; i < 8; i++)
-        {
-        board.getBoard()[6][i] = new Pawn(2, i+1, true);
-        }
-        for(int i = 0; i < 8; i++)
-        {
-        board.getBoard()[1][i] = new Pawn(7, i+1, false);
-        }
-        Random rand = new Random();
-        //White Pieces randomized
-        int bishop1 = rand.nextInt((3-0)+1)*2; //first bishop is in a random even location
-        board.getBoard()[7][bishop1] = new Bishop(1, bishop1+1, true);
-        pieces[0] = bishop1; //add first bishop's location to pieces
-        int bishop2 = rand.nextInt((3-0)+1)*2+1; //second bishop location must be odd
-        board.getBoard()[7][bishop2] = new Bishop(1, bishop2+1, true);
-        pieces[1] = bishop2; //add second bishop's location to pieces
-        board.getBoard()[7][RandomLoc(2)] = new Queen(1, RandomLoc(2)+1, true);
-        board.getBoard()[7][RandomLoc(3)] = new Knight(1, RandomLoc(3)+1, true);
-        board.getBoard()[7][RandomLoc(4)] = new Knight(1, RandomLoc(4)+1, true);
-        board.getBoard()[7][RandomLoc(5)] = new Rook(1, RandomLoc(5)+1, true);
-        GamePane();
-         */
-    }
-
-    /**
-     * Finds a random location for white pieces in the chess 960 game
-     * @param the piece's number (for how many pieces are before it)
-     * @return the piece's new location
-     */
-    public int RandomLoc(int pieceNum)
-    {
-        /*
-        Random rand = new Random();
-        boolean pieceLoc = false;
-        while(pieceLoc == false) //while the piece has not found a location yet
-        {
-        int piece = rand.nextInt((7-0)+1); //random location for piece
-        for(int i = 0; i < pieces.length; i++)
-        {
-        if(piece != pieces[i]) //if piece is not on any piece's location
-        {
-        pieceLoc = true; //piece is so far not on any piece's location
-        }
-        else
-        pieceLoc = false; //piece is on another piece's location so find a new location
-        }
-        if(pieceLoc = true) //if piece has found a location
-        {
-        pieces[pieceNum] = piece; //add piece's location to pieces                
-        }
-        }
-         */
-        return pieces[pieceNum];
-
     }
 
     public JPanel BoardPanel()
@@ -356,6 +305,10 @@ class GameFrame extends JFrame implements ActionListener
     public JPanel ScorePanel()
     {
         Score.removeAll();
+        BlackContainer.removeAll();
+        WhiteContainer.removeAll();
+        GameOverPanel1.removeAll();
+        GameOverPanel2.removeAll();
 
         if(choice == 1)
         {
@@ -365,8 +318,6 @@ class GameFrame extends JFrame implements ActionListener
         }
         else if(choice == 2)
         {
-            BlackContainer.removeAll();
-            WhiteContainer.removeAll();
             PiecesPanel.removeAll();
             PiecesPanel.add(WhiteQueen);
             PiecesPanel.add(WhiteRook);
@@ -382,8 +333,6 @@ class GameFrame extends JFrame implements ActionListener
         }
         else if(choice == 3)
         {
-            BlackContainer.removeAll();
-            WhiteContainer.removeAll();
             PiecesPanel.removeAll();
             PiecesPanel.add(BlackQueen);
             PiecesPanel.add(BlackRook);
@@ -399,8 +348,6 @@ class GameFrame extends JFrame implements ActionListener
         }
         else if(choice == 4)
         {
-            BlackContainer.removeAll();
-            WhiteContainer.removeAll();
             JLabel WhiteWin = new JLabel("White Wins!");
             WhiteWin.setFont(WinFont);
             JLabel BlackLose = new JLabel("Black Loses!");
@@ -417,8 +364,6 @@ class GameFrame extends JFrame implements ActionListener
         }
         else if(choice == 5)
         {
-            BlackContainer.removeAll();
-            WhiteContainer.removeAll();
             JLabel BlackWin = new JLabel("Black Wins!");
             BlackWin.setFont(WinFont);
             JLabel WhiteLose = new JLabel("White Loses!");
@@ -435,8 +380,6 @@ class GameFrame extends JFrame implements ActionListener
         }
         else if(choice == 6)
         {
-            BlackContainer.removeAll();
-            WhiteContainer.removeAll();
             JLabel GameDraw = new JLabel("It's a draw!"); //to be displayed in white container`
             GameDraw.setFont(WinFont);
             JLabel GameDraw1 = new JLabel("It's a draw!"); //to be displayed in black container
@@ -451,7 +394,7 @@ class GameFrame extends JFrame implements ActionListener
             Score.add(Middle);
             Score.add(BlackContainer);
         }
-        
+
         if(isWhitesTurn)
         {
             BlackContainer.add(new JLabel (new ImageIcon("ChessPieceIcons/Dot.png")), BorderLayout.NORTH);
@@ -543,13 +486,19 @@ class GameFrame extends JFrame implements ActionListener
                                         if(board.getBoard()[r][c].getIsWhite() && board.getBoard()[r][c].getRow() == 0)
                                         {
                                             choice = 2;
+                                            promoteRow = r;
+                                            promoteCol = c;
+
                                             LayeredPane.removeAll();
                                             LayeredPane.add(Pane, middle, 0);
-                                            LayeredPane.add(ScorePanel(), middle, 1);   
+                                            LayeredPane.add(ScorePanel(), middle, 1);  
                                         }
                                         else if(!board.getBoard()[r][c].getIsWhite() && board.getBoard()[r][c].getRow() == 7)
                                         {
                                             choice = 3;
+                                            promoteRow = r;
+                                            promoteCol = c;
+
                                             LayeredPane.removeAll();
                                             LayeredPane.add(Pane, top, 0);
                                             LayeredPane.add(ScorePanel(), top, 1);   
@@ -562,17 +511,11 @@ class GameFrame extends JFrame implements ActionListener
                                         {
                                             winner = true;
                                             choice = 4;
-
-                                            
-
                                         }
                                         else if(board.checkStaleMate(false))
                                         {
                                             winner = true;
                                             choice = 6;
-
-                                            
-
                                         }
                                         isWhitesTurn = false;
                                     }
@@ -599,6 +542,29 @@ class GameFrame extends JFrame implements ActionListener
                         }
                     }
                 }
+            }
+
+            if(e.getActionCommand().equals("Queen"))
+            {
+                choice = 1;
+                board.promote(board.getBoard()[promoteRow][promoteCol], "Queen");
+                System.out.println(board.getBoard()[promoteRow][promoteCol]);
+                LayeredPane.removeAll();
+                LayeredPane.add(Pane, top, 0);
+                LayeredPane.add(ScorePanel(), top, 1);  
+                System.out.println(board.getBoard()[promoteRow][promoteCol]);
+            }
+            else if(e.getActionCommand().equals("Rook"))
+            {
+                board.promote(board.getBoard()[promoteRow][promoteCol], "Rook");
+            }
+            else if(e.getActionCommand().equals("Bishop"))
+            {
+                board.promote(board.getBoard()[promoteRow][promoteCol], "Bishop");
+            }
+            else if(e.getActionCommand().equals("Knight"))
+            {
+                board.promote(board.getBoard()[promoteRow][promoteCol], "Knight");
             }
 
             if(e.getActionCommand().equals("White Resign"))
@@ -649,15 +615,6 @@ class GameFrame extends JFrame implements ActionListener
             LayeredPane.removeAll();
             LayeredPane.add(Pane, top, 0);
             LayeredPane.add(ScorePanel(), top, 1);   
-        }
-
-        if(e.getActionCommand().equals("Chess960"))
-        {
-            winner = false;
-            choice = 1;
-            LayeredPane.add(Pane, top, 0);
-            LayeredPane.add(ScorePanel(), top, 1);   
-            start960();
         }
     }
 
