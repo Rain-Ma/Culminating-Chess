@@ -6,10 +6,10 @@ Type 'DONE' besides completed items in the list
 5. Add pieces eaten methods to GUI and board
 6. Maybe flip board when changing turns
 7. Add promote method to board and GUI (done)
-8. Fix options buttons on gui (done0
-9. (Justin) Ask teachers about all the instance variables in GUI
-10. (Justin) Ask teachers about if we need resizing
+8. Fix options buttons on gui (done)
+9. (Justin) Ask teachers about all the instance variables in GUI (done)
+10. (Justin) Ask teachers about if we need resizing (done)
 11. (URGENT) King remains in check because it thinks pawns can attack forward
 12. Comment code
 13. Do we need getWhitePieces and getBlackPieces in board and their arrays
-14. Promote doesn't require to be clicked before moving enemy piece
+14. Promote doesn't require to be clicked before moving enemy piece (done)
