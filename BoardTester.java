@@ -9,7 +9,7 @@ public class BoardTester
 {
     public static void main (String[] args)
     {
-        Board board = new Board();
+        GameFrame board = new GameFrame();
         board.startGame();        
     }
 }
