@@ -1,4 +1,3 @@
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -40,9 +39,9 @@ class GameFrame extends JFrame implements ActionListener
 
     private JPanel Score = new JPanel(new GridLayout(3,1));
     private JPanel WhiteContainer = new JPanel(new BorderLayout());
-    private JPanel WhiteSide = new JPanel(new GridLayout(4,8));
+    private JPanel WhiteSide = new JPanel(new GridLayout(3,5));
     private JPanel BlackContainer = new JPanel(new BorderLayout());
-    private JPanel BlackSide = new JPanel(new GridLayout(4,8));
+    private JPanel BlackSide = new JPanel(new GridLayout(3,5));
     private JPanel Middle = new JPanel(new FlowLayout());
     private JButton Exit = new JButton("Exit");
     private Font ScoreFont = new Font("Sans-Serif", Font.BOLD, 24);
@@ -338,7 +337,7 @@ class GameFrame extends JFrame implements ActionListener
                 else
                     break;
             }
-            WhiteContainer.add(WhiteSide, BorderLayout.SOUTH);
+            WhiteContainer.add(WhiteSide, BorderLayout.CENTER);
 
             for(int i = 0; i < 32; i++)
             {
@@ -347,7 +346,7 @@ class GameFrame extends JFrame implements ActionListener
                 else
                     break;
             }
-            BlackContainer.add(BlackSide, BorderLayout.SOUTH);
+            BlackContainer.add(BlackSide, BorderLayout.CENTER);
 
             Score.add(WhiteContainer);
             Score.add(Middle);
@@ -369,10 +368,10 @@ class GameFrame extends JFrame implements ActionListener
                 if(board.getBlackEaten()[i] == null)
                     break;
                 else
-                    BlackSide.add(new JButton(new ImageIcon(board.getBlackEaten()[i].toString())));
+                    BlackSide.add(new JLabel(new ImageIcon(board.getBlackEaten()[i].toString())));
             }
-            BlackContainer.add(BlackSide, BorderLayout.SOUTH);
-            
+            BlackContainer.add(BlackSide, BorderLayout.CENTER);
+           
             Score.add(WhiteContainer);
             Score.add(Middle);
             Score.add(BlackContainer);
@@ -393,7 +392,7 @@ class GameFrame extends JFrame implements ActionListener
                 if(board.getWhiteEaten()[i] == null)
                     break;
                 else
-                    WhiteSide.add(new JButton(new ImageIcon(board.getWhiteEaten()[i].toString())));
+                    WhiteSide.add(new JLabel(new ImageIcon(board.getWhiteEaten()[i].toString())));
             }
             WhiteContainer.add(WhiteSide, BorderLayout.SOUTH);
             
@@ -452,12 +451,12 @@ class GameFrame extends JFrame implements ActionListener
 
         if(isWhitesTurn)
         {
-            BlackContainer.add(new JLabel (new ImageIcon("ChessPieceIcons/Dot.png")), BorderLayout.NORTH);
+            BlackContainer.add(new JLabel (new ImageIcon("ChessPieceIcons/test.png")), BorderLayout.NORTH);
             WhiteContainer.add(new JLabel(new ImageIcon("ChessPieceIcons/NotDot.png")), BorderLayout.NORTH);
         }
         else
         {
-            WhiteContainer.add(new JLabel(new ImageIcon("ChessPieceIcons/Dot.png")), BorderLayout.NORTH);
+            WhiteContainer.add(new JLabel(new ImageIcon("ChessPieceIcons/test.png")), BorderLayout.NORTH);
             BlackContainer.add(new JLabel(new ImageIcon("ChessPieceIcons/NotDot.png")), BorderLayout.NORTH);
         }
         return Score;
