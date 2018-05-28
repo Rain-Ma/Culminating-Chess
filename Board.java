@@ -11,6 +11,8 @@ public class Board
     private ChessPiece[][] GameBoard;// the entire board
     private ChessPiece[] blackPieces;  // the black Pieces
     private ChessPiece[] whitePieces;  // the white pieces
+    private ChessPiece[] deadBlack = new ChessPiece[32];  // the dead black pieces
+    private ChessPiece[] deadWhite = new ChessPiece[32]; // the dead white pieces
 
     /**
      * Constructor for objects of class board
@@ -31,7 +33,7 @@ public class Board
     /**
      * @return the white pieces
      */
-    public ChessPiece[] getWhitePieces()
+    public ChessPiece[]  getWhitePieces()
     {
         return whitePieces;
     }
@@ -122,6 +124,7 @@ public class Board
                         else
                         {
                             king.setHasMoved(true);
+                            addPiecesEaten(GameBoard[row][col]);
                             GameBoard[row][col] = piece;
                             GameBoard[piece.getRow()][piece.getCol()] = null;
                             piece.moveRow(row);
@@ -131,6 +134,7 @@ public class Board
                     }
                     else 
                     {
+                        addPiecesEaten(GameBoard[row][col]);
                         GameBoard[row][col] = piece;
                         GameBoard[piece.getRow()][piece.getCol()] = null;
                         piece.moveRow(row);
@@ -147,7 +151,6 @@ public class Board
                     {
                         if(GameBoard[row][col]==null)
                         {
-
                             GameBoard[row][col] = piece;
                             GameBoard[piece.getRow()][col] = null;
                             GameBoard[piece.getRow()][piece.getCol()] = null;
@@ -158,6 +161,7 @@ public class Board
                         }
                         else
                         {
+                            addPiecesEaten(GameBoard[row][col]);
                             GameBoard[row][col] = piece;
                             GameBoard[piece.getRow()][piece.getCol()] = null;
                             piece.moveRow(row);
@@ -175,9 +179,11 @@ public class Board
                         pawn.setEnPassant(true);
                         return true;
                     }
-
                     else
                     {
+                        
+                    if(GameBoard[row][col] instanceof ChessPiece)
+                        addPiecesEaten(GameBoard[row][col]);
                         GameBoard[row][col] = piece;
                         GameBoard[piece.getRow()][piece.getCol()] = null;
                         piece.moveRow(row);
@@ -194,6 +200,8 @@ public class Board
                         Rook rook = (Rook)piece;
                         rook.setMoved(true);
                     }
+                    if(GameBoard[row][col] instanceof ChessPiece)
+                        addPiecesEaten(GameBoard[row][col]);
                     GameBoard[row][col] = piece;
                     GameBoard[piece.getRow()][piece.getCol()] = null;
                     piece.moveRow(row);
@@ -406,6 +414,40 @@ public class Board
             GameBoard[pawn.getRow()][pawn.getCol()] = new Bishop(pawn.getRow(), pawn.getCol(), pawn.getIsWhite());
         else if(piece.equals("Knight"))
             GameBoard[pawn.getRow()][pawn.getCol()] = new Knight(pawn.getRow(), pawn.getCol(), pawn.getIsWhite());
+    }
+
+    public void addPiecesEaten(ChessPiece piece)
+    {
+        if(piece.getIsWhite())
+        {
+            for(int i = 0; i < 32; i++)
+            {
+                if(deadWhite[i] == null)
+                {
+                    deadWhite[i] = piece;
+                }
+            }
+        }
+        else
+        {
+            for(int i = 0; i < 32; i++)
+            {
+                if(deadBlack[i] == null)
+                {
+                    deadBlack[i] = piece;
+                }
+            }
+        }
+    }
+
+    public ChessPiece[] getBlackEaten()
+    {
+        return deadBlack;
+    }  
+
+    public ChessPiece[] getWhiteEaten()
+    {
+        return deadWhite;
     }
 
     public boolean has(int[][] a,int[] b)
