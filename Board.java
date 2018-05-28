@@ -1,4 +1,3 @@
-
 import java.util.Arrays;
 /**   
  * Write a description of class board here.
@@ -195,7 +194,6 @@ public class Board
                         Rook rook = (Rook)piece;
                         rook.setMoved(true);
                     }
-                    System.out.println("ok");
                     GameBoard[row][col] = piece;
                     GameBoard[piece.getRow()][piece.getCol()] = null;
                     piece.moveRow(row);
@@ -363,8 +361,6 @@ public class Board
         }
         board[row][col] = Piece;
         board[Piece.getRow()][Piece.getCol()] = null;
-        System.out.println(Piece);
-        System.out.println(piece);
         Piece.moveRow(row);
         Piece.moveCol(col);
         for(int r =0;r<8;r++)
@@ -398,6 +394,18 @@ public class Board
             return true;
         }
 
+    }
+
+    public void promote(ChessPiece pawn, String piece)
+    {
+        if(piece.equals("Queen"))
+            GameBoard[pawn.getRow()][pawn.getCol()] = new Queen(pawn.getRow(), pawn.getCol(), pawn.getIsWhite());
+        else if(piece.equals("Rook"))
+            GameBoard[pawn.getRow()][pawn.getCol()] = new Rook(pawn.getRow(), pawn.getCol(), pawn.getIsWhite());
+        else if(piece.equals("Bishop"))
+            GameBoard[pawn.getRow()][pawn.getCol()] = new Bishop(pawn.getRow(), pawn.getCol(), pawn.getIsWhite());
+        else if(piece.equals("Knight"))
+            GameBoard[pawn.getRow()][pawn.getCol()] = new Knight(pawn.getRow(), pawn.getCol(), pawn.getIsWhite());
     }
 
     public boolean has(int[][] a,int[] b)
@@ -436,7 +444,6 @@ public class Board
                 break;
             }
         }
-        
 
         boolean noLegalMoves = true;
         for(int r =0;r<8;r++)
@@ -514,7 +521,6 @@ public class Board
                 break;
             }
         }
-       
 
         boolean noLegalMoves = true;
         for(int r =0;r<8;r++)
@@ -543,7 +549,7 @@ public class Board
                 break;
             }
         }
-         if(white)
+        if(white)
         {
             king.updateOpponentMove(blackMoves());
         }
