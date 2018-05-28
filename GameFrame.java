@@ -1,4 +1,4 @@
-//import statements
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -46,8 +46,6 @@ class GameFrame extends JFrame implements ActionListener
     private JPanel Middle = new JPanel(new FlowLayout());
     private JButton Exit = new JButton("Exit");
     private Font ScoreFont = new Font("Sans-Serif", Font.BOLD, 24);
-    private ChessPiece[] DeadBlack = new ChessPiece[32];
-    private ChessPiece[] DeadWhite = new ChessPiece[32];
 
     private JButton[][] buttons = new JButton[8][8]; //new JButton array to put on chess board
 
@@ -182,41 +180,44 @@ class GameFrame extends JFrame implements ActionListener
         WhiteKnight.setActionCommand("Knight");
         WhiteKnight.addActionListener(this);
         WhiteKnight.setFocusPainted(false);
-        
+
         WhiteBishop.setBackground(new Color(5, 115, 56)); 
         WhiteBishop.setActionCommand("Bishop");
         WhiteBishop.addActionListener(this);
         WhiteBishop.setFocusPainted(false);
-        
+
         WhiteRook.setBackground(new Color(5, 115, 56));
         WhiteRook.setActionCommand("Rook");
         WhiteRook.addActionListener(this);
         WhiteRook.setFocusPainted(false);
-        
+
         WhiteQueen.setBackground(new Color(5, 115, 56));
         WhiteQueen.setActionCommand("Queen");
         WhiteQueen.addActionListener(this);
         WhiteQueen.setFocusPainted(false);
-        
+
         BlackKnight.setBackground(new Color(251, 244, 225));
         BlackKnight.setActionCommand("Knight");
         BlackKnight.addActionListener(this);
         BlackKnight.setFocusPainted(false);
-        
+
         BlackBishop.setBackground(new Color(251, 244, 225));
         BlackBishop.setActionCommand("Bishop");
         BlackBishop.addActionListener(this);
         BlackBishop.setFocusPainted(false);
-        
+
         BlackRook.setBackground(new Color(251, 244, 225));
         BlackRook.setActionCommand("Rook");
         BlackRook.addActionListener(this);
         BlackRook.setFocusPainted(false);
-        
+
         BlackQueen.setBackground(new Color(251, 244, 225));
         BlackQueen.setActionCommand("Queen");
         BlackQueen.addActionListener(this);
         BlackQueen.setFocusPainted(false);
+
+        WhiteContainer.setBorder(BorderFactory.createStrokeBorder(new BasicStroke(3.0f)));
+        BlackContainer.setBorder(BorderFactory.createStrokeBorder(new BasicStroke(3.0f)));
 
         LayeredPane.add(MenuPanel(), top, 0);
         LayeredPane.add(Pane, middle, 1);
@@ -325,12 +326,32 @@ class GameFrame extends JFrame implements ActionListener
         WhiteContainer.removeAll();
         GameOverPanel1.removeAll();
         GameOverPanel2.removeAll();
+        WhiteSide.removeAll();
+        BlackSide.removeAll();
 
         if(choice == 1)
         {
-            Score.add(WhiteEatenPane(DeadWhite));
+            for(int i = 0; i < 32; i++) 
+            {
+                if(board.getWhiteEaten()[i] instanceof ChessPiece)
+                    WhiteSide.add(new JLabel(new ImageIcon(board.getWhiteEaten()[i].toString())));
+                else
+                    break;
+            }
+            WhiteContainer.add(WhiteSide, BorderLayout.SOUTH);
+
+            for(int i = 0; i < 32; i++)
+            {
+                if(board.getBlackEaten()[i] instanceof ChessPiece)
+                    BlackSide.add(new JLabel(new ImageIcon(board.getBlackEaten()[i].toString())));
+                else
+                    break;
+            }
+            BlackContainer.add(BlackSide, BorderLayout.SOUTH);
+
+            Score.add(WhiteContainer);
             Score.add(Middle);
-            Score.add(BlackEatenPane(DeadBlack));
+            Score.add(BlackContainer);
         }
         else if(choice == 2)
         {
@@ -343,9 +364,18 @@ class GameFrame extends JFrame implements ActionListener
             WhiteContainer.add(PromoteTitle, BorderLayout.CENTER);
             WhiteContainer.add(PiecesPanel, BorderLayout.SOUTH);
 
+            for(int i = 0; i < 32; i++)
+            {
+                if(board.getBlackEaten()[i] == null)
+                    break;
+                else
+                    BlackSide.add(new JButton(new ImageIcon(board.getBlackEaten()[i].toString())));
+            }
+            BlackContainer.add(BlackSide, BorderLayout.SOUTH);
+            
             Score.add(WhiteContainer);
             Score.add(Middle);
-            Score.add(BlackEatenPane(DeadBlack));
+            Score.add(BlackContainer);
         }
         else if(choice == 3)
         {
@@ -358,7 +388,16 @@ class GameFrame extends JFrame implements ActionListener
             BlackContainer.add(PromoteTitle, BorderLayout.CENTER);
             BlackContainer.add(PiecesPanel, BorderLayout.SOUTH);
 
-            Score.add(WhiteEatenPane(DeadWhite));
+            for(int i = 0; i < 32; i++) 
+            {
+                if(board.getWhiteEaten()[i] == null)
+                    break;
+                else
+                    WhiteSide.add(new JButton(new ImageIcon(board.getWhiteEaten()[i].toString())));
+            }
+            WhiteContainer.add(WhiteSide, BorderLayout.SOUTH);
+            
+            Score.add(WhiteContainer);
             Score.add(Middle);
             Score.add(BlackContainer);
         }
@@ -422,42 +461,6 @@ class GameFrame extends JFrame implements ActionListener
             BlackContainer.add(new JLabel(new ImageIcon("ChessPieceIcons/NotDot.png")), BorderLayout.NORTH);
         }
         return Score;
-    }
-
-    public JPanel WhiteEatenPane(ChessPiece[] WhitePieces)
-    {
-        WhiteContainer.removeAll();
-
-        WhiteContainer.add(WhiteSide, BorderLayout.CENTER);
-        WhiteContainer.setBorder(BorderFactory.createStrokeBorder(new BasicStroke(3.0f)));
-
-        for(int i = 0; i < 32; i++) 
-        {
-            if(WhitePieces[i] == null)
-                break;
-            else
-                WhiteSide.add(new JButton(WhitePieces[i].toString()));
-        }
-
-        return WhiteContainer;
-    }
-
-    public JPanel BlackEatenPane(ChessPiece[] BlackPieces)
-    {
-        BlackContainer.removeAll();
-
-        BlackContainer.add(BlackSide, BorderLayout.CENTER);
-        BlackContainer.setBorder(BorderFactory.createStrokeBorder(new BasicStroke(3.0f)));
-
-        for(int i = 0; i < 32; i++)
-        {
-            if(BlackPieces[i] == null)
-                break;
-            else
-                BlackSide.add(new JButton(BlackPieces[i].toString()));
-        }
-
-        return BlackContainer;
     }
 
     /**
