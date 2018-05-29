@@ -72,14 +72,12 @@ public class Board
         piece.findMove(GameBoard,false);
         if(piece.attacks(row,col))
         {
-            
             if(isLegal(piece,row,col))
             {
                 piece.setMoveNumber(piece.getGameMoveNumber());
                 if(piece instanceof King)
                 {
                     King king = (King)piece;
-
                     if(!king.hasMoved())
                     {
                         if(col==2)
@@ -107,10 +105,8 @@ public class Board
                         else
                         {
                             king.setHasMoved(true);
-                            if(GameBoard[row][col] !=null)
-                            {
+                            if(GameBoard[row][col] instanceof ChessPiece)
                                 addPiecesEaten(GameBoard[row][col]);
-                            }
                             GameBoard[row][col] = piece;
                             GameBoard[piece.getRow()][piece.getCol()] = null;
                             piece.moveRow(row);
@@ -121,9 +117,7 @@ public class Board
                     else 
                     {
                         if(GameBoard[row][col] instanceof ChessPiece)
-                        {
                             addPiecesEaten(GameBoard[row][col]);
-                        }
                         GameBoard[row][col] = piece;
                         GameBoard[piece.getRow()][piece.getCol()] = null;
                         piece.moveRow(row);
@@ -170,7 +164,6 @@ public class Board
                     }
                     else
                     {
-
                         if(GameBoard[row][col] instanceof ChessPiece)
                             addPiecesEaten(GameBoard[row][col]);
                         GameBoard[row][col] = piece;
@@ -180,7 +173,6 @@ public class Board
                         pawn.setEnPassant(false);
                         return true;
                     }
-
                 }
                 else 
                 {
