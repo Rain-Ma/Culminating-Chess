@@ -9,8 +9,6 @@ public class Board
 {
     // instance variables - replace the example below with your own
     private ChessPiece[][] GameBoard;// the entire board
-    private ChessPiece[] blackPieces;  // the black Pieces
-    private ChessPiece[] whitePieces;  // the white pieces
     private ChessPiece[] deadBlack = new ChessPiece[16];  // the dead black pieces
     private ChessPiece[] deadWhite = new ChessPiece[16]; // the dead white pieces
 
@@ -28,22 +26,6 @@ public class Board
     public ChessPiece[][] getBoard()
     {
         return GameBoard;
-    }
-
-    /**
-     * @return the white pieces
-     */
-    public ChessPiece[]  getWhitePieces()
-    {
-        return whitePieces;
-    }
-
-    /**
-     * @return the black pieces 
-     */
-    public ChessPiece[] getBlackPieces()
-    {
-        return blackPieces;
     }
 
     /**
