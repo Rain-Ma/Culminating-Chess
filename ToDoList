@@ -13,3 +13,4 @@ Type 'DONE' besides completed items in the list
 12. Comment code
 13. Do we need getWhitePieces and getBlackPieces in board and their arrays (done)
 14. Promote doesn't require to be clicked before moving enemy piece (done)
+15. Make all variable and method names camel case (lowerUpper)
