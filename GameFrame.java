@@ -76,6 +76,7 @@ class GameFrame extends JFrame implements ActionListener
 
     private JPanel GameOverPanel1 = new JPanel();
     private JPanel GameOverPanel2 = new JPanel();
+    private JLabel CheckMessage = new JLabel("Check!");
 
     private Board board;
 
@@ -435,15 +436,57 @@ class GameFrame extends JFrame implements ActionListener
         }
         else if(choice == 6)
         {
-            JLabel GameDraw = new JLabel("It's a draw!"); //to be displayed in white container`
-            GameDraw.setFont(WinFont);
-            JLabel GameDraw1 = new JLabel("It's a draw!"); //to be displayed in black container
-            GameDraw1.setFont(WinFont);
+            JLabel CheckMessage = new JLabel("It's a draw!"); //to be displayed in white container`
+            CheckMessage.setFont(WinFont);
+            JLabel CheckMessage1 = new JLabel("It's a draw!"); //to be displayed in black container
+            CheckMessage1.setFont(WinFont);
 
-            GameOverPanel1.add(GameDraw, BorderLayout.CENTER);
-            GameOverPanel2.add(GameDraw1, BorderLayout.CENTER);
+            GameOverPanel1.add(CheckMessage, BorderLayout.CENTER);
+            GameOverPanel2.add(CheckMessage1, BorderLayout.CENTER);
             WhiteContainer.add(GameOverPanel1, BorderLayout.CENTER);
             BlackContainer.add(GameOverPanel2, BorderLayout.CENTER);
+
+            Score.add(WhiteContainer);
+            Score.add(Middle);
+            Score.add(BlackContainer);
+        }
+        else if(choice == 7)
+        {
+            choice = 1;
+
+            CheckMessage.setFont(WinFont);
+            GameOverPanel1.add(CheckMessage, BorderLayout.CENTER);
+            BlackContainer.add(GameOverPanel1, BorderLayout.CENTER);
+
+            for(int i = 0; i < 32; i++) 
+            {
+                if(board.getWhiteEaten()[i] == null)
+                    break;
+                else
+                    WhiteSide.add(new JLabel(new ImageIcon(board.getWhiteEaten()[i].toString())));
+            }
+            WhiteContainer.add(WhiteSide, BorderLayout.SOUTH);
+
+            Score.add(WhiteContainer);
+            Score.add(Middle);
+            Score.add(BlackContainer);
+        }
+        else if(choice == 8)
+        {
+            choice = 1;
+
+            CheckMessage.setFont(WinFont);
+            GameOverPanel1.add(CheckMessage, BorderLayout.CENTER);
+            WhiteContainer.add(GameOverPanel1, BorderLayout.CENTER);
+
+            for(int i = 0; i < 32; i++)
+            {
+                if(board.getBlackEaten()[i] == null)
+                    break;
+                else
+                    BlackSide.add(new JLabel(new ImageIcon(board.getBlackEaten()[i].toString())));
+            }
+            BlackContainer.add(BlackSide, BorderLayout.CENTER);
 
             Score.add(WhiteContainer);
             Score.add(Middle);
@@ -511,9 +554,7 @@ class GameFrame extends JFrame implements ActionListener
                                                 promoteRow = r;
                                                 promoteCol = c;
 
-                                                LayeredPane.removeAll();
-                                                LayeredPane.add(Pane, middle, 0);
-                                                LayeredPane.add(ScorePanel(), middle, 1);  
+                                                GamePane();
                                             }
                                             else if(!board.getBoard()[r][c].getIsWhite() && board.getBoard()[r][c].getRow() == 7)
                                             {
@@ -522,12 +563,9 @@ class GameFrame extends JFrame implements ActionListener
                                                 promoteRow = r;
                                                 promoteCol = c;
 
-                                                LayeredPane.removeAll();
-                                                LayeredPane.add(Pane, top, 0);
-                                                LayeredPane.add(ScorePanel(), top, 1);   
+                                                GamePane();  
                                             }
                                         }
-
                                         if(isWhitesTurn)
                                         {
                                             if(board.checkCheckMate(false))
@@ -568,6 +606,26 @@ class GameFrame extends JFrame implements ActionListener
                 }
             }
 
+            for(int r = 0; r < 8; r++)
+            {
+                for(int c = 0; c < 8; c++)
+                {
+
+                    if(board.getBoard()[r][c] instanceof King)
+                    {
+                        King king = (King)board.getBoard()[r][c];//temporary casting
+                        if(king.checked())
+                        {
+                            if(king.getIsWhite())
+                                choice = 7;
+                            else
+                                choice = 8;
+                            GamePane();
+                        }
+                    }
+                }
+            }
+
             if(e.getActionCommand().equals("Queen"))
             {
                 choice = 1;
@@ -601,30 +659,21 @@ class GameFrame extends JFrame implements ActionListener
             {
                 winner = true;
                 choice = 5;
-
-                LayeredPane.removeAll();
-                LayeredPane.add(Pane, top, 0);
-                LayeredPane.add(ScorePanel(), top, 1);  
+                GamePane();
             }
 
             if(e.getActionCommand().equals("Black Resign"))
             {
                 winner = true;
                 choice = 4;
-
-                LayeredPane.removeAll();
-                LayeredPane.add(Pane, top, 0);
-                LayeredPane.add(ScorePanel(), top, 1);  
+                GamePane();
             }
 
             if(e.getActionCommand().equals("Draw"))
             {
                 winner = true;
                 choice = 6;
-
-                LayeredPane.removeAll();
-                LayeredPane.add(Pane, top, 0);
-                LayeredPane.add(ScorePanel(), top, 1);  
+                GamePane();
             }
         }
 
