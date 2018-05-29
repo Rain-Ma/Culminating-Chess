@@ -2,7 +2,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.net.*;
-import java.util.Random;
 /**
  * GUI layout for our chess game
  *
@@ -12,7 +11,6 @@ import java.util.Random;
 class GameFrame extends JFrame implements ActionListener
 {
     //instance variables
-
     private Font WinFont = new Font("Sans-Serif", Font.BOLD,40);
     private JButton WhiteResign = new JButton("White Resign");
     private JButton Draw = new JButton("Draw");
@@ -220,7 +218,7 @@ class GameFrame extends JFrame implements ActionListener
         WhiteContainer.setBorder(BorderFactory.createStrokeBorder(new BasicStroke(3.0f)));
         BlackContainer.setBorder(BorderFactory.createStrokeBorder(new BasicStroke(3.0f)));
 
-        LayeredPane.add(MenuPanel(), top, 0);
+        LayeredPane.add(MainMenu, top, 0);
         LayeredPane.add(Pane, middle, 1);
         LayeredPane.add(ScorePanel(), middle, 2);
     }
@@ -308,12 +306,6 @@ class GameFrame extends JFrame implements ActionListener
         setResizable(false);
     }
 
-    public JPanel MenuPanel()
-    {
-        //----------------------------------MAINMENU JPANEL - RETURNS MENU PANEL--------------------------------------
-        return MainMenu;
-    }
-
     /**
      * Side panel to the right of board pane panel - shows options, pieces eaten, promotion, winner
      *        if 1 - show black and white pieces eaten; if 2 - show white promotion panel; 
@@ -349,10 +341,6 @@ class GameFrame extends JFrame implements ActionListener
                     break;
             }
             BlackContainer.add(BlackSide, BorderLayout.CENTER);
-
-            Score.add(WhiteContainer);
-            Score.add(Middle);
-            Score.add(BlackContainer);
         }
         else if(choice == 2)
         {
@@ -373,10 +361,6 @@ class GameFrame extends JFrame implements ActionListener
                     BlackSide.add(new JLabel(new ImageIcon(board.getBlackEaten()[i].toString())));
             }
             BlackContainer.add(BlackSide, BorderLayout.CENTER);
-
-            Score.add(WhiteContainer);
-            Score.add(Middle);
-            Score.add(BlackContainer);
         }
         else if(choice == 3)
         {
@@ -397,10 +381,6 @@ class GameFrame extends JFrame implements ActionListener
                     WhiteSide.add(new JLabel(new ImageIcon(board.getWhiteEaten()[i].toString())));
             }
             WhiteContainer.add(WhiteSide, BorderLayout.SOUTH);
-
-            Score.add(WhiteContainer);
-            Score.add(Middle);
-            Score.add(BlackContainer);
         }
         else if(choice == 4)
         {
@@ -413,10 +393,6 @@ class GameFrame extends JFrame implements ActionListener
             BlackContainer.add(GameOverPanel1, BorderLayout.CENTER);
             GameOverPanel2.add(BlackLose, BorderLayout.CENTER);
             WhiteContainer.add(GameOverPanel2, BorderLayout.CENTER);
-
-            Score.add(WhiteContainer);
-            Score.add(Middle);
-            Score.add(BlackContainer);
         }
         else if(choice == 5)
         {
@@ -429,10 +405,6 @@ class GameFrame extends JFrame implements ActionListener
             WhiteContainer.add(GameOverPanel1, BorderLayout.CENTER);
             GameOverPanel2.add(WhiteLose, BorderLayout.CENTER);
             BlackContainer.add(GameOverPanel2, BorderLayout.CENTER);
-
-            Score.add(WhiteContainer);
-            Score.add(Middle);
-            Score.add(BlackContainer);
         }
         else if(choice == 6)
         {
@@ -445,10 +417,6 @@ class GameFrame extends JFrame implements ActionListener
             GameOverPanel2.add(CheckMessage1, BorderLayout.CENTER);
             WhiteContainer.add(GameOverPanel1, BorderLayout.CENTER);
             BlackContainer.add(GameOverPanel2, BorderLayout.CENTER);
-
-            Score.add(WhiteContainer);
-            Score.add(Middle);
-            Score.add(BlackContainer);
         }
         else if(choice == 7)
         {
@@ -466,10 +434,6 @@ class GameFrame extends JFrame implements ActionListener
                     WhiteSide.add(new JLabel(new ImageIcon(board.getWhiteEaten()[i].toString())));
             }
             WhiteContainer.add(WhiteSide, BorderLayout.SOUTH);
-
-            Score.add(WhiteContainer);
-            Score.add(Middle);
-            Score.add(BlackContainer);
         }
         else if(choice == 8)
         {
@@ -487,11 +451,11 @@ class GameFrame extends JFrame implements ActionListener
                     BlackSide.add(new JLabel(new ImageIcon(board.getBlackEaten()[i].toString())));
             }
             BlackContainer.add(BlackSide, BorderLayout.CENTER);
-
-            Score.add(WhiteContainer);
-            Score.add(Middle);
-            Score.add(BlackContainer);
         }
+
+        Score.add(WhiteContainer);
+        Score.add(Middle);
+        Score.add(BlackContainer);
 
         if(isWhitesTurn)
         {
@@ -682,7 +646,7 @@ class GameFrame extends JFrame implements ActionListener
         if(e.getActionCommand().equals("Exit"))
         {
             LayeredPane.removeAll();
-            LayeredPane.add(MenuPanel(), top, 0);
+            LayeredPane.add(MainMenu, top, 0);
         }
 
         if(e.getActionCommand().equals("New Game"))
