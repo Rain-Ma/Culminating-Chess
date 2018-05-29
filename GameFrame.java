@@ -610,17 +610,19 @@ class GameFrame extends JFrame implements ActionListener
             {
                 for(int c = 0; c < 8; c++)
                 {
-
                     if(board.getBoard()[r][c] instanceof King)
                     {
                         King king = (King)board.getBoard()[r][c];//temporary casting
                         if(king.checked())
                         {
-                            if(king.getIsWhite())
-                                choice = 7;
-                            else
-                                choice = 8;
-                            GamePane();
+                            if(!board.checkCheckMate(king.getIsWhite()))
+                            {
+                                if(king.getIsWhite())
+                                    choice = 7;
+                                else
+                                    choice = 8;
+                                GamePane();
+                            }
                         }
                     }
                 }
