@@ -87,9 +87,10 @@ public class Board
 
     public boolean move(ChessPiece piece, int row, int col)
     {
-        piece.findMove(GameBoard);
+        piece.findMove(GameBoard,false);
         if(piece.attacks(row,col))
         {
+            
             if(isLegal(piece,row,col))
             {
                 piece.setMoveNumber(piece.getGameMoveNumber());
@@ -124,7 +125,10 @@ public class Board
                         else
                         {
                             king.setHasMoved(true);
-                            addPiecesEaten(GameBoard[row][col]);
+                            if(GameBoard[row][col] !=null)
+                            {
+                                addPiecesEaten(GameBoard[row][col]);
+                            }
                             GameBoard[row][col] = piece;
                             GameBoard[piece.getRow()][piece.getCol()] = null;
                             piece.moveRow(row);
@@ -134,7 +138,10 @@ public class Board
                     }
                     else 
                     {
-                        addPiecesEaten(GameBoard[row][col]);
+                        if(GameBoard[row][col] instanceof ChessPiece)
+                        {
+                            addPiecesEaten(GameBoard[row][col]);
+                        }
                         GameBoard[row][col] = piece;
                         GameBoard[piece.getRow()][piece.getCol()] = null;
                         piece.moveRow(row);
@@ -181,9 +188,9 @@ public class Board
                     }
                     else
                     {
-                        
-                    if(GameBoard[row][col] instanceof ChessPiece)
-                        addPiecesEaten(GameBoard[row][col]);
+
+                        if(GameBoard[row][col] instanceof ChessPiece)
+                            addPiecesEaten(GameBoard[row][col]);
                         GameBoard[row][col] = piece;
                         GameBoard[piece.getRow()][piece.getCol()] = null;
                         piece.moveRow(row);
@@ -225,7 +232,7 @@ public class Board
                 {
                     if(GameBoard[r][c].getIsWhite())
                     {
-                        GameBoard[r][c].findMove(GameBoard);
+                        GameBoard[r][c].findMove(GameBoard,true);
                         whiteMoves = add(whiteMoves,GameBoard[r][c].getMoves());
                     }
                 }
@@ -247,7 +254,7 @@ public class Board
                 {
                     if(GameBoard[r][c].getIsWhite())
                     {
-                        GameBoard[r][c].findMove(GameBoard);
+                        GameBoard[r][c].findMove(GameBoard,true);
                         whiteMoves = add(whiteMoves,GameBoard[r][c].getMoves());
                     }
                 }
@@ -269,7 +276,7 @@ public class Board
                 {
                     if(!GameBoard[r][c].getIsWhite())
                     {
-                        GameBoard[r][c].findMove(GameBoard);
+                        GameBoard[r][c].findMove(GameBoard,true);
                         whiteMoves = add(whiteMoves,GameBoard[r][c].getMoves());
                     }
                 }
@@ -291,7 +298,7 @@ public class Board
                 {
                     if(!GameBoard[r][c].getIsWhite())
                     {
-                        GameBoard[r][c].findMove(GameBoard);
+                        GameBoard[r][c].findMove(GameBoard,true);
                         whiteMoves = add(whiteMoves,GameBoard[r][c].getMoves());
                     }
                 }
@@ -498,7 +505,7 @@ public class Board
                 {
                     if(GameBoard[r][c].getIsWhite() ==white)
                     {
-                        GameBoard[r][c].findMove(GameBoard);
+                        GameBoard[r][c].findMove(GameBoard,false);
                         int[][] move = GameBoard[r][c].getMoves();
                         for(int i=0;i<move.length;i++)
                         {
@@ -575,7 +582,7 @@ public class Board
                 {
                     if(GameBoard[r][c].getIsWhite() ==white)
                     {
-                        GameBoard[r][c].findMove(GameBoard);
+                        GameBoard[r][c].findMove(GameBoard,false);
                         int[][] move = GameBoard[r][c].getMoves();
                         for(int i=0;i<move.length;i++)
                         {

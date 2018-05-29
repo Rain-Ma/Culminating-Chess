@@ -33,7 +33,7 @@ public class King extends ChessPiece
     }
     
     @Override
-    public void findMove(ChessPiece[][] board)
+    public void findMove(ChessPiece[][] board,boolean attack)
     {
         int[][] moves = new int[10][2];
         int i =0;

@@ -42,7 +42,7 @@ public abstract class ChessPiece
         
     }
 
-    public abstract void findMove(ChessPiece[][] board);
+    public abstract void findMove(ChessPiece[][] board, boolean attacks);
 
     /**
      * @return the squares that the chess piece can move to [i][0] is row [i][1] is col

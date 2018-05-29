@@ -22,7 +22,7 @@ public  class Rook extends ChessPiece
         super(piece);
     }
     
-    public void findMove(ChessPiece[][] board)
+    public void findMove(ChessPiece[][] board,boolean attack)
     {
         int[][] moves = new int[14][2];
         int count = 0;

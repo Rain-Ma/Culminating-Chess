@@ -20,7 +20,7 @@ public class Pawn extends ChessPiece
         super(piece);
     }
 
-    public void findMove(ChessPiece[][] board)
+    public void findMove(ChessPiece[][] board,boolean attack)
     {
         int[][] moves =  new int[4][2];
         int count=0;
@@ -29,16 +29,19 @@ public class Pawn extends ChessPiece
 
             if(getRow()>0)
             {
-                if(board[getRow()-1][getCol()]==null)
+                if(!attack)
                 {
-                    moves[count][0] = getRow()-1;
-                    moves[count][1] = getCol();
-                    count++;
-                    if(getRow()==6 && board[4][getCol()] == null)
+                    if(board[getRow()-1][getCol()]==null)
                     {
-                        moves[count][0] = getRow()-2;
+                        moves[count][0] = getRow()-1;
                         moves[count][1] = getCol();
                         count++;
+                        if(getRow()==6 && board[4][getCol()] == null)
+                        {
+                            moves[count][0] = getRow()-2;
+                            moves[count][1] = getCol();
+                            count++;
+                        }
                     }
                 }
 
@@ -104,16 +107,19 @@ public class Pawn extends ChessPiece
         {
             if(getRow()<7)
             {
-                if(board[getRow()+1][getCol()]==null)
+                if(!attack)
                 {
-                    moves[count][0] = getRow()+1;
-                    moves[count][1] = getCol();
-                    count++;
-                    if(getRow()==1&&board[getRow()+2][getCol()]==null)
+                    if(board[getRow()+1][getCol()]==null)
                     {
-                        moves[count][0] = getRow()+2;
+                        moves[count][0] = getRow()+1;
                         moves[count][1] = getCol();
                         count++;
+                        if(getRow()==1&&board[getRow()+2][getCol()]==null)
+                        {
+                            moves[count][0] = getRow()+2;
+                            moves[count][1] = getCol();
+                            count++;
+                        }
                     }
                 }
 

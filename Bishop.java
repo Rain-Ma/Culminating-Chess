@@ -19,7 +19,7 @@ public class Bishop extends ChessPiece
         super(piece);
     }
     
-    public void findMove(ChessPiece[][] board)
+    public void findMove(ChessPiece[][] board,boolean attack)
     {
         int[][] moves = new int[13][2]; //Array saves all moves possible for the piece [most moves possible][coordinates]
         int count = 0; //counter for possible moves
