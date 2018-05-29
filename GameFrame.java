@@ -75,6 +75,9 @@ class GameFrame extends JFrame implements ActionListener
     private JPanel GameOverPanel1 = new JPanel();
     private JPanel GameOverPanel2 = new JPanel();
     private JLabel CheckMessage = new JLabel("Check!");
+    private JLabel DrawMessage = new JLabel("It's a draw!");
+    private JLabel DrawMessage1 = new JLabel("It's a draw!");
+    private JLabel CantMove = new JLabel("Can't move there!");
 
     private Board board;
 
@@ -214,6 +217,11 @@ class GameFrame extends JFrame implements ActionListener
         BlackQueen.setActionCommand("Queen");
         BlackQueen.addActionListener(this);
         BlackQueen.setFocusPainted(false);
+
+        DrawMessage1.setFont(WinFont);
+        DrawMessage.setFont(WinFont);
+        CheckMessage.setFont(WinFont);
+        CantMove.setFont(WinFont);
 
         WhiteContainer.setBorder(BorderFactory.createStrokeBorder(new BasicStroke(3.0f)));
         BlackContainer.setBorder(BorderFactory.createStrokeBorder(new BasicStroke(3.0f)));
@@ -408,13 +416,8 @@ class GameFrame extends JFrame implements ActionListener
         }
         else if(choice == 6)
         {
-            JLabel CheckMessage = new JLabel("It's a draw!"); //to be displayed in white container`
-            CheckMessage.setFont(WinFont);
-            JLabel CheckMessage1 = new JLabel("It's a draw!"); //to be displayed in black container
-            CheckMessage1.setFont(WinFont);
-
-            GameOverPanel1.add(CheckMessage, BorderLayout.CENTER);
-            GameOverPanel2.add(CheckMessage1, BorderLayout.CENTER);
+            GameOverPanel1.add(DrawMessage, BorderLayout.CENTER);
+            GameOverPanel2.add(DrawMessage1, BorderLayout.CENTER);
             WhiteContainer.add(GameOverPanel1, BorderLayout.CENTER);
             BlackContainer.add(GameOverPanel2, BorderLayout.CENTER);
         }
@@ -422,7 +425,6 @@ class GameFrame extends JFrame implements ActionListener
         {
             choice = 1;
 
-            CheckMessage.setFont(WinFont);
             GameOverPanel1.add(CheckMessage, BorderLayout.CENTER);
             BlackContainer.add(GameOverPanel1, BorderLayout.CENTER);
 
@@ -439,7 +441,6 @@ class GameFrame extends JFrame implements ActionListener
         {
             choice = 1;
 
-            CheckMessage.setFont(WinFont);
             GameOverPanel1.add(CheckMessage, BorderLayout.CENTER);
             WhiteContainer.add(GameOverPanel1, BorderLayout.CENTER);
 
@@ -452,7 +453,38 @@ class GameFrame extends JFrame implements ActionListener
             }
             BlackContainer.add(BlackSide, BorderLayout.CENTER);
         }
+        else if(choice == 9)
+        {
+            choice = 1;
 
+            GameOverPanel1.add(CantMove, BorderLayout.CENTER);
+            BlackContainer.add(GameOverPanel1, BorderLayout.CENTER);
+
+            for(int i = 0; i < 32; i++) 
+            {
+                if(board.getWhiteEaten()[i] == null)
+                    break;
+                else
+                    WhiteSide.add(new JLabel(new ImageIcon(board.getWhiteEaten()[i].toString())));
+            }
+            WhiteContainer.add(WhiteSide, BorderLayout.SOUTH);
+        }
+        else if(choice == 10)
+        {
+            choice = 1;
+
+            GameOverPanel1.add(CantMove, BorderLayout.CENTER);
+            WhiteContainer.add(GameOverPanel1, BorderLayout.CENTER);
+
+            for(int i = 0; i < 32; i++)
+            {
+                if(board.getBlackEaten()[i] == null)
+                    break;
+                else
+                    BlackSide.add(new JLabel(new ImageIcon(board.getBlackEaten()[i].toString())));
+            }
+            BlackContainer.add(BlackSide, BorderLayout.CENTER);
+        }
         Score.add(WhiteContainer);
         Score.add(Middle);
         Score.add(BlackContainer);
@@ -558,8 +590,15 @@ class GameFrame extends JFrame implements ActionListener
                                             }
                                             isWhitesTurn = true;
                                         }
-
                                         firstClick = true;
+                                        GamePane();
+                                    }
+                                    else
+                                    {
+                                        if(board.getBoard()[oldRow][oldCol].getIsWhite())
+                                            choice = 9;
+                                        else
+                                            choice = 10;
                                         GamePane();
                                     }
                                 }
