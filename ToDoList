@@ -1,6 +1,6 @@
 Type 'DONE' besides completed items in the list
 1. Fix pawn glitches (done)
-2. Add end-game methods (check, checkmate, concede) (the game doesn't specifically tell the user thier in check, but it will not change the board)
+2. Add end-game methods (check, checkmate, concede) (the game doesn't specifically tell the user thier in check, but it will not change the board) (done)
 3. Implement En Passant in pawn class (done)
 4. Finish king class (done)
 5. Add pieces eaten methods to GUI and board (done)
@@ -10,7 +10,7 @@ Type 'DONE' besides completed items in the list
 9. (Justin) Ask teachers about all the instance variables in GUI (done)
 10. (Justin) Ask teachers about if we need resizing (done)
 11. (URGENT) King remains in check because it thinks pawns can attack forward (done)
-12. Comment code
+12. Comment code (done)
 13. Do we need getWhitePieces and getBlackPieces in board and their arrays (done)
 14. Promote doesn't require to be clicked before moving enemy piece (done)
-15. Make all variable and method names camel case (lowerUpper)
+15. Make all variable and method names camel case (lowerUpper) (done)
