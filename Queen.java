@@ -1,5 +1,6 @@
 import java.util.Arrays;
 /**
+ * Queen chess piece class
  * 
  * @author Shawn && Rain Ma && Justin Chu
  * @version 21/05/2018
