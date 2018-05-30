@@ -1,3 +1,4 @@
+//import statement
 import java.util.Arrays;
 /**
  * Queen chess piece class
