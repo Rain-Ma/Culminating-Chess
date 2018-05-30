@@ -30,6 +30,8 @@ public class Queen extends ChessPiece
 
     @Override
     /**
+     * Finds all possible moves queen can make
+     * 
      * @param board This is the chess board
      * @param attack Not appicable to Queen since moving and attacking is the thing 
      */
