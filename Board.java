@@ -1,7 +1,7 @@
+//import statements
 import java.util.Arrays;
 /**   
- * The board class creates the chess board
- * and has methods that manipulate the board
+ * The board class creates the chess board and has methods that manipulate the board
  *
  * @author Rain Ma, Justin Chu
  * @version 27/05/2018
@@ -23,6 +23,8 @@ public class Board
     }
 
     /**
+     * Returns GameBoard 2d array
+     * 
      * @return the 2d array of pieces which represents the 8 by 8 chess board
      */
     public ChessPiece[][] getBoard()
@@ -31,11 +33,11 @@ public class Board
     }
 
     /**
-     * sets up the board for a standard chess game
+     * Sets up the board for a standard chess game
      */
     public void SetGame()
     {
-        //white pieces
+        //Add white pieces to chess board
         GameBoard[7][0] = new Rook(7,0,true);
         GameBoard[7][1] = new Knight(7,1,true);
         GameBoard[7][2] = new Bishop(7,2,true);
@@ -49,7 +51,7 @@ public class Board
             GameBoard[6][i] = new Pawn(6, i, true);
         }
 
-        //black pieces
+        //Add black pieces to chess board
         GameBoard[0][0] = new Rook(0,0,false);
         GameBoard[0][1] = new Knight(0,1,false);
         GameBoard[0][2] = new Bishop(0,2,false);
@@ -66,9 +68,11 @@ public class Board
 
     /**
      * This method moves the location of a piece on the board to a different "square"
+     * 
      * @param piece This is the ChessPiece being moved
      * @param row This is row value of the square that piece is being moved to
      * @param col This is the column value of the square that piece is being moved to
+     * 
      * @return true if changes were made to the board
      */
 
@@ -84,38 +88,40 @@ public class Board
                 if(piece instanceof King)//if piece is a king
                 {
                     King king = (King)piece;//Make piece's variable into King so King methods can be called
-
-                    if(!king.hasMoved())
+                    if(!king.hasMoved()) //if king hasn't moved yet
                     {
-                        if(col==2)//  castles queenside
+                        if(col==2)//castles queenside
                         {
-                            GameBoard[row][col] = piece;
+                            //move the king and rook
+                            GameBoard[row][col] = piece; 
                             GameBoard[piece.getRow()][piece.getCol()] = null;
                             piece.moveCol(col);
                             GameBoard[king.getRow()][3] = GameBoard[king.getRow()][0];
                             GameBoard[king.getRow()][0] = null;
                             GameBoard[king.getRow()][3].moveCol(3);
-                            king.setHasMoved(true);
+                            king.setHasMoved(true); //king has moved
                             return true;
                         }
-                        else if(col==6)// castles kingside
+                        else if(col==6)//castles kingside
                         {
+                            //move the king and rook
                             GameBoard[row][col] = piece;
                             GameBoard[piece.getRow()][piece.getCol()] = null;
                             piece.moveCol(col);
                             GameBoard[king.getRow()][5] = GameBoard[king.getRow()][7];
                             GameBoard[king.getRow()][7] = null;
                             GameBoard[king.getRow()][5].moveCol(5);
-                            king.setHasMoved(true);
+                            king.setHasMoved(true);//king has moved
                             return true;
                         }
                         else //moves the king
                         {
-                            king.setHasMoved(true);
-                            if(GameBoard[row][col] !=null)// checks if the king is eating a piece or not
+                            king.setHasMoved(true); //king has moved
+                            if(GameBoard[row][col] !=null)//checks if the king is eating a piece or not
                             {
-                                addPiecesEaten(GameBoard[row][col]);
+                                addPiecesEaten(GameBoard[row][col]); //add to array of pieces eaten
                             }
+                            //move king
                             GameBoard[row][col] = piece;
                             GameBoard[piece.getRow()][piece.getCol()] = null;
                             piece.moveRow(row);
@@ -127,15 +133,15 @@ public class Board
                     {
                         if(GameBoard[row][col] instanceof ChessPiece)// checks if the king is eating a piece or not
                         {
-                            addPiecesEaten(GameBoard[row][col]);
+                            addPiecesEaten(GameBoard[row][col]); //add to array of pieces eaten
                         }
+                        //move king
                         GameBoard[row][col] = piece;
                         GameBoard[piece.getRow()][piece.getCol()] = null;
                         piece.moveRow(row);
                         piece.moveCol(col);
                         return true;
                     }
-
                 }
 
                 else if(piece instanceof Pawn)// if piece is a pawn
@@ -155,7 +161,8 @@ public class Board
                         }
                         else // pawn captures a piece
                         {
-                            addPiecesEaten(GameBoard[row][col]);
+                            addPiecesEaten(GameBoard[row][col]); //add to pieces eaten
+                            //move pawn
                             GameBoard[row][col] = piece;
                             GameBoard[piece.getRow()][piece.getCol()] = null;
                             piece.moveRow(row);
@@ -166,6 +173,7 @@ public class Board
                     }
                     else if(Math.abs(pawn.getRow()-row)==2)// pawn is moving 2 squares forward
                     {
+                        //move pawn
                         GameBoard[row][col] = piece;
                         GameBoard[piece.getRow()][piece.getCol()] = null;
                         piece.moveRow(row);
@@ -175,9 +183,9 @@ public class Board
                     }
                     else// the pawn moves forawrd 1 square
                     {
-
-                        if(GameBoard[row][col] instanceof ChessPiece)
-                            addPiecesEaten(GameBoard[row][col]);
+                        if(GameBoard[row][col] instanceof ChessPiece) //if the pawn is attacking a piece
+                            addPiecesEaten(GameBoard[row][col]); //add to pieces eaten
+                        //move pawn
                         GameBoard[row][col] = piece;
                         GameBoard[piece.getRow()][piece.getCol()] = null;
                         piece.moveRow(row);
@@ -185,7 +193,6 @@ public class Board
                         pawn.setEnPassant(false);
                         return true;
                     }
-
                 }
                 else //moving/capture for all the other pieces
                 {
@@ -194,8 +201,9 @@ public class Board
                         Rook rook = (Rook)piece;
                         rook.setMoved(true);
                     }
-                    if(GameBoard[row][col] instanceof ChessPiece)
-                        addPiecesEaten(GameBoard[row][col]);
+                    if(GameBoard[row][col] instanceof ChessPiece) //if piece is attacking another piece
+                        addPiecesEaten(GameBoard[row][col]); //add to pieces eaten
+                    //move piece
                     GameBoard[row][col] = piece;
                     GameBoard[piece.getRow()][piece.getCol()] = null;
                     piece.moveRow(row);
@@ -209,7 +217,8 @@ public class Board
     }
 
     /**
-     * returns all the squares that white ChessPieces are attacking
+     * Returns all the squares that white ChessPieces are attacking
+     * 
      * @return whiteMoves This returns a 2D array that contains the row and col values
      *          of all the squares that the white pieces are attacking
      */
@@ -236,7 +245,8 @@ public class Board
     }
 
     /**
-     * returns all the squares that white ChessPieces are attacking
+     * Returns all the squares that white ChessPieces are attacking
+     * 
      * @param GameBoard This is the chess board that the method is searching
      * @return whiteMoves This returns a 2D array that contains the row and col values
      *          of all the squares that the white pieces are attacking
@@ -256,73 +266,70 @@ public class Board
                         whiteMoves = add(whiteMoves,GameBoard[r][c].getMoves());//merges the two arrays
                     }
                 }
-
             }
-
         }
         return whiteMoves;
     }
-    
-     /**
-     * returns all the squares that white ChessPieces are attacking
+
+    /**
+     * Returns all the squares that white ChessPieces are attacking
      * 
-     * @return whiteMoves This returns a 2D array that contains the row and col values
-     *          of all the squares that the white pieces are attacking
+     * @return blackMoves This returns a 2D array that contains the row and col values
+     *          of all the squares that the black pieces are attacking
      */
     public int[][] blackMoves()
     {
         int[][] blackMoves = new int[0][2];
         for(int r=0;r<8;r++)
         {
-            for(int c=0;c<8;c++)
+            for(int c=0;c<8;c++)//nested for loop to seach every square for a black piece
             {
                 if(GameBoard[r][c] !=null)
                 {
                     if(!GameBoard[r][c].getIsWhite())
                     {
-                        GameBoard[r][c].findMove(GameBoard,true);
-                        blackMoves = add(blackMoves,GameBoard[r][c].getMoves());
+                        GameBoard[r][c].findMove(GameBoard,true);//finds all the square that piece is attacking 
+                        blackMoves = add(blackMoves,GameBoard[r][c].getMoves());//merges the two arrays
                     }
                 }
-
             }
-
         }
         return blackMoves;
     }
 
     /**
-     * returns all the squares that white ChessPieces are attacking
+     * Returns all the squares that black ChessPieces are attacking
+     * 
      * @param GameBoard This is the chess board that the method is searching
-     * @return whiteMoves This returns a 2D array that contains the row and col values
-     *          of all the squares that the white pieces are attacking
+     * @return blackMoves This returns a 2D array that contains the row and col values
+     *          of all the squares that the black pieces are attacking
      */
     public int[][] blackMoves(ChessPiece[][] GameBoard)
     {
         int[][] blackMoves = new int[0][2];
         for(int r=0;r<8;r++)
         {
-            for(int c=0;c<8;c++)
+            for(int c=0;c<8;c++)//nested for loop to seach every square for a black piece
             {
                 if(GameBoard[r][c] !=null)
                 {
                     if(!GameBoard[r][c].getIsWhite())
                     {
-                        GameBoard[r][c].findMove(GameBoard,true);
-                        blackMoves = add(blackMoves,GameBoard[r][c].getMoves());
+                        GameBoard[r][c].findMove(GameBoard,true);//finds all the square that piece is attacking 
+                        blackMoves = add(blackMoves,GameBoard[r][c].getMoves());//merges the two arrays
                     }
                 }
-
             }
-
         }
         return blackMoves;
     }
-    
+
     /**
-     * this method adds merges the two arrays 
+     * This method adds merges two arrays 
+     * 
      * @param a This is the first parameter to add
      * @param b This is the second parameter to add
+     * 
      * @return moves This is the merged array
      */
     public int[][] add(int[][] a, int[][] b)
@@ -335,7 +342,6 @@ public class Board
             {
                 moves[i] = a[i];
                 counter++;
-
             }
         }
         if(b!=null)
@@ -347,36 +353,34 @@ public class Board
                     moves[counter] = b[i];
                     counter++;
                 }
-
             }
         }
-        int[][] finaleMoves = Arrays.copyOf(moves,counter);
+        int[][] finaleMoves = Arrays.copyOf(moves,counter); //truncate array
 
         return finaleMoves;
     }
 
     /**
-     * checks wether moving a chesspiece to a certain square would be legal
+     * Checks whether moving a chesspiece to a certain square would be legal
      * 
      * @param piece This is the piece being moved
      * @param row This is row value of the square that piece is being moved to
      * @param col This is the column value of the square that piece is being moved to
+     * 
      * @return if move is legal
      */
     public boolean isLegal(ChessPiece piece, int row, int col)
     {
         King king = new King();//initailizes a King
         ChessPiece Piece = piece;//Initializes a ChessPiece;
-        
+
         //creates a copy of the board that doesnt refer to the original
         ChessPiece[][] board = new ChessPiece[8][8];
         for(int i =0;i<8;i++)
         {
-
             board[i] = GameBoard[i].clone();
-
         }
-        // 
+        //clones piece into whatever chess piece they are
         if(piece instanceof Pawn)
         {
             Piece = new Pawn(piece);
@@ -439,18 +443,17 @@ public class Board
         {
             return true;
         }
-
     }
-    
+
     /**
-     * promoting a pawn
-     * replaces pawn with a new piece
+     * Promoting a pawn - replaces pawn with a new piece
+     * 
      * @param pawn This is the pawn that has just reached the end of the board
      * @param piece This is the piece that the pawn is being promoted to
      */
     public void promote(ChessPiece pawn, String piece)
     {
-        // makes a new piece at the location of pawn
+        //makes a new piece at the location of pawn
         if(piece.equals("Queen"))
             GameBoard[pawn.getRow()][pawn.getCol()] = new Queen(pawn.getRow(), pawn.getCol(), pawn.getIsWhite());
         else if(piece.equals("Rook"))
@@ -460,29 +463,30 @@ public class Board
         else if(piece.equals("Knight"))
             GameBoard[pawn.getRow()][pawn.getCol()] = new Knight(pawn.getRow(), pawn.getCol(), pawn.getIsWhite());
     }
-    
+
     /**
-     * adds a piece to a list of eaten pieces
+     * Adds a piece to a list of eaten pieces
+     * 
      * @param piece This is the piece getting captured
      */
     public void addPiecesEaten(ChessPiece piece)
     {
-        if(piece.getIsWhite())
+        if(piece.getIsWhite()) //if piece eaten is white
         {
             for(int i = 0; i < 32; i++)
             {
-                if(deadWhite[i] == null)
+                if(deadWhite[i] == null) //add it to the first empty index
                 {
                     deadWhite[i] = piece;
                     break;
                 }
             }
         }
-        else
+        else //if piece eaten is black
         {
             for(int i = 0; i < 32; i++)
             {
-                if(deadBlack[i] == null)
+                if(deadBlack[i] == null) //add it to the first empty index
                 {
                     deadBlack[i] = piece;
                     break;
@@ -490,8 +494,10 @@ public class Board
             }
         }
     }
-    
+
     /**
+     * Returns the array of dead black pieces
+     * 
      * @return the black pieces that have been eaten
      */
     public ChessPiece[] getBlackEaten()
@@ -499,17 +505,22 @@ public class Board
         return deadBlack;
     }  
 
-     /**
+    /**
+     * Returns the array of dead white pieces
+     * 
      * @return the white pieces that have been eaten
      */
     public ChessPiece[] getWhiteEaten()
     {
         return deadWhite;
     }
-    
+
     /**
+     * Returns whether a 2d array contains another array
+     * 
      * @param a This is the array of different squares
      * @param b This is a single square
+     * 
      * @return true if a already contains b
      */
     public boolean has(int[][] a,int[] b)
@@ -520,14 +531,15 @@ public class Board
             {
                 return true;
             }
-
         }
         return false;
     }
 
     /**
-     * checks if a color has been checkmated
-     * @param white This tells the method color it should check, 
+     * Checks if a color has been checkmated
+     * 
+     * @param white This tells the method which color it should check 
+     * 
      * @return true if there is a checkmate on the board
      */
     public boolean checkCheckMate(boolean white)
@@ -541,9 +553,9 @@ public class Board
             {
                 if(GameBoard[r][c]!=null)
                 {
-                    if(GameBoard[r][c] instanceof King&& GameBoard[r][c].getIsWhite()==white)
+                    if(GameBoard[r][c] instanceof King && GameBoard[r][c].getIsWhite()==white) //if king is found
                     {
-                        king = (King)GameBoard[r][c];
+                        king = (King)GameBoard[r][c]; //cast the ChessPiece into a King to use its methods
                         foundKing = true;
                         break;
                     }
@@ -562,13 +574,13 @@ public class Board
             {
                 if(GameBoard[r][c]!=null)
                 {
-                    if(GameBoard[r][c].getIsWhite() ==white)
+                    if(GameBoard[r][c].getIsWhite() == white)
                     {
                         GameBoard[r][c].findMove(GameBoard,false);
                         int[][] move = GameBoard[r][c].getMoves();
                         for(int i=0;i<move.length;i++)
                         {
-                            if(isLegal(GameBoard[r][c],move[i][0],move[i][1]))
+                            if(isLegal(GameBoard[r][c],move[i][0],move[i][1])) //if there is a legal move
                             {
                                 noLegalMoves = false;
                                 break;
@@ -590,8 +602,8 @@ public class Board
         {
             king.updateOpponentMove(whiteMoves());
         }
+
         //checks if the king is in check or not
-       
         if(noLegalMoves)
         {
             if(king.checked())
@@ -607,13 +619,13 @@ public class Board
         {
             return false;
         }
-
     }
-    
-    
+
     /**
-     * checks if a color has been stalemated
-     * @param white This tells the method color it should check, 
+     * Checks if a color has been stalemated
+     * 
+     * @param white This tells the method color it should check
+     * 
      * @return true if there is a stalemate on the board
      */
     public boolean checkStaleMate(boolean white)
@@ -627,9 +639,9 @@ public class Board
             {
                 if(GameBoard[r][c]!=null)
                 {
-                    if(GameBoard[r][c] instanceof King&& GameBoard[r][c].getIsWhite()==white)
+                    if(GameBoard[r][c] instanceof King && GameBoard[r][c].getIsWhite()==white)// if king is found
                     {
-                        king = (King)GameBoard[r][c];
+                        king = (King)GameBoard[r][c];//cast the ChessPiece into a King to use its methods
                         foundKing = true;
                         break;
                     }
@@ -648,13 +660,13 @@ public class Board
             {
                 if(GameBoard[r][c]!=null)
                 {
-                    if(GameBoard[r][c].getIsWhite() ==white)
+                    if(GameBoard[r][c].getIsWhite() == white)
                     {
                         GameBoard[r][c].findMove(GameBoard,false);
                         int[][] move = GameBoard[r][c].getMoves();
                         for(int i=0;i<move.length;i++)
                         {
-                            if(isLegal(GameBoard[r][c],move[i][0],move[i][1]))
+                            if(isLegal(GameBoard[r][c],move[i][0],move[i][1])) //if there is a legal move
                             {
                                 noLegalMoves = false;
                                 break;
