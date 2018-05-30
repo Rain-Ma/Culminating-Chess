@@ -1,15 +1,14 @@
-
 /**
- * Tests the Board class
+ * Runs a chess game
  *
  * @author Justin Chu
  * @version May 13th, 2018
  */
-public class BoardTester
+public class RunGame
 {
     public static void main (String[] args)
     {
         GameFrame board = new GameFrame();
-        board.startGame();        
+        board.startGame(); //Starts a new game
     }
 }
