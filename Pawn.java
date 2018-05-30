@@ -1,4 +1,4 @@
-
+import java.util.Arrays;
 /**
  * 
  *
@@ -7,36 +7,54 @@
  */
 public class Pawn extends ChessPiece
 {
+    // if the pawn can be enpassant by an opponent pawn
     boolean enPassant;
+    /**
+     * this is the constructor for objects of class Pawn
+     * @param row This is the row num of the square that the rook is starting on
+     * @param col This is the column num of the square that the rook is starting on
+     * @param isWhite This is the color of the Pawn. if isWhite is true, the Pawn is white
+     */
     public Pawn(int row,int col,boolean isWhite)
     {
         super(row,col,isWhite);
 
         enPassant = false;
     }
-
+    /**
+     *  a Constructor that clones another Pawn
+     *  @param piece This is the Pawn that is being cloned
+     */
     public Pawn(ChessPiece piece)
     {
         super(piece);
     }
 
+    @Override
+    /**
+     * finds all the legal moves the pawn can make
+     * @param board This is the chess board
+     * @param attack This tells the pawn to ether find all squares that it can move to
+     *          or to find all squares that it attacks
+     *
+     */
     public void findMove(ChessPiece[][] board,boolean attack)
     {
         int[][] moves =  new int[4][2];
         int count=0;
         if(getIsWhite())
         {
-
-            if(getRow()>0)
+            
+            if(getRow()>0)//so the program will not throw out of bounds errors
             {
-                if(!attack)
+                if(!attack)// if findMove is check for all moves
                 {
                     if(board[getRow()-1][getCol()]==null)
                     {
                         moves[count][0] = getRow()-1;
                         moves[count][1] = getCol();
                         count++;
-                        if(getRow()==6 && board[4][getCol()] == null)
+                        if(getRow()==6 && board[4][getCol()] == null)//if pawn has not moved yet it can move 2 squares at once
                         {
                             moves[count][0] = getRow()-2;
                             moves[count][1] = getCol();
@@ -45,9 +63,9 @@ public class Pawn extends ChessPiece
                     }
                 }
 
-                if(getCol()>0)
+                if(getCol()>0)// checks if pawn can capture to the left
                 {
-                    if(board[getRow()-1][getCol()-1]!=null)
+                    if(board[getRow()-1][getCol()-1]!=null)//to see if the pawn can capture anything
                     {
                         if(board[getRow()-1][getCol()-1].getIsWhite()!=getIsWhite())
                         {
@@ -56,7 +74,7 @@ public class Pawn extends ChessPiece
                             count++;
                         }
                     }
-                    else if(board[getRow()][getCol()-1]!=null)
+                    else if(board[getRow()][getCol()-1]!=null)// checks if pawn can en passant another pawn
                     {
                         if(board[getRow()][getCol()-1] instanceof Pawn && board[getRow()][getCol()-1].getIsWhite()!=getIsWhite())
                         {
@@ -74,7 +92,7 @@ public class Pawn extends ChessPiece
 
                 }
 
-                if(getCol()<7)
+                if(getCol()<7)// checks if pawn can capture to the right
                 {
                     if(board[getRow()-1][getCol()+1]!=null)
                     {
@@ -103,7 +121,7 @@ public class Pawn extends ChessPiece
                 }
             }
         }
-        else
+        else //if pawn is black
         {
             if(getRow()<7)
             {
@@ -175,14 +193,8 @@ public class Pawn extends ChessPiece
             }
 
         }
-        int[][] finaleMoves = new int[count][2];
-        for(int i =0; i <finaleMoves.length;i++)
-        {
-            for(int j=0;j<2;j++)
-            { 
-                finaleMoves[i][j] = moves[i][j];
-            }
-        }
+        int[][] finaleMoves = Arrays.copyOf(moves,count);
+        
         newMoves(finaleMoves);
     }
 
@@ -204,16 +216,27 @@ public class Pawn extends ChessPiece
 
     }
 
+    /**
+     * @return the instance variable enPassant
+     */    
     public boolean getEnPassant()
     {
         return enPassant;
     }
-
+    
+    /**
+     * mutator method for the instance variable enPassant
+     * @param enPassant This is the boolean that enPassant is being set to
+     */
+    
     public void setEnPassant(boolean enPassant)
     {
         this.enPassant = enPassant;
     }
-
+    
+    /**
+     * @return the memory address of the pawn png as a string
+     */
     public String toString()
     {
         if(getIsWhite())
