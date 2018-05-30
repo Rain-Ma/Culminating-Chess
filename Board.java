@@ -8,7 +8,7 @@ import java.util.Arrays;
  */
 public class Board
 {
-    // instance variables - replace the example below with your own
+    // instance variables
     private ChessPiece[][] GameBoard;// the entire board
 
     private ChessPiece[] deadBlack = new ChessPiece[16];  // the dead black pieces
