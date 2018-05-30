@@ -160,9 +160,9 @@ public class Bishop extends ChessPiece
      */
     public String toString()
     {
-        if(getIsWhite())
+        if(getIsWhite()) //if bishop is white
             return "ChessPieceIcons/WhiteBishop.png";
-        else
+        else //if bishop is black
             return "ChessPieceIcons/BlackBishop.png";
     }
 }
