@@ -1,6 +1,7 @@
-
+//import statement
+import java.util.Arrays;
 /**
- * 
+ * Knight chess piece class
  *
  * @author Justin & Shawn
  * @version May 24th, 2018
@@ -9,6 +10,10 @@ public class Knight extends ChessPiece
 {
     /**
      * Constructor for objects of class Knight
+     * 
+     * @param row This is the row num of the square that the Knight is starting on
+     * @param col This is the column num of the square that the Knight is starting on
+     * @param isWhite This is the color of the Knight. if isWhite is true, the Knight is white
      */
     public Knight(int row, int col, boolean isWhite)
     {
@@ -27,6 +32,8 @@ public class Knight extends ChessPiece
 
     @Override
     /**
+     * Finds all possible moves knight can make
+     * 
      * @param board This is the chess board
      * @param attack Not appicable to Knight since moving and attacking is the thing 
      */
@@ -41,11 +48,10 @@ public class Knight extends ChessPiece
                 if(board[getRow()+1][getCol()+2] instanceof ChessPiece &&board[getRow()+1][getCol()+2].getIsWhite() != board[getRow()][getCol()].getIsWhite()
                 || board[getRow()+1][getCol()+2] == null)//if the square is empty of occupied by an opponent piece
                 {
-
+                    //add coordinates to array
                     moves[counter][0] = getRow()+1;
                     moves[counter][1] = getCol()+2;
-                    counter++;
-
+                    counter++;//increase number of possible moves in array
                 }
             }
             if(getCol()-2 <=7 && getCol()-2 >=0)//checks if the column exists
@@ -54,9 +60,10 @@ public class Knight extends ChessPiece
                 board[getRow()+1][getCol()-2].getIsWhite() != board[getRow()][getCol()].getIsWhite()
                 || board[getRow()+1][getCol()-2] == null)//if the square is empty of occupied by an opponent piece
                 {
+                    //add coordinates to array
                     moves[counter][0] = getRow()+1;
                     moves[counter][1] = getCol()-2;
-                    counter++;
+                    counter++; //increase number of possible moves in array
                 }
             }
         }
@@ -68,9 +75,10 @@ public class Knight extends ChessPiece
                 board[getRow()-1][getCol()+2].getIsWhite() != board[getRow()][getCol()].getIsWhite()
                 || board[getRow()-1][getCol()+2] == null)//if the square is empty of occupied by an opponent piece
                 {
+                    //add coordinates to array
                     moves[counter][0] = getRow()-1;
                     moves[counter][1] = getCol()+2;
-                    counter++;
+                    counter++; //increase number of possible moves in array
                 }
             }
             if(getCol()-2 <=7 && getCol()-2 >=0)//checks if the column exists
@@ -79,9 +87,10 @@ public class Knight extends ChessPiece
                     board[getRow()-1][getCol()-2].getIsWhite() != board[getRow()][getCol()].getIsWhite())
                 || board[getRow()-1][getCol()-2] == null)//if the square is empty of occupied by an opponent piece
                 {
+                    //add coordinates to array
                     moves[counter][0] = getRow()-1;
                     moves[counter][1] = getCol()-2;
-                    counter++;
+                    counter++; //increase number of possible moves in array
                 }
             }
         }
@@ -93,9 +102,10 @@ public class Knight extends ChessPiece
                 board[getRow()+2][getCol()+1].getIsWhite() != board[getRow()][getCol()].getIsWhite()
                 || board[getRow()+2][getCol()+1] == null)//if the square is empty of occupied by an opponent piece
                 {
+                    //add coordinates to array
                     moves[counter][0] = getRow()+2;
                     moves[counter][1] = getCol()+1;
-                    counter++;
+                    counter++; //increase number of possible moves in array
                 }
             }
             if(getCol()-1 <=7 && getCol()-1 >=0)//checks if the column exists
@@ -104,9 +114,10 @@ public class Knight extends ChessPiece
                     board[getRow()+2][getCol()-1].getIsWhite() != board[getRow()][getCol()].getIsWhite())
                 || board[getRow()+2][getCol()-1] == null)//if the square is empty of occupied by an opponent piece
                 {
+                    //add coordinates to array
                     moves[counter][0] = getRow()+2;
                     moves[counter][1] = getCol()-1;
-                    counter++;
+                    counter++; //increase number of possible moves in array
                 }
             }
         }
@@ -118,9 +129,10 @@ public class Knight extends ChessPiece
                 board[getRow()-2][getCol()+1].getIsWhite() != board[getRow()][getCol()].getIsWhite()
                 || board[getRow()-2][getCol()+1] == null)//if the square is empty of occupied by an opponent piece
                 {
+                    //add coordinates to array
                     moves[counter][0] = getRow()-2;
                     moves[counter][1] = getCol()+1;
-                    counter++;
+                    counter++; //increase number of possible moves in array
                 }
             }
             if(getCol()-1 <=7 && getCol()-1 >=0)//checks if the column exists
@@ -129,50 +141,28 @@ public class Knight extends ChessPiece
                 board[getRow()-2][getCol()-1].getIsWhite() != board[getRow()][getCol()].getIsWhite()
                 || board[getRow()-2][getCol()-1] == null)//if the square is empty of occupied by an opponent piece
                 {
+                    //add coordinates to array
                     moves[counter][0] = getRow()-2;
                     moves[counter][1] = getCol()-1;
-                    counter++;
+                    counter++; //increase number of possible moves in array
                 }
             }
         }
-
-        int[][] finaleMoves = new int[counter][2];
-        for(int i =0; i <finaleMoves.length;i++)
-        {
-            for(int j=0;j<2;j++)
-            { 
-                finaleMoves[i][j] = moves[i][j];
-            }
-        }
-        newMoves(finaleMoves);
-    }
-
-    /**
-     * @param the chessboard because the value of a piece depend on the position of other pieces.
-     * @return the value of the chessPiece
-     */
-    public double evaluate(ChessPiece[][] board)
-    {
-        double value = 3;
-        if(getIsWhite())
-        {
-            return value;
-        }
-        else
-        {
-            return value*-1;
-        }
+        int[][] finaleMoves = Arrays.copyOf(moves,counter); //truncates size of array
+        newMoves(finaleMoves); //make the array the new array of moves the rook can make
     }
 
     @Override
     /**
-     * @return the memory adress of the Knight png
+     * Return the location of the knight icon
+     * 
+     * @return the String address of the Knight image
      */
     public String toString()
     {
-        if(getIsWhite())
+        if(getIsWhite()) //if it is white
             return "ChessPieceIcons/WhiteKnight.png";
-        else 
+        else //if it is black
             return "ChessPieceIcons/BlackKnight.png";
     }
 }
