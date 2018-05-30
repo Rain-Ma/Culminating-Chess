@@ -1,16 +1,14 @@
-
-
-
+//import statement
 import java.util.Arrays;
- /**
- *
- * @author Rain Ma
+/**
+ * Rook chess piece class
+ * 
+ * @author Rain Ma & Justin Chu
  * @version 29/05/2018
  */
-public  class Rook extends ChessPiece
+public class Rook extends ChessPiece
 {
-
-    private boolean moved; // to keep of wether the rook has moved or not
+    private boolean moved; //to keep track of whether the rook has moved or not
     /**
      * Constructor for objects of class Rook
      * @param row This is the row num of the square that the rook is starting on
@@ -22,7 +20,7 @@ public  class Rook extends ChessPiece
         super(row,col,isWhite);
         moved = false;
     }
-    
+
     /**
      * a Constructor that clones another rook
      * 
@@ -32,62 +30,68 @@ public  class Rook extends ChessPiece
     {
         super(piece);
     }
-    
+
     @Override
     /**
+     * Finds all possible moves for rook objects
+     * 
      * @param board This is the chess board
      * @param attack Not appicable to rook since moving and attacking is the thing 
      */
     public void findMove(ChessPiece[][] board,boolean attack)
     {
-        int[][] moves = new int[14][2];
-        int count = 0;
+        int[][] moves = new int[14][2]; //the total number of possible moves a rook can have at once [most moves possible][coordinates]
+        int count = 0; //number of possible moves
         //if the rook trys to move down the board
         if(getRow()<7)
         {
             for(int r = getRow()+1;r<8;r++)
             {
-                if(board[r][getCol()] instanceof ChessPiece)
+                if(board[r][getCol()] instanceof ChessPiece) //if there is a piece on that square
                 {
-                    if(board[r][getCol()].getIsWhite()!=getIsWhite())
+                    if(board[r][getCol()].getIsWhite()!=getIsWhite()) //if it is an enemy piece
                     {
+                        //add coordinates to array
                         moves[count][0] = r;
                         moves[count][1] = getCol();
-                        count++;
+                        count++; //increase number of possible moves in array
                         break;
                     }
-                    else
+                    else //if it is friendly piece
                     {
                         break;
                     }
                 }    
+                //add coordinates to array
                 moves[count][0] = r;
                 moves[count][1] = getCol();
-                count++;
+                count++; //increase number of possible moves in array
             }
         }
         //if the rook trys to move up the board
         if(getRow()>0)
         {
-            for( int r = getRow()-1;r>=0;r--)
+            for(int r = getRow()-1;r>=0;r--)
             {
-                if(board[r][getCol()] instanceof ChessPiece)
+                if(board[r][getCol()] instanceof ChessPiece) //if there is a piece on that square
                 {
-                    if(board[r][getCol()].getIsWhite()!=getIsWhite())
+                    if(board[r][getCol()].getIsWhite()!=getIsWhite()) //if it is an enemy piece
                     {
+                        //add coordinates to array
                         moves[count][0] = r;
                         moves[count][1] = getCol();
-                        count++;
+                        count++; //increase number of possible moves in array
                         break;
                     }
-                    else
+                    else //if it is a friendly piece
                     {
                         break;
                     }
                 }
+                //add coordinates to array
                 moves[count][0] = r;
                 moves[count][1] = getCol();
-                count++;       
+                count++; //increase number of possible moves in array
             }
         }
         //if the rook trys to move right
@@ -95,56 +99,61 @@ public  class Rook extends ChessPiece
         {
             for( int c = getCol()+1;c<8;c++)
             {
-                if(board[getRow()][c] instanceof ChessPiece)
+                if(board[getRow()][c] instanceof ChessPiece) //if there is a piece on that square
                 {
-                    if(board[getRow()][c].getIsWhite()!=getIsWhite())
+                    if(board[getRow()][c].getIsWhite()!=getIsWhite())//if it is an enemy piece
                     {
+                        //add coordinates to array
                         moves[count][0] = getRow();
                         moves[count][1] = c;
-                        count++;
+                        count++; //increase number of possible moves in array
                         break;
                     }
-                    else
+                    else //if it is a friendly piece
                     {
                         break;
                     }
-
                 }
+                //add coordinates to array
                 moves[count][0] = getRow();
                 moves[count][1] = c;
-                count++;   
+                count++; //increase number of possible moves in array
             }
         }
-        //if the rook trys to left
+        //if the rook trys to move left
         if(getCol()>0)
         {
             for( int c = getCol()-1;c>=0;c--)
             {
-                if(board[getRow()][c] instanceof ChessPiece)
+                if(board[getRow()][c] instanceof ChessPiece) //if there is a piece on that square
                 {
-                    if(board[getRow()][c].getIsWhite()!=getIsWhite())
+                    if(board[getRow()][c].getIsWhite()!=getIsWhite()) //if it is an enemy piece
                     {
+                        //add coordinates to array
                         moves[count][0] = getRow();
                         moves[count][1] = c;
-                        count++;
+                        count++; //increase number of possible moves in array
                         break;
                     }
-                    else
+                    else //if it is a freindly piece
                     {
                         break;
                     }
                 }
+                //add coordinates to array
                 moves[count][0] = getRow();
                 moves[count][1] = c;
-                count++;   
+                count++; //increase number of possible moves in array
             }
         }
-        int[][] finaleMoves = Arrays.copyOf(moves,count);
-       
-        newMoves(finaleMoves);
+        int[][] finaleMoves = Arrays.copyOf(moves,count); //truncates size of array
+
+        newMoves(finaleMoves); //make the array the new array of moves the rook can make
     }
 
     /**
+     * Returns if the rook has moved
+     * 
      * @return if whether or not the rook has been moved
      */
     public boolean hasMoved()
@@ -153,43 +162,29 @@ public  class Rook extends ChessPiece
     }
 
     /**
-     * @return the memory address of the rook png
+     * Returns the location of the rook image
+     * 
+     * @return the String address of the rook icon
      */
     public String toString()
     {
-        if(getIsWhite())
+        if(getIsWhite()) //if piece is white, return white icon
         {
             return "ChessPieceIcons/WhiteRook.png";
         }
-        else 
+        else //if piece is black, return black icon
         {
             return "ChessPieceIcons/BlackRook.png";
         }
     }
-    
+
     /**
-     * mutator method for the instance variable moved
+     * Mutator method for the instance variable moved
+     * 
      * @param moved This is the boolean moved is being set to
      */
     public void setMoved(boolean moved)
     {
         this.moved = moved;
-    }
-    
-    /**
-     * @param the chessboard because the value of a piece depend on the position of other pieces.
-     * @return the value of the chessPiece
-     */
-    public double evaluate(ChessPiece[][] board)
-    {
-        double value = 5;
-        if(getIsWhite())
-        {
-            return value;
-        }
-        else
-        {
-            return value*-1;
-        }
     }
 }
