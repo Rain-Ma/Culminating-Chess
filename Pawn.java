@@ -12,8 +12,8 @@ public class Pawn extends ChessPiece
     /**
      * This is the constructor for objects of class Pawn
      * 
-     * @param row This is the row num of the square that the rook is starting on
-     * @param col This is the column num of the square that the rook is starting on
+     * @param row This is the row num of the square that the pawn is starting on
+     * @param col This is the column num of the square that the pawn is starting on
      * @param isWhite This is the color of the Pawn. if isWhite is true, the Pawn is white
      */
     public Pawn(int row,int col,boolean isWhite)
@@ -41,7 +41,7 @@ public class Pawn extends ChessPiece
      */
     public void findMove(ChessPiece[][] board,boolean attack)
     {
-        int[][] moves =  new int[4][2]; //the total number of possible moves a rook can have at once [most moves possible][coordinates]
+        int[][] moves =  new int[4][2]; //the total number of possible moves a pawn can have at once [most moves possible][coordinates]
         int count = 0;//number of possible moves
         if(getIsWhite()) //if pawn is white
         {
@@ -231,12 +231,8 @@ public class Pawn extends ChessPiece
     public String toString()
     {
         if(getIsWhite()) //if pawn is white
-        {
             return "ChessPieceIcons/WhitePawn.png";
-        }
         else //if pawn is black
-        {
             return "ChessPieceIcons/BlackPawn.png";
-        }
     }
 }
