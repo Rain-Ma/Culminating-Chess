@@ -1,18 +1,23 @@
+//import statement
 import java.util.Arrays;
 /**
- * Write a description of class King here.
+ * King chess piece class
  *
  * @author Rain Ma
  * @version 29/05/2018
  */
 public class King extends ChessPiece
 {
-    // instance variables - replace the example below with your own
-    private boolean hasMoved;// in order to castle, it has to be the kings first move
-    private boolean isInCheck;
-    private int[][] opponentMove;
+    //instance variables
+    private boolean hasMoved;//in order to castle, it has to be the kings first move
+    private boolean isInCheck; //if king is in check
+    private int[][] opponentMove; //the opponent's moves
     /**
      * Constructor for objects of class King
+     * 
+     * @param row This is the row num of the square that the king is starting on
+     * @param col This is the column num of the square that the king is starting on
+     * @param isWhite This is the color of the king. if isWhite is true, the king is white
      */
     public King(int row, int col, boolean isWhite)
     {
@@ -20,35 +25,36 @@ public class King extends ChessPiece
         hasMoved = false;
         isInCheck = false;
     }
-    
+
     /**
-     * blank constructor for objects of class King
+     * An empty constructor for objects of class King
      */
     public King()
     {
         super();
-        
     }
-    
-     /**
-     * a Constructor that clones another King
+
+    /**
+     * a Constructor that clones another king
      * 
-     * @param piece This is the King that is being cloned
+     * @param piece This is the king that is being cloned
      */
     public King(ChessPiece piece)
     {
         super(piece);
     }
-    
+
     @Override
     /**
+     * Finds all possible moves for king objects
+     * 
      * @param board This is the chess board
-     * @param attack Not appicable to King since moving and attacking is the thing 
+     * @param attack Not appicable to king since moving and attacking are the thing 
      */
     public void findMove(ChessPiece[][] board,boolean attack)
     {
-        int[][] moves = new int[10][2];
-        int i =0;
+        int[][] moves = new int[10][2];//the total number of possible moves a king can have at once [most moves possible][coordinates]
+        int i =0;//number of possible moves
         if(!hasMoved)//checks if the king can castle
         {
             if(board[getRow()][0] instanceof Rook&&board[getRow()][0].getIsWhite()==getIsWhite())//checks if the rooks have moved  
@@ -58,9 +64,10 @@ public class King extends ChessPiece
                 {
                     if(board[getRow()][1]==null&&board[getRow()][2]==null&&board[getRow()][3]==null)// checks if the king will be castling through check
                     {
+                        //add coordinates to array
                         moves[i][0] = getRow();
                         moves[i][1] = 2;
-                        i++;
+                        i++;//increase number of possible moves in array
                     }
                 }
             }
@@ -72,13 +79,13 @@ public class King extends ChessPiece
                 {
                     if(board[getRow()][5]==null&&board[getRow()][6]==null)
                     {
+                        //add coordinates to array
                         moves[i][0] = getRow();
                         moves[i][1] = 6;
-                        i++;
+                        i++;//increase number of possible moves in array
                     }
                 }
             }
-
         }
         //checks if the king can move to the squares around it
         for(int r = getRow()-1;r<8&&r<=getRow()+1;r++)
@@ -93,79 +100,78 @@ public class King extends ChessPiece
                         {
                             if(r==getRow()&&c==getCol()||attacked(r,c))// if the opponent pieces attack that square
                             {
-
+                                //king cannot move to that square
                             }
                             else if(board[r][c]==null )//if board is empty
                             {
+                                //add coordinates to array
                                 moves[i][0] = r;
                                 moves[i][1] = c;
-                                i++;
+                                i++;//increase number of possible moves in array
                             }
                             else if(board[r][c].getIsWhite()!=getIsWhite())//if board is occupied by an opponent piece
                             {
-
+                                //add coordinates to array
                                 moves[i][0] = r;
                                 moves[i][1] = c;
-                                i++;
+                                i++;//increase number of possible moves in array
                             }  
                         }
                     }
                 }
             }
         }
-        int[][] move = Arrays.copyOf(moves,i);
-        
-        newMoves(move);
+        int[][] move = Arrays.copyOf(moves,i);//truncates size of array
+        newMoves(move);//make the array the new array of moves the king can make
     }
 
-   
-
     /**
-     * mutator method for the instace variable opponentMove
+     * Mutator method for the instance variable opponentMove
+     * 
      * @param opponentMove This is the new value for the instance variable opponentMove
      */
     public void updateOpponentMove(int[][] opponentMove)
     {
-
         this.opponentMove = opponentMove;
-
     }
 
     /**
-     * checks if opponent pieces are attacking a square
+     * Checks if opponent pieces are attacking a square
+     * 
      * @param row This is the row number of the square
      * @param col This is the column number of the square
+     * 
      * @return if the square is being attacked by an opponent piece
      */
     public boolean attacked(int row,int col)
     {  
-        if(opponentMove==null)
+        if(opponentMove==null) //if opponents dont have moves
         {
             return false;
         }
-        for(int i=0;i<opponentMove.length;i++)
+        for(int i=0;i<opponentMove.length;i++) //go through opponents moves
         {
-            if(opponentMove[i][0]==row&&opponentMove[i][1]==col)
+            if(opponentMove[i][0]==row&&opponentMove[i][1]==col) //if opponents are attacking this square
             {
                 return true;
             }
-
         }
         return false;
     }  
 
     /**
-     * accessor method for the instance variable hasMoved
+     * Accessor method for the instance variable hasMoved
+     * 
      * @return hasMoved
      */
     public boolean hasMoved()
     {
         return hasMoved;
-
     }
 
     /**
-     * mutator method for the instance variable hasMoved
+     * Mutator method for the instance variable hasMoved
+     * 
      * @param hasMoved This is the new value for the instance variable hasMoved
      */
     public void setHasMoved(boolean hasMoved)
@@ -174,28 +180,29 @@ public class King extends ChessPiece
     }
 
     /**
+     * Check if the king is being attacked
+     * 
      * @return if the square the king is on is being attacked by an opponent piece
      */
     public boolean checked()
     {
-        if(attacked(getRow(),getCol()))
+        if(attacked(getRow(),getCol())) //if king is being attacked
         {
             return true;
         }
-        else
+        else //if not
         {
             return false;
         }
-
     }
-    
-    
 
     /**
-     * since kings cant touch there is a space between the kings known as the opposition
+     * Since kings cant touch there is a space between the kings known as the opposition
+     * 
      * @param board This is the chess board
      * @param row This is the row num of the square that the king is trying to move to
      * @param col This is the column num of the square that the king is trying to move to
+     * 
      * @return if the opponent king also attacks the square
      */
     public boolean opposition(ChessPiece[][] board, int row,int col)
@@ -209,7 +216,7 @@ public class King extends ChessPiece
                 {
                     if(c>=0&&c<8)
                     {
-                        if(board[r][c] instanceof King)//if there is an opponent king, then there opposition exists
+                        if(board[r][c] instanceof King)//if there is an opponent king, then opposition exists
                         {
                             if(board[r][c].getIsWhite()!=getIsWhite())
                             {
@@ -223,15 +230,16 @@ public class King extends ChessPiece
         return false;
     }
 
-     @Override
     /**
-     * @return the memory adress of the King png
+     * Returns the file location of the king image
+     * 
+     * @return the String address of the king icon
      */
     public String toString()
     {
-        if(getIsWhite())
+        if(getIsWhite())//if king is white
             return "ChessPieceIcons/WhiteKing.png";
-        else
+        else//if king is black
             return "ChessPieceIcons/BlackKing.png";
     }    
 }
